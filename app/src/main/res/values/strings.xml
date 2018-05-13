@@ -47,4 +47,7 @@
         <item>4</item>
         <item>5</item>
     </string-array>
+    <string name="title_activity_view_itinerary">ViewItineraryActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Itinerary Day: %1$d</string>
 </resources>

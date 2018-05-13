@@ -15,6 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <!-- specify the api key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -23,6 +24,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
+
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -33,14 +35,22 @@
         <activity android:name=".activity.SignupActivity"/>
         <activity android:name=".activity.MainActivity"/>
         <activity android:name=".activity.ForgetPasswordActivity"/>
-        <activity android:name=".activity.SearchCityActivity"
+        <activity
+            android:name=".activity.SearchCityActivity"
             android:parentActivityName=".activity.MainActivity">
         </activity>
-        <activity android:name=".activity.AddTripActivity"
+        <activity
+            android:name=".activity.AddTripActivity"
             android:parentActivityName=".activity.SearchCityActivity">
         </activity>
-        <activity android:name=".activity.ChooseAccommodationActivity"
+        <activity
+            android:name=".activity.ChooseAccommodationActivity"
             android:parentActivityName=".activity.AddTripActivity">
+        </activity>
+        <activity
+            android:name=".activity.ViewItineraryActivity"
+            android:label="@string/title_activity_view_itinerary"
+            android:parentActivityName=".activity.MainActivity">
         </activity>
     </application>
 

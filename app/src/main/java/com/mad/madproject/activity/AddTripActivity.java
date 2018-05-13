@@ -60,7 +60,7 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                Intent intent = new Intent(getBaseContext(), ViewItineraryActivity.class);
                 startActivity(intent);
             }
         });
