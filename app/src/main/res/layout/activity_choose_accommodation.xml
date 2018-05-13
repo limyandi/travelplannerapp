@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mad.madproject.activity.ChooseAccommodationActivity">
+
+    <!-- this fragment is to show maps -->
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/map"
+              android:name="com.google.android.gms.maps.SupportMapFragment"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".MapsActivity"/>
+
+    <RelativeLayout
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/white_border"
+        android:elevation="10dp"
+
+        >
+
+        <!--imeOptions is used for java logic purpose will cache the EditorInfo.ACTION_SEARCH -->
+        <AutoCompleteTextView
+            android:id="@+id/input_search_et"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:drawableLeft="@drawable/search_img"
+            android:drawableStart="@drawable/search_img"
+            android:layout_margin="10dp"
+            android:drawablePadding="10dp"
+            android:hint="Enter address"
+            android:drawableRight="@drawable/cancel"
+            android:drawableEnd="@drawable/cancel"
+            android:imeOptions="actionSearch"
+            android:textColor="@color/colorPrimaryText"
+            />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

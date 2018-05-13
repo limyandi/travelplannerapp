@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">CityGrid</string>
+    <string name="hello">Hello World, MainActivity!</string>
+    <string name="enterZipCode">Enter a Zip Code</string>
+    <string name="goButton">Go!</string>
+    <string name="defaultZipCode">90069</string>
+    <string name="enterWhat">Looking for</string>
+    <string name="defaultWhat">restaurant</string>
+    <string name="app_name2">CityGrid 2</string>
+</resources>

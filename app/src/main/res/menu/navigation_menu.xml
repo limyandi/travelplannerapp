@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools">
+    <!--Enable only one menu at a time. -->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/mytrip"
+            android:icon="@drawable/drawer_traveler"
+            android:title="My Trip"/>
+        <item
+            android:id="@+id/answerquestions"
+            android:icon="@drawable/drawer_questions"
+            android:title="Answer Questions"/>
+
+        <item
+            android:id="@+id/holidaynews"
+            android:icon="@drawable/drawer_holiday"
+            android:title="Holiday News"/>
+
+        <item
+            android:id="@+id/sendfeedback"
+            android:icon="@drawable/drawer_feedback"
+            android:title="Send Feedback"/>
+
+        <item
+            android:id="@+id/aboutus"
+            android:title="About us"/>
+
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/drawer_settings"
+            android:title="Settings"/>
+
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/username"
+            android:title="Log out"/>
+    </group>
+</menu>

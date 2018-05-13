@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/activity_vertical_margin"
+    tools:context="com.mad.madproject.activity.AddTripActivity">
+
+    <LinearLayout
+        android:id="@+id/trip_to_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trip name"
+            android:textSize="10dp"
+            />
+
+        <EditText
+            android:id="@+id/addtrip_activity_trip_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Trip to ..."
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/start_date_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/trip_to_layout"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Date"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/start_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="Date"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/end_date_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/start_date_layout"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="End Date"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/end_date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="Date"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/end_date_layout"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/addtrip_activity_accommodation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accommodation"/>
+
+        <TextView
+            android:id="@+id/addtrip_activity_accommodation_details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/addtrip_activity_confirm_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:text="Confirm"/>
+
+
+</RelativeLayout>
