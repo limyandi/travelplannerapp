@@ -50,7 +50,8 @@
         <activity
             android:name=".activity.ViewItineraryActivity"
             android:label="@string/title_activity_view_itinerary"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 

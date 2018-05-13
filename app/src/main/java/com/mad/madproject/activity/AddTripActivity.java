@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,7 +23,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.mad.madproject.R;
 import com.mad.madproject.utils.Constant;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class AddTripActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -118,19 +120,40 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
                 dateSetListener = null;
         }
 
-        DatePickerDialog startDateDialog = new DatePickerDialog(AddTripActivity.this,
+        DatePickerDialog dateDialog = new DatePickerDialog(AddTripActivity.this,
                 android.R.style.Theme_Holo_Dialog,
                 dateSetListener,
                 year, month, day);
-        startDateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        startDateDialog.show();
+        DatePicker datePicker = dateDialog.getDatePicker();
+        datePicker.setMinDate(cal.getTimeInMillis());
+        //set the min date and max date for the end date text view, for min date, should be at least for a day,
+        // for max date, 5 day after the start date. (at least for current version).
+        if(dateSetListener == endDateSetListener) {
+            Date date = cal.getTime();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                date = sdf.parse(mStartDateTv.getText().toString());
+            } catch (ParseException e) {
+                //TODO: Handle catch.
+                e.printStackTrace();
+            }
+            Log.d(Constant.LOG_TAG, date.toString());
+            long minDate = date.getTime();
+            long maxDate = date.getTime() + Constant.DAY_LIMIT;
+            Log.d(Constant.LOG_TAG, String.valueOf(maxDate));
+            datePicker.setMinDate(minDate);
+            datePicker.setMaxDate(maxDate);
+        }
+        dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dateDialog.show();
     }
 
+    //TODO: This two listener is really similar, fix this?
     private DatePickerDialog.OnDateSetListener startDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
             month = month + 1;
-            String date = day + "/" + month + "/" + year;
+            String date = day + "-" + month + "-" + year;
             updateDisplay(mStartDateTv, date);
         }
     };
@@ -139,7 +162,7 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
             month = month + 1;
-            String date = day + "/" + month + "/" + year;
+            String date = day + "-" + month + "-" + year;
             updateDisplay(mEndDateTv, date);
         }
     };
