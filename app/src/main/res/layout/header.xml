@@ -1,38 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:background="@color/bg_main"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.mad.madproject.activity.MainActivity">
+    android:background="@drawable/side_nav_bar"
+    android:gravity="bottom"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-    <LinearLayout
-        android:layout_margin="10dp"
-        android:id="@+id/prof_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!-- TODO: Change the picture later -->
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profile_image"
-            android:layout_width="96dp"
-            android:src="@drawable/amu_bubble_mask"
-            android:layout_height="96dp"
-            app:civ_border_width="2dp"
-            app:civ_border_color="#FF000000"/>
-
-    </LinearLayout>
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image"
+        android:layout_width="96dp"
+        android:src="@drawable/amu_bubble_mask"
+        android:layout_height="96dp"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"/>
 
     <!--TODO: FIX THIS LATER -->
     <TextView
-        android:layout_below="@id/prof_layout"
         android:id="@+id/username_nav_header"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Limyandi Vicotrico" />
+        android:paddingTop="10dp"
+        android:text="Limyandi Vicotrico"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
-
-
-</RelativeLayout>
+</LinearLayout>
