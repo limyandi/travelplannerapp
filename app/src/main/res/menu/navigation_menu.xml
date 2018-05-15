@@ -26,14 +26,20 @@
             android:id="@+id/aboutus"
             android:title="About us"/>
 
-        <item
-            android:id="@+id/settings"
-            android:icon="@drawable/drawer_settings"
-            android:title="Settings"/>
 
-        <item
-            android:id="@+id/logout"
-            android:icon="@drawable/username"
-            android:title="Log out"/>
     </group>
+
+    <item android:title="Utility">
+        <menu>
+            <item
+                android:id="@+id/settings"
+                android:icon="@drawable/drawer_settings"
+                android:title="Settings"/>
+
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/username"
+                android:title="Log out"/>
+        </menu>
+    </item>
 </menu>

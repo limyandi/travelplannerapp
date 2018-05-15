@@ -47,10 +47,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ChooseAccommodationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     //widgets
-    private AutoCompleteTextView mSearchText;
+    @BindView(R.id.input_search_et)
+    AutoCompleteTextView mSearchText;
 
     private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -73,8 +77,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_accommodation);
 
-        //TODO: Get LatLng Bounds from here.
-        //get the lat lng from addtripactivity.
+        ButterKnife.bind(this);
         mInitLatLng = getIntent().getParcelableExtra("Latitudelongitude");
 
         //Create the bound for the city, so that the autocompleteadapter will suggest mostly place that are close to the chosen city.
@@ -94,9 +97,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         //set the filter to accommodation + exact address only.
         AutocompleteFilter accommodationFilter = new AutocompleteFilter.Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_GEOCODE).build();
 
-        //TODO: The lat_lng_bounds should be from the city latlng boundary
         mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(ChooseAccommodationActivity.this, mGeoDataClient, cityBound, accommodationFilter);
-        mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search_et);
 
         //we need to set the search text to single line so that the keyevent can be read.
         //(Otherwise, the keyevent will not work and the geolocate function will never be called.)
@@ -322,7 +323,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
             moveCamera(place.getLatLng(), CAMERA_ZOOM, mAccommodationInfo);
 
             places.release();
-
         }
     };
 }

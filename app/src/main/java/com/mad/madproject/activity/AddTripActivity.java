@@ -28,36 +28,42 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class AddTripActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextView mStartDateTv, mEndDateTv;
-    private TextView mTripNameTv, mAccommodationTv, mAccommodationDetailsTv;
-    private Button confirmBtn;
-    private LinearLayout mStartDateLayout, mEndDateLayout;
+    @BindView(R.id.start_date_tv)
+    TextView mStartDateTv;
+    @BindView(R.id.end_date_tv)
+    TextView mEndDateTv;
+    @BindView(R.id.addtrip_activity_trip_name)
+    TextView mTripNameTv;
+    @BindView(R.id.addtrip_activity_accommodation)
+    TextView mAccommodationTv;
+    @BindView(R.id.addtrip_activity_accommodation_details)
+    TextView mAccommodationDetailsTv;
 
     //for handling if user google play services version is not valid / error
     private static final int ERROR_DIALOG_REQUEST = 9001;
+    //Request to choose accommodation.
     private static final int CHOOSE_ACCOMMODATION_REQUEST = 1;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
 
-        mStartDateTv = (TextView) findViewById(R.id.start_date_tv);
-        mEndDateTv = (TextView) findViewById(R.id.end_date_tv);
-        mTripNameTv = (EditText) findViewById(R.id.addtrip_activity_trip_name);
-        mAccommodationTv = (TextView) findViewById(R.id.addtrip_activity_accommodation);
-        mAccommodationDetailsTv = (TextView) findViewById(R.id.addtrip_activity_accommodation_details);
-        mStartDateLayout = (LinearLayout) findViewById(R.id.start_date_layout);
-        mEndDateLayout = (LinearLayout) findViewById(R.id.end_date_layout);
+        ButterKnife.bind(this);
 
-        confirmBtn = (Button) findViewById(R.id.addtrip_activity_confirm_btn);
+        LinearLayout startDateLayout = (LinearLayout) findViewById(R.id.start_date_layout);
+        LinearLayout endDateLayout = (LinearLayout) findViewById(R.id.end_date_layout);
+        Button confirmBtn = (Button) findViewById(R.id.addtrip_activity_confirm_btn);
 
         String textTrip = "Trip to " + getIntent().getStringExtra("City");
         mTripNameTv.setText(textTrip);
 
-        mStartDateLayout.setOnClickListener(this);
-        mEndDateLayout.setOnClickListener(this);
+        startDateLayout.setOnClickListener(this);
+        endDateLayout.setOnClickListener(this);
 
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,7 +134,7 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         datePicker.setMinDate(cal.getTimeInMillis());
         //set the min date and max date for the end date text view, for min date, should be at least for a day,
         // for max date, 5 day after the start date. (at least for current version).
-        if(dateSetListener == endDateSetListener) {
+        if (dateSetListener == endDateSetListener) {
             Date date = cal.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             try {

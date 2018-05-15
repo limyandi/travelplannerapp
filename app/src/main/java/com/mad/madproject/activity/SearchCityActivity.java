@@ -38,32 +38,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SearchCityActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
-    private AutoCompleteTextView mSearchTextField;
+
 
     private ArrayList<City> mCities = new ArrayList<>();
-    private RecyclerView mRecyclerView;
-    private CityAdapter mCityAdapter;
-    private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
-    private GeoDataClient mGeoDataClient;
-    private GoogleApiClient mGoogleApiClient;
-    //bounds for the whole world.
-    private City mCityInfo;
 
+    @BindView(R.id.search_field)
+    AutoCompleteTextView mSearchTextField;
+    @BindView(R.id.recycler_view)
+    RecyclerView mRecyclerView;
+
+    private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
+    private GoogleApiClient mGoogleApiClient;
+    private City mCityInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_city);
 
-        mSearchTextField = (AutoCompleteTextView) findViewById(R.id.search_field);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        ButterKnife.bind(this);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //initialising the geo data client for the Google Places API for android.
-        mGeoDataClient = Places.getGeoDataClient(this);
+        GeoDataClient geoDataClient = Places.getGeoDataClient(this);
         mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
@@ -75,14 +77,14 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
         //set the filter to city only.
         AutocompleteFilter cityFilter = new AutocompleteFilter.Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES).build();
         //intialising for the placeautocompleteadapter.
-        mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, Constant.LAT_LNG_BOUNDS, cityFilter);
+        mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, geoDataClient, Constant.LAT_LNG_BOUNDS, cityFilter);
 
         mSearchTextField.setAdapter(mPlaceAutocompleteAdapter);
         mSearchTextField.setOnItemClickListener(mAutoCompleteClickListener);
 
         //initialising for the city adapter.
-        mCityAdapter = new CityAdapter(this, mCities);
-        mRecyclerView.setAdapter(mCityAdapter);
+        CityAdapter cityAdapter = new CityAdapter(this, mCities);
+        mRecyclerView.setAdapter(cityAdapter);
 
         mSearchTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override

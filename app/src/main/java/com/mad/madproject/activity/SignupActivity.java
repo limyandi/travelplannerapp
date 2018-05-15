@@ -21,11 +21,26 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.mad.madproject.R;
 import com.mad.madproject.model.User;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText inputUsername, inputEmail, inputPassword;
-    private Button btnSignIn, btnSignUp, btnResetPassword;
-    private ProgressBar progressBar;
+    @BindView(R.id.username)
+    EditText inputUsername;
+    @BindView(R.id.email)
+    EditText inputEmail;
+    @BindView(R.id.password)
+    EditText inputPassword;
+    @BindView(R.id.sign_in_button)
+    Button btnSignIn;
+    @BindView(R.id.sign_up_button)
+    Button btnSignUp;
+    @BindView(R.id.btn_reset_password)
+    Button btnResetPassword;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
     private FirebaseAuth auth;
 
     @Override
@@ -33,15 +48,10 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        ButterKnife.bind(this);
+
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
-
-        btnSignIn = (Button) findViewById(R.id.sign_in_button);
-        btnSignUp = (Button) findViewById(R.id.sign_up_button);
-        inputUsername = (EditText) findViewById(R.id.username);
-        inputEmail = (EditText) findViewById(R.id.email);
-        inputPassword = (EditText) findViewById(R.id.password);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override

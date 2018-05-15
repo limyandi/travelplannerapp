@@ -39,6 +39,7 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    @BindView(R.id.drawerlayout)
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle drawerToggle;
 
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private User currentUser;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference usersRef = database.getReference("Users");
+    private DatabaseReference usersRef = database.getReference("Users");
 
     private TextView username;
 
@@ -61,7 +62,8 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+        ButterKnife.bind(this);
+
         //initialize the drawertoggle using the constructor (Activity, DrawerLayout, String, String)
         drawerToggle = new ActionBarDrawerToggle(
                 this,

@@ -19,15 +19,25 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.mad.madproject.R;
 import com.mad.madproject.utils.Constant;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText mInputEmail, mInputPassword;
+    @BindView(R.id.email)
+    EditText mInputEmail;
+    @BindView(R.id.password)
+    EditText mInputPassword;
+    @BindView(R.id.btn_signup)
+    Button mBtnSignup;
+    @BindView(R.id.btn_login)
+    Button mBtnLogin;
+    @BindView(R.id.btn_reset_password)
+    Button mBtnReset;
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
+
     private FirebaseAuth mAuth;
-    private ProgressBar mProgressBar;
-    private Button mBtnSignup, mBtnLogin, mBtnReset;
-    private Intent mainActivityIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 
         //Get Firebase mAuth instance
         mAuth = FirebaseAuth.getInstance();
-        mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
+        Intent mainActivityIntent = new Intent(LoginActivity.this, MainActivity.class);
 
         //keep user session.
         if (mAuth.getCurrentUser() != null) {
@@ -47,12 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         //set the view now
         setContentView(R.layout.activity_login);
 
-        mInputEmail = (EditText) findViewById(R.id.email);
-        mInputPassword = (EditText) findViewById(R.id.password);
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        mBtnSignup = (Button) findViewById(R.id.btn_signup);
-        mBtnLogin = (Button) findViewById(R.id.btn_login);
-        mBtnReset = (Button) findViewById(R.id.btn_reset_password);
+        ButterKnife.bind(this);
 
         //Get Firebase mAuth instance
         mAuth = FirebaseAuth.getInstance();
