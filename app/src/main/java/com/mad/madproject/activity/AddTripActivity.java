@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.mad.madproject.R;
 import com.mad.madproject.utils.Constant;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -69,6 +70,13 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), ViewItineraryActivity.class);
+
+                int intervalDay = Integer.valueOf(mEndDateTv.getText().toString().substring(0, 2)) - Integer.valueOf(mStartDateTv.getText().toString().substring(0, 2)) + 1;
+                intent.putExtra("Start Date", mStartDateTv.getText().toString());
+                intent.putExtra("End Date", mEndDateTv.getText().toString());
+                intent.putExtra("Day", intervalDay);
+                //TODO: Chaining intent put? is this bad practice?
+                intent.putExtra("City", getIntent().getStringExtra("City"));
                 startActivity(intent);
             }
         });
@@ -159,7 +167,10 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
             month = month + 1;
-            String date = day + "-" + month + "-" + year;
+            DecimalFormat df = new DecimalFormat("00");
+            //add leading zeros to day less than 10.
+            String leadingDay = df.format(day);
+            String date = leadingDay + "-" + month + "-" + year;
             updateDisplay(mStartDateTv, date);
         }
     };
@@ -168,7 +179,10 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
             month = month + 1;
-            String date = day + "-" + month + "-" + year;
+            //add leading zeros to day less than 10.
+            DecimalFormat df = new DecimalFormat("00");
+            String leadingDay = df.format(day);
+            String date = leadingDay + "-" + month + "-" + year;
             updateDisplay(mEndDateTv, date);
         }
     };

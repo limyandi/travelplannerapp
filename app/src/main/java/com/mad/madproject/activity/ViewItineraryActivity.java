@@ -1,7 +1,5 @@
 package com.mad.madproject.activity;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,9 +20,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mad.madproject.R;
+import com.mad.madproject.adapter.ItineraryAdapter;
+import com.mad.madproject.model.Itinerary;
+import com.mad.madproject.utils.Constant;
+
+import java.util.ArrayList;
 
 public class ViewItineraryActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = "ViewItinerary";
+    private int mDays;
+    private String mCity;
+    private String mStartDate;
+    private String mEndDate;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -54,6 +63,13 @@ public class ViewItineraryActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        mCity = getIntent().getStringExtra("City");
+        mStartDate = getIntent().getStringExtra("Start Date");
+        mEndDate = getIntent().getStringExtra("End Date");
+        TextView itineraryPlace = (TextView) findViewById(R.id.view_itinerary_activity_place);
+        TextView itineraryDate = (TextView) findViewById(R.id.view_itinerary_activity_date);
+        itineraryPlace.setText(mCity);
+        itineraryDate.setText(mStartDate + " - " + mEndDate);
     }
 
 
@@ -83,6 +99,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+        private ItineraryAdapter mItineraryAdapter;
+        private ArrayList<Itinerary> mItinerariesList = new ArrayList<>();
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -90,12 +108,17 @@ public class ViewItineraryActivity extends AppCompatActivity {
         private static final String ARG_SECTION_NUMBER = "section_number";
 
         public PlaceholderFragment() {
+
+            Log.d(Constant.LOG_TAG, "Trying to adding to the itinerary");
+            //TODO: This lists is a mockup. Get the real data using distance matrix API or?
+            mItinerariesList.add(new Itinerary("10:00 A.M", "Yoyogi", "a"));
         }
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
+        //TODO: This might be wrong.
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -108,14 +131,14 @@ public class ViewItineraryActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_view_itinerary, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            //set the text here later.
-            TextView itineraryPlace = (TextView) rootView.findViewById(R.id.view_itinerary_activity_place);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            TextView daylist = (TextView) rootView.findViewById(R.id.section_label);
+
+            mItineraryAdapter = new ItineraryAdapter(mItinerariesList, getActivity());
+            daylist.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 //            itineraryTitle.setText(getString(R.string.example_string), getArguments().getInt(ARG_SECTION_NUMBER));
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.itinerary_view);
-            //TODO: Set the adapter here.
             recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+            recyclerView.setAdapter(mItineraryAdapter);
             return rootView;
         }
     }
@@ -139,8 +162,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
-            return 3;
+            mDays = getIntent().getIntExtra("Day", 1);
+            return mDays;
         }
 
         @Override
