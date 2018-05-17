@@ -10,7 +10,7 @@ import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mad.madproject.R;
-import com.mad.madproject.activity.ForgetPasswordActivity;
+import com.mad.madproject.forgetpassword.ForgetPasswordActivity;
 import com.mad.madproject.activity.MainActivity;
 import com.mad.madproject.register.RegisterActivity;
 import com.mad.madproject.utils.Utils;

@@ -34,7 +34,7 @@
         </activity>
         <activity android:name=".register.RegisterActivity"/>
         <activity android:name=".activity.MainActivity"/>
-        <activity android:name=".activity.ForgetPasswordActivity"/>
+        <activity android:name=".forgetpassword.ForgetPasswordActivity"/>
         <activity
             android:name=".activity.SearchCityActivity"
             android:parentActivityName=".activity.MainActivity">
