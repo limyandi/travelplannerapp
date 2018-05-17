@@ -6,6 +6,15 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+
 /**
  * Created by limyandivicotrico on 5/16/18.
  */
@@ -32,5 +41,36 @@ public class Utils<Data> {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
+    public static String readUrl(String theUrl) throws IOException {
+        String data = "";
+        InputStream inputStream = null;
+        HttpURLConnection urlConnection = null;
+        try {
+            URL url = new URL(theUrl);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.connect();
 
+            inputStream = urlConnection.getInputStream();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+            StringBuffer stringBuffer = new StringBuffer();
+
+            String line = "";
+            while((line = bufferedReader.readLine()) != null) {
+                stringBuffer.append(line);
+            }
+
+            data = stringBuffer.toString();
+            bufferedReader.close();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            inputStream.close();
+            urlConnection.disconnect();
+        }
+
+        return data;
+    }
 }
