@@ -25,14 +25,14 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
 
-        <activity android:name=".activity.LoginActivity">
+        <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".activity.SignupActivity"/>
+        <activity android:name=".register.RegisterActivity"/>
         <activity android:name=".activity.MainActivity"/>
         <activity android:name=".activity.ForgetPasswordActivity"/>
         <activity

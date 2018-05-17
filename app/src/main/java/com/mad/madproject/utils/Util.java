@@ -2,7 +2,11 @@ package com.mad.madproject.utils;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.maps.android.SphericalUtil;
+import com.mad.madproject.db.Firebase;
 
 /**
  * Created by limyandivicotrico on 5/13/18.
@@ -21,4 +25,16 @@ public class Util {
         LatLng northeastCorner = SphericalUtil.computeOffset(center, distanceFromCenterToCorner, 45.0);
         return new LatLngBounds(southwestCorner, northeastCorner);
     }
+
+    public static String getUserUid() {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        return auth.getUid();
+    }
+
+    public static DatabaseReference getUserDatabase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("Users");
+        return usersRef;
+    }
+
 }

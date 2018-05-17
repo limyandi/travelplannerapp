@@ -20,8 +20,12 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.mad.madproject.R;
+import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.utils.Constant;
+import com.mad.madproject.utils.Util;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -77,6 +81,10 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
                 intent.putExtra("Day", intervalDay);
                 //TODO: Chaining intent put? is this bad practice?
                 intent.putExtra("City", getIntent().getStringExtra("City"));
+
+                ItineraryPreview itineraryPreview = new ItineraryPreview("A", getIntent().getStringExtra("City"), String.valueOf(intervalDay));
+                DatabaseReference userDatabase = Util.getUserDatabase();
+                userDatabase.child(Util.getUserUid()).child("ItineraryPreview").push().setValue(itineraryPreview);
                 startActivity(intent);
             }
         });

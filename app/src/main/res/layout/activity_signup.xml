@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.mad.madproject.activity.SignupActivity">
+    tools:context="com.mad.madproject.register.RegisterActivity">
 
     <!--&lt;!&ndash; Setting the background opacity &ndash;&gt;-->
     <!--<View-->

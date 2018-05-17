@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.mad.madproject.activity.LoginActivity">
+    tools:context="com.mad.madproject.login.LoginActivity">
 
     <!--&lt;!&ndash; Setting the background opacity &ndash;&gt;-->
     <!--<View-->

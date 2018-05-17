@@ -13,7 +13,14 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
-            <android.support.design.widget.FloatingActionButton
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/view_itinerary_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            />
+
+        <android.support.design.widget.FloatingActionButton
                 android:id="@+id/activity_main_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -24,6 +31,9 @@
                 app:srcCompat="@android:drawable/ic_input_add" />
 
     </FrameLayout>
+
+
+
     <!-- Creating the navigation view and populate it with the menu item. -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nv"
@@ -34,7 +44,5 @@
         app:headerLayout="@layout/header">
 
     </android.support.design.widget.NavigationView>
-
-
 
 </android.support.v4.widget.DrawerLayout>

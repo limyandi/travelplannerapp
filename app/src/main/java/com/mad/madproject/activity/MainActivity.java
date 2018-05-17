@@ -12,6 +12,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,13 +28,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.madproject.R;
+import com.mad.madproject.adapter.ItineraryPreviewAdapter;
 import com.mad.madproject.fragments.AboutFragment;
 import com.mad.madproject.fragments.HolidayNewsFragment;
 import com.mad.madproject.fragments.MyTripFragment;
 import com.mad.madproject.fragments.SendFeedbackFragment;
 import com.mad.madproject.fragments.SettingsFragment;
+import com.mad.madproject.login.LoginActivity;
+import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.model.User;
 import com.mad.madproject.utils.Constant;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +49,10 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.drawerlayout)
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle drawerToggle;
+
+    private ItineraryPreviewAdapter mItineraryPreviewAdapter;
+    private ArrayList<ItineraryPreview> mItineraryPreviewList = new ArrayList<>();
+    private RecyclerView mRecyclerView;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -63,6 +74,35 @@ public class MainActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
 
         ButterKnife.bind(this);
+
+        //setting up the recycler view for viewing the created itinerary.
+        mItineraryPreviewList.add(new ItineraryPreview("URL", "Kyoto, Japan", "3"));
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.view_itinerary_recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        //TODO: Use async task for this, maybe do this during the splash screen?
+        usersRef.child(user.getUid()).child("ItineraryPreview").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot itineraryView: dataSnapshot.getChildren()) {
+                    Log.d(Constant.LOG_TAG, itineraryView.toString());
+                    ItineraryPreview crawledView = itineraryView.getValue(ItineraryPreview.class);
+                    Log.d(Constant.LOG_TAG, crawledView.toString());
+                    mItineraryPreviewList.add(crawledView);
+                }
+                mItineraryPreviewAdapter = new ItineraryPreviewAdapter(MainActivity.this, mItineraryPreviewList);
+                mRecyclerView.setAdapter(mItineraryPreviewAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
 
         //initialize the drawertoggle using the constructor (Activity, DrawerLayout, String, String)
         drawerToggle = new ActionBarDrawerToggle(
