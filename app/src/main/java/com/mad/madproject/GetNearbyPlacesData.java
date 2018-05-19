@@ -5,6 +5,10 @@ import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.mad.madproject.model.Itinerary;
+import com.mad.madproject.utils.Util;
 import com.mad.madproject.utils.Utils;
 
 import java.io.IOException;
@@ -26,8 +30,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
     @Override
     protected String doInBackground(Object... objects) {
-        mMap = (GoogleMap) objects[0];
-        url = (String) objects[1];
+        url = (String) objects[0];
 
         try {
             googlePlacesData = Utils.readUrl(url);
@@ -43,23 +46,30 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
         List<HashMap<String, String>> nearbyPlaceList = null;
         DataParser parser = new DataParser();
         nearbyPlaceList = parser.parse(s);
-        showNearbyPlaces(nearbyPlaceList);
+        getNearbyPlace(nearbyPlaceList);
     }
 
-    private void showNearbyPlaces(List<HashMap<String, String>> nearbyPlaceList) {
-        for(int i = 0; i < nearbyPlaceList.size(); i++) {
-            HashMap<String, String> googlePlace = nearbyPlaceList.get(i);
+    private void getNearbyPlace(List<HashMap<String, String>> nearbyPlaceList) {
+        //For now, only take the first one because we are only ranking them based on the rating.
+        HashMap<String, String> googlePlace = nearbyPlaceList.get(0);
 
-            String placeName = googlePlace.get("place_name");
-            String vicinity = googlePlace.get("vicinity");
-            double lat = Double.parseDouble(googlePlace.get("lat"));
-            double lng = Double.parseDouble(googlePlace.get("lng"));
+        String placeName = googlePlace.get("place_name");
+        String vicinity = googlePlace.get("vicinity");
+        double lat = Double.parseDouble(googlePlace.get("lat"));
+        double lng = Double.parseDouble(googlePlace.get("lng"));
 
-            LatLng latLng = new LatLng(lat, lng);
+        LatLng latLng = new LatLng(lat, lng);
 
-            Log.d("Get Nearby Place Data", placeName);
-            Log.d("Get Nearby Place Data", vicinity);
-            Log.d("Get Nearby Place Data", latLng.latitude + ", " + latLng.longitude);
-        }
+        //TODO: We have to do this several time, how?
+        Itinerary it = new Itinerary("10:00 A.M.", placeName, "A");
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference usersRef = database.getReference("Users");
+
+        usersRef.child(Util.getUserUid()).child("Day1").push().setValue(it);
+
+        Log.d("Get", placeName);
+        Log.d("Get", vicinity);
+        Log.d("Get", latLng.latitude + ", " + latLng.longitude);
     }
 }

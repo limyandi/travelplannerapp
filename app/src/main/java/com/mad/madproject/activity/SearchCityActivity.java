@@ -32,6 +32,7 @@ import com.mad.madproject.adapter.PlaceAutocompleteAdapter;
 import com.mad.madproject.model.Accommodation;
 import com.mad.madproject.model.City;
 import com.mad.madproject.utils.Constant;
+import com.mad.madproject.utils.Utils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -173,6 +174,7 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
             //TODO: Its better to send the city object rather than doing this.
             intent.putExtra("City", mCityInfo.getCity());
             intent.putExtra("LatLng", mCityInfo.getLatLng());
+
             startActivity(intent);
         }
     };

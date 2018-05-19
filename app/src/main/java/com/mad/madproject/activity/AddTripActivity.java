@@ -54,6 +54,9 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
     //Request to choose accommodation.
     private static final int CHOOSE_ACCOMMODATION_REQUEST = 1;
 
+    private String mLatitude;
+    private String mLongitude;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
@@ -81,8 +84,10 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
                 intent.putExtra("Day", intervalDay);
                 //TODO: Chaining intent put? is this bad practice?
                 intent.putExtra("City", getIntent().getStringExtra("City"));
+                intent.putExtra("Latitude", mLatitude);
+                intent.putExtra("Longitude", mLongitude);
 
-                ItineraryPreview itineraryPreview = new ItineraryPreview("A", getIntent().getStringExtra("City"), String.valueOf(intervalDay));
+                ItineraryPreview itineraryPreview = new ItineraryPreview(mTripNameTv.getText().toString(), "A", getIntent().getStringExtra("City"), String.valueOf(intervalDay));
                 DatabaseReference userDatabase = Util.getUserDatabase();
                 userDatabase.child(Util.getUserUid()).child("ItineraryPreview").push().setValue(itineraryPreview);
                 startActivity(intent);
@@ -117,6 +122,8 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             case CHOOSE_ACCOMMODATION_REQUEST:
                 if (resultCode == Activity.RESULT_OK) {
                     mAccommodationDetailsTv.setText(data.getStringExtra("Accommodation Address"));
+                    mLatitude = data.getStringExtra("Accommodation Latitude");
+                    mLongitude = data.getStringExtra("Accommodation Longitude");
                 }
         }
     }
@@ -220,4 +227,6 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         }
         return false;
     }
+
+
 }

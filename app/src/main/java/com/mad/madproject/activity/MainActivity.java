@@ -76,8 +76,6 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         //setting up the recycler view for viewing the created itinerary.
-        mItineraryPreviewList.add(new ItineraryPreview("URL", "Kyoto, Japan", "3"));
-
         mRecyclerView = (RecyclerView) findViewById(R.id.view_itinerary_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -85,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         usersRef.child(user.getUid()).child("ItineraryPreview").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mItineraryPreviewList.clear();
                 for(DataSnapshot itineraryView: dataSnapshot.getChildren()) {
                     Log.d(Constant.LOG_TAG, itineraryView.toString());
                     ItineraryPreview crawledView = itineraryView.getValue(ItineraryPreview.class);

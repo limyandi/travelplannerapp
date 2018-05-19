@@ -19,10 +19,18 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mad.madproject.R;
 import com.mad.madproject.adapter.ItineraryAdapter;
+import com.mad.madproject.adapter.ItineraryPreviewAdapter;
 import com.mad.madproject.model.Itinerary;
+import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.utils.Constant;
+import com.mad.madproject.utils.Util;
 
 import java.util.ArrayList;
 
@@ -101,6 +109,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
     public static class PlaceholderFragment extends Fragment {
         private ItineraryAdapter mItineraryAdapter;
         private ArrayList<Itinerary> mItinerariesList = new ArrayList<>();
+        private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+        private DatabaseReference mUsersRef = mDatabase.getReference("Users");
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -110,8 +120,20 @@ public class ViewItineraryActivity extends AppCompatActivity {
         public PlaceholderFragment() {
 
             Log.d(Constant.LOG_TAG, "Trying to adding to the itinerary");
-            //TODO: This lists is a mockup. Get the real data using distance matrix API or?
-            mItinerariesList.add(new Itinerary("10:00 A.M", "Yoyogi", "a"));
+            mUsersRef.child(Util.getUserUid()).child("Day1").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mItinerariesList.clear();
+                    for(DataSnapshot itinerary: dataSnapshot.getChildren()) {
+                        Itinerary crawledView = itinerary.getValue(Itinerary.class);
+                        mItinerariesList.add(crawledView);
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
         }
 
         /**

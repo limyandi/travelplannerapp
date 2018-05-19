@@ -25,13 +25,14 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
+        TextView tripNameTv;
         ImageView imageViewIcon;
         TextView placeTv;
         TextView inDaysTv;
 
-
         public MyViewHolder(View itemView) {
             super(itemView);
+            this.tripNameTv = (TextView) itemView.findViewById(R.id.activity_main_view_itinerary_trip_name);
             this.placeTv = (TextView) itemView.findViewById(R.id.activity_main_place);
             this.inDaysTv = (TextView) itemView.findViewById(R.id.activity_main_days);
             this.imageViewIcon = (ImageView) itemView.findViewById(R.id.city_image_view);
@@ -56,8 +57,9 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
+        holder.tripNameTv.setText(dataSet.get(listPosition).getTripName());
         holder.placeTv.setText(dataSet.get(listPosition).getCity());
-        holder.inDaysTv.setText(dataSet.get(listPosition).getInDays() + " days trip");
+        holder.inDaysTv.setText(dataSet.get(listPosition).getLengthOfTrip() + " days trip");
         //TODO: Fix this, should have its own picture.
         holder.imageViewIcon.setImageResource(R.drawable.background);
     }

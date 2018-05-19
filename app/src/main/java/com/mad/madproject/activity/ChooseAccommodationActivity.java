@@ -18,6 +18,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.mad.madproject.GetNearbyPlacesData;
 import com.mad.madproject.R;
 import com.mad.madproject.adapter.PlaceAutocompleteAdapter;
 import com.mad.madproject.model.Accommodation;
@@ -69,6 +71,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     private GeoDataClient mGeoDataClient;
     private GoogleApiClient mGoogleApiClient;
     private LatLng mInitLatLng;
+    int PROXIMITY_RADIUS = 10000;
 
     private Accommodation mAccommodationInfo;
 
@@ -230,7 +233,8 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                                 Log.d(Constant.LOG_TAG, mAccommodationInfo.toString());
                                 //TODO: Key Naming.
                                 returnIntent.putExtra("Accommodation Address", mAccommodationInfo.getAddress());
-
+                                returnIntent.putExtra("Accommodation Latitude", mAccommodationInfo.getLatLng().latitude);
+                                returnIntent.putExtra("Accommodation Longitude", mAccommodationInfo.getLatLng().longitude);
 
                                 //TODO: The check might be too sluggish. (Might be better if we handle the error somewhere else, but where?)
                                 if(mAccommodationInfo != null) {
@@ -320,9 +324,28 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                 Log.e(Constant.LOG_TAG, "onResult: NullPointerException: " + e.getMessage());
             }
 
+            String restaurant = "amusement_park";
+            String url = getUrl(mAccommodationInfo.getLatLng().latitude, mAccommodationInfo.getLatLng().longitude, restaurant);
+
+            GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+            getNearbyPlacesData.execute((Object) url);
+
             moveCamera(place.getLatLng(), CAMERA_ZOOM, mAccommodationInfo);
 
             places.release();
         }
     };
+
+    private String getUrl(double latitude, double longitude, String nearbyPlace) {
+        StringBuilder googleNearbyPlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googleNearbyPlaceUrl.append("location="+latitude+","+longitude);
+        googleNearbyPlaceUrl.append("&radius=5000");
+        googleNearbyPlaceUrl.append("&rankby=prominence");
+        googleNearbyPlaceUrl.append("&type="+nearbyPlace);
+        googleNearbyPlaceUrl.append("&key="+"AIzaSyAUIVnQu5Pc9K48reQl0btDc2VrSrESzS8");
+
+//        StringBuilder googleNearbyPlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyAUIVnQu5Pc9K48reQl0btDc2VrSrESzS8");
+
+        return googleNearbyPlaceUrl.toString();
+    }
 }

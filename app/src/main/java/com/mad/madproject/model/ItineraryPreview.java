@@ -5,18 +5,29 @@ package com.mad.madproject.model;
  */
 
 public class ItineraryPreview {
+    private String mTripName;
     private String mCity;
     private String mImageURL;
-    private String mInDays;
+    private String mLengthOfTrip;
 
     public ItineraryPreview() {
 
     }
 
-    public ItineraryPreview(String imageURL, String city, String inDays) {
+    public ItineraryPreview(String tripName, String imageURL, String city, String lengthOfTrip) {
+        mTripName = tripName;
+
         mCity = city;
         mImageURL = imageURL;
-        mInDays = inDays;
+        mLengthOfTrip = lengthOfTrip;
+    }
+
+    public String getTripName() {
+        return mTripName;
+    }
+
+    public void setTripName(String tripName) {
+        mTripName = tripName;
     }
 
     public String getImageURL() {
@@ -35,15 +46,15 @@ public class ItineraryPreview {
         mCity = city;
     }
 
-    public String getInDays() {
-        return mInDays;
+    public String getLengthOfTrip() {
+        return mLengthOfTrip;
     }
 
-    public void setInDays(String inDays) {
-        mInDays = inDays;
+    public void setLengthOfTrip(String lengthOfTrip) {
+        mLengthOfTrip = lengthOfTrip;
     }
 
     public String toString() {
-        return "City: " + mCity + " In days: " + mInDays;
+        return "City: " + mCity + " In days: " + mLengthOfTrip;
     }
 }
