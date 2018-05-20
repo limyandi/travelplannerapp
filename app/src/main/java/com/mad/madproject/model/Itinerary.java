@@ -1,47 +1,30 @@
 package com.mad.madproject.model;
 
+import com.mad.madproject.utils.Util;
+
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by limyandivicotrico on 5/15/18.
  */
 
 public class Itinerary {
-    private String mItineraryTime;
-    private String mItineraryPlace;
-    private String mItineraryImageURL;
+    private ArrayList<Trip> mTrips;
 
     public Itinerary() {
 
     }
 
-    public Itinerary(String itineraryTime, String itineraryPlace, String itineraryImageURL) {
-        mItineraryTime = itineraryTime;
-        mItineraryPlace = itineraryPlace;
-        mItineraryImageURL = itineraryImageURL;
+    public Itinerary(String tripName, String startDate, String endDate, ArrayList<Trip> trips) {
+        this.mTrips = trips;
     }
 
-    public String getItineraryTime() {
-        return mItineraryTime;
+    public ArrayList<Trip> getTrips() {
+        return mTrips;
     }
 
-    public void setItineraryTime(String itineraryTime) {
-        mItineraryTime = itineraryTime;
-    }
-
-    public String getItineraryPlace() {
-        return mItineraryPlace;
-    }
-
-    public void setItineraryPlace(String itineraryPlace) {
-        mItineraryPlace = itineraryPlace;
-    }
-
-    public String getItineraryImageURL() {
-        return mItineraryImageURL;
-    }
-
-    public void setItineraryImageURL(String itineraryImageURL) {
-        mItineraryImageURL = itineraryImageURL;
+    public void setTrips(ArrayList<Trip> trips) {
+        this.mTrips = trips;
     }
 }

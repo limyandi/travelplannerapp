@@ -25,10 +25,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.madproject.R;
-import com.mad.madproject.adapter.ItineraryAdapter;
-import com.mad.madproject.adapter.ItineraryPreviewAdapter;
+import com.mad.madproject.adapter.TripAdapter;
+import com.mad.madproject.model.Itineraries;
 import com.mad.madproject.model.Itinerary;
-import com.mad.madproject.model.ItineraryPreview;
+import com.mad.madproject.model.Trip;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
 
@@ -38,9 +38,13 @@ public class ViewItineraryActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "ViewItinerary";
     private int mDays;
-    private String mCity;
-    private String mStartDate;
-    private String mEndDate;
+
+    private TextView mItineraryPlace;
+    private TextView mItineraryDate;
+
+    private String mPreviewId;
+    private Itineraries mCrawledItinerary;
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -71,13 +75,35 @@ public class ViewItineraryActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        mCity = getIntent().getStringExtra("City");
-        mStartDate = getIntent().getStringExtra("Start Date");
-        mEndDate = getIntent().getStringExtra("End Date");
-        TextView itineraryPlace = (TextView) findViewById(R.id.view_itinerary_activity_place);
-        TextView itineraryDate = (TextView) findViewById(R.id.view_itinerary_activity_date);
-        itineraryPlace.setText(mCity);
-        itineraryDate.setText(mStartDate + " - " + mEndDate);
+        mPreviewId = getIntent().getStringExtra("PreviewKey");
+
+        mItineraryPlace = (TextView) findViewById(R.id.view_itinerary_activity_place);
+        mItineraryDate = (TextView) findViewById(R.id.view_itinerary_activity_date);
+        getItinerariesDetails();
+
+    }
+
+    private void getItinerariesDetails() {
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference itinerariesDatabase = firebaseDatabase.getReference("Itinerary");
+
+
+        itinerariesDatabase.orderByChild("itineraryPreviewId").equalTo(mPreviewId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot itinerary: dataSnapshot.getChildren()) {
+                    mCrawledItinerary = itinerary.getValue(Itineraries.class);
+                    Log.d("ShowIt", mCrawledItinerary.toString());
+                }
+                mItineraryPlace.setText(mCrawledItinerary.getTripName());
+                mItineraryDate.setText(mCrawledItinerary.getStartDate() + " - " + mCrawledItinerary.getEndDate());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -107,10 +133,10 @@ public class ViewItineraryActivity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        private ItineraryAdapter mItineraryAdapter;
-        private ArrayList<Itinerary> mItinerariesList = new ArrayList<>();
+        private TripAdapter mTripAdapter;
+        private ArrayList<Trip> mTripsList = new ArrayList<>();
         private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        private DatabaseReference mUsersRef = mDatabase.getReference("Users");
+        private DatabaseReference mItineraryRef = mDatabase.getReference("Itinerary");
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -120,13 +146,15 @@ public class ViewItineraryActivity extends AppCompatActivity {
         public PlaceholderFragment() {
 
             Log.d(Constant.LOG_TAG, "Trying to adding to the itinerary");
-            mUsersRef.child(Util.getUserUid()).child("Day1").addValueEventListener(new ValueEventListener() {
+            mItineraryRef.child("-LCs_F64Gf83BNofm_Bm").child("itineraryLists").child("0").child("trips").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    mItinerariesList.clear();
+                    mTripsList.clear();
                     for(DataSnapshot itinerary: dataSnapshot.getChildren()) {
-                        Itinerary crawledView = itinerary.getValue(Itinerary.class);
-                        mItinerariesList.add(crawledView);
+                        Trip crawledView = itinerary.getValue(Trip.class);
+                        Log.d(Constant.LOG_TAG, crawledView.toString());
+                        mTripsList.add(crawledView);
+                        mTripAdapter.notifyDataSetChanged();
                     }
                 }
                 @Override
@@ -155,12 +183,12 @@ public class ViewItineraryActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_view_itinerary, container, false);
             TextView daylist = (TextView) rootView.findViewById(R.id.section_label);
 
-            mItineraryAdapter = new ItineraryAdapter(mItinerariesList, getActivity());
+            mTripAdapter = new TripAdapter(mTripsList, getActivity());
             daylist.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 //            itineraryTitle.setText(getString(R.string.example_string), getArguments().getInt(ARG_SECTION_NUMBER));
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.itinerary_view);
             recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-            recyclerView.setAdapter(mItineraryAdapter);
+            recyclerView.setAdapter(mTripAdapter);
             return rootView;
         }
     }

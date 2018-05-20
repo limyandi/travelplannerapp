@@ -37,4 +37,9 @@ public class Util {
         return usersRef;
     }
 
+    public static int convertDateToDayInterval(String endDate, String startDate) {
+        int intervalDay = Integer.valueOf(endDate.substring(0, 2)) - Integer.valueOf(startDate.substring(0, 2)) + 1;
+        return intervalDay;
+    }
+
 }

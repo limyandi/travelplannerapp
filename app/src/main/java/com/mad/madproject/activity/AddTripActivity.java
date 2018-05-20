@@ -23,13 +23,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mad.madproject.R;
+import com.mad.madproject.model.Itineraries;
+import com.mad.madproject.model.Itinerary;
 import com.mad.madproject.model.ItineraryPreview;
+import com.mad.madproject.model.Trip;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
 
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -57,6 +61,12 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
     private String mLatitude;
     private String mLongitude;
 
+    private Itineraries fullItinerary;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = database.getReference();
+    String itineraryPreviewKey = databaseReference.child("ItineraryPreview").push().getKey();
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
@@ -78,18 +88,20 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), ViewItineraryActivity.class);
 
-                int intervalDay = Integer.valueOf(mEndDateTv.getText().toString().substring(0, 2)) - Integer.valueOf(mStartDateTv.getText().toString().substring(0, 2)) + 1;
-                intent.putExtra("Start Date", mStartDateTv.getText().toString());
-                intent.putExtra("End Date", mEndDateTv.getText().toString());
+                int intervalDay = Util.convertDateToDayInterval(mEndDateTv.getText().toString(), mStartDateTv.getText().toString());
                 intent.putExtra("Day", intervalDay);
                 //TODO: Chaining intent put? is this bad practice?
-                intent.putExtra("City", getIntent().getStringExtra("City"));
                 intent.putExtra("Latitude", mLatitude);
                 intent.putExtra("Longitude", mLongitude);
 
-                ItineraryPreview itineraryPreview = new ItineraryPreview(mTripNameTv.getText().toString(), "A", getIntent().getStringExtra("City"), String.valueOf(intervalDay));
-                DatabaseReference userDatabase = Util.getUserDatabase();
-                userDatabase.child(Util.getUserUid()).child("ItineraryPreview").push().setValue(itineraryPreview);
+                intent.putExtra("PreviewKey", itineraryPreviewKey);
+
+                ItineraryPreview itineraryPreview = new ItineraryPreview(mTripNameTv.getText().toString(), "A", getIntent().getStringExtra("City"),  Util.getUserUid(), itineraryPreviewKey, mStartDateTv.getText().toString(), mEndDateTv.getText().toString());
+                databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
+
+                mockUpDataForItinerariesLists();
+                databaseReference.child("Itinerary").push().setValue(fullItinerary);
+
                 startActivity(intent);
             }
         });
@@ -98,6 +110,59 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
 
         //cannot use this because api level is too low
         //mStartDateDp.setOnDateChangedListener();
+    }
+
+    private void mockUpDataForItinerariesLists() {
+        Trip trip = new Trip("Yoyogi Park", "A", "8.00 A.M");
+        Trip trip2 = new Trip("Hotel Beika", "A", "10.00 A.M");
+        Trip trip3 = new Trip("Hotel A", "A", "12.00 P.M");
+        Trip trip4 = new Trip("Maruyu", "A", "14.00 P.M");
+
+        Itinerary day1 = new Itinerary();
+        ArrayList<Trip> tripDay1 = new ArrayList<>();
+        tripDay1.add(trip);
+        tripDay1.add(trip2);
+        tripDay1.add(trip3);
+        tripDay1.add(trip4);
+        day1.setTrips(tripDay1);
+
+        Trip tripday2 = new Trip("YKyoen Paku", "A", "8.00 A.M");
+        Trip tripday21 = new Trip("Hotel Yo", "A", "10.00 A.M");
+        Trip tripday22 = new Trip("Hotel A", "A", "12.00 P.M");
+        Trip tripday23 = new Trip("Bababapa", "A", "14.00 P.M");
+
+        Itinerary day2 = new Itinerary();
+        ArrayList<Trip> tripDay2 = new ArrayList<>();
+        tripDay2.add(tripday2);
+        tripDay2.add(tripday21);
+        tripDay2.add(tripday22);
+        tripDay2.add(tripday23);
+        day2.setTrips(tripDay2);
+
+        Trip tripday3 = new Trip("Settai ni", "A", "8.00 A.M");
+        Trip tripday31 = new Trip("Hotel Beika", "A", "10.00 A.M");
+        Trip tripday32 = new Trip("One piece", "A", "12.00 P.M");
+        Trip tripday33 = new Trip("Naruto ", "A", "14.00 P.M");
+
+        Itinerary day3 = new Itinerary();
+        ArrayList<Trip> tripDay3 = new ArrayList<>();
+        tripDay3.add(tripday3);
+        tripDay3.add(tripday31);
+        tripDay3.add(tripday32);
+        tripDay3.add(tripday33);
+        day3.setTrips(tripDay3);
+
+        String tripName = mTripNameTv.getText().toString();
+        String startDate = mStartDateTv.getText().toString();
+        String endDate = mEndDateTv.getText().toString();
+        String itineraryPreviewId = itineraryPreviewKey;
+        ArrayList<Itinerary> fullItineraries = new ArrayList<>();
+        fullItineraries.add(day1);
+        fullItineraries.add(day2);
+        fullItineraries.add(day3);
+
+        fullItinerary = new Itineraries(fullItineraries, tripName, startDate, endDate, itineraryPreviewId);
+
     }
 
     private void initAddTripActivity() {

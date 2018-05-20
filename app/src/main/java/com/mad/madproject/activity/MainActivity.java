@@ -38,6 +38,7 @@ import com.mad.madproject.login.LoginActivity;
 import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.model.User;
 import com.mad.madproject.utils.Constant;
+import com.mad.madproject.utils.Util;
 
 import java.util.ArrayList;
 
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private User currentUser;
 
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference mItineraryPreviewRef = database.getReference("ItineraryPreview");
     private DatabaseReference usersRef = database.getReference("Users");
 
     private TextView username;
@@ -79,8 +81,10 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.view_itinerary_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+
+
         //TODO: Use async task for this, maybe do this during the splash screen?
-        usersRef.child(user.getUid()).child("ItineraryPreview").addValueEventListener(new ValueEventListener() {
+        mItineraryPreviewRef.orderByChild("ownerId").equalTo(Util.getUserUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mItineraryPreviewList.clear();

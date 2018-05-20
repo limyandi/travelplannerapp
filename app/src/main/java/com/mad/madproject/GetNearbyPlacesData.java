@@ -8,6 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mad.madproject.model.Itinerary;
+import com.mad.madproject.model.Trip;
 import com.mad.madproject.utils.Util;
 import com.mad.madproject.utils.Utils;
 
@@ -61,12 +62,16 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
         LatLng latLng = new LatLng(lat, lng);
 
         //TODO: We have to do this several time, how?
-        Itinerary it = new Itinerary("10:00 A.M.", placeName, "A");
+//        Itinerary it = new Itinerary("10:00 A.M.", placeName, "A");
+
+//        Trip trip = new Trip("10:00 A.M.");
+
+
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference usersRef = database.getReference("Users");
 
-        usersRef.child(Util.getUserUid()).child("Day1").push().setValue(it);
+//        usersRef.child(Util.getUserUid()).child("Day1").push().setValue(it);
 
         Log.d("Get", placeName);
         Log.d("Get", vicinity);
