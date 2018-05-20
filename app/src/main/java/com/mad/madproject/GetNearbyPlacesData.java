@@ -68,8 +68,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
 
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference usersRef = database.getReference("Users");
+
 
 //        usersRef.child(Util.getUserUid()).child("Day1").push().setValue(it);
 

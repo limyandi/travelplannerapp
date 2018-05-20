@@ -69,12 +69,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
         mPreviewId = getIntent().getStringExtra("PreviewKey");
 
         mItineraryPlace = (TextView) findViewById(R.id.view_itinerary_activity_place);
@@ -84,11 +80,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
     }
 
     private void getItinerariesDetails() {
-        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference itinerariesDatabase = firebaseDatabase.getReference("Itinerary");
 
-
-        itinerariesDatabase.orderByChild("itineraryPreviewId").equalTo(mPreviewId).addValueEventListener(new ValueEventListener() {
+        Util.getDatabaseReference("Itinerary").orderByChild("itineraryPreviewId").equalTo(mPreviewId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot itinerary: dataSnapshot.getChildren()) {
@@ -97,6 +90,9 @@ public class ViewItineraryActivity extends AppCompatActivity {
                 }
                 mItineraryPlace.setText(mCrawledItinerary.getTripName());
                 mItineraryDate.setText(mCrawledItinerary.getStartDate() + " - " + mCrawledItinerary.getEndDate());
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                // Set up the ViewPager with the sections adapter.
+                mViewPager.setAdapter(mSectionsPagerAdapter);
             }
 
             @Override
@@ -135,8 +131,6 @@ public class ViewItineraryActivity extends AppCompatActivity {
     public static class PlaceholderFragment extends Fragment {
         private TripAdapter mTripAdapter;
         private ArrayList<Trip> mTripsList = new ArrayList<>();
-        private FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-        private DatabaseReference mItineraryRef = mDatabase.getReference("Itinerary");
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -145,23 +139,6 @@ public class ViewItineraryActivity extends AppCompatActivity {
 
         public PlaceholderFragment() {
 
-            Log.d(Constant.LOG_TAG, "Trying to adding to the itinerary");
-            mItineraryRef.child("-LCs_F64Gf83BNofm_Bm").child("itineraryLists").child("0").child("trips").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    mTripsList.clear();
-                    for(DataSnapshot itinerary: dataSnapshot.getChildren()) {
-                        Trip crawledView = itinerary.getValue(Trip.class);
-                        Log.d(Constant.LOG_TAG, crawledView.toString());
-                        mTripsList.add(crawledView);
-                        mTripAdapter.notifyDataSetChanged();
-                    }
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
         }
 
         /**
@@ -169,10 +146,15 @@ public class ViewItineraryActivity extends AppCompatActivity {
          * number.
          */
         //TODO: This might be wrong.
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(int sectionNumber, Itineraries itineraries) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
+
+            Log.d(Constant.LOG_TAG, "Number of itinerary days: " + String.valueOf(itineraries.getItineraryLists().size() + 1));
+
+            //args.putSerializable(Itinerary)
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putSerializable("Itinerary Lists", itineraries.getItineraryLists().get(sectionNumber - 1));
             fragment.setArguments(args);
             return fragment;
         }
@@ -183,9 +165,13 @@ public class ViewItineraryActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_view_itinerary, container, false);
             TextView daylist = (TextView) rootView.findViewById(R.id.section_label);
 
-            mTripAdapter = new TripAdapter(mTripsList, getActivity());
+            Itinerary itinerary = (Itinerary) getArguments().getSerializable("Itinerary Lists");
+
+            mTripsList = itinerary != null ? itinerary.getTrips() : null;
+
             daylist.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-//            itineraryTitle.setText(getString(R.string.example_string), getArguments().getInt(ARG_SECTION_NUMBER));
+
+            mTripAdapter = new TripAdapter(mTripsList, getActivity());
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.itinerary_view);
             recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
             recyclerView.setAdapter(mTripAdapter);
@@ -207,7 +193,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position + 1, mCrawledItinerary);
         }
 
         @Override

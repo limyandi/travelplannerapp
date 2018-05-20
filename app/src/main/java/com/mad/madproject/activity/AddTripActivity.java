@@ -63,6 +63,8 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
 
     private Itineraries fullItinerary;
 
+    private int intervalDay;
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
     String itineraryPreviewKey = databaseReference.child("ItineraryPreview").push().getKey();
@@ -88,7 +90,7 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), ViewItineraryActivity.class);
 
-                int intervalDay = Util.convertDateToDayInterval(mEndDateTv.getText().toString(), mStartDateTv.getText().toString());
+                intervalDay = Util.convertDateToDayInterval(mEndDateTv.getText().toString(), mStartDateTv.getText().toString());
                 intent.putExtra("Day", intervalDay);
                 //TODO: Chaining intent put? is this bad practice?
                 intent.putExtra("Latitude", mLatitude);
@@ -99,7 +101,7 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
                 ItineraryPreview itineraryPreview = new ItineraryPreview(mTripNameTv.getText().toString(), "A", getIntent().getStringExtra("City"),  Util.getUserUid(), itineraryPreviewKey, mStartDateTv.getText().toString(), mEndDateTv.getText().toString());
                 databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
 
-                mockUpDataForItinerariesLists();
+                mockUpDataForItinerariesCreation();
                 databaseReference.child("Itinerary").push().setValue(fullItinerary);
 
                 startActivity(intent);
@@ -112,56 +114,28 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         //mStartDateDp.setOnDateChangedListener();
     }
 
-    private void mockUpDataForItinerariesLists() {
-        Trip trip = new Trip("Yoyogi Park", "A", "8.00 A.M");
-        Trip trip2 = new Trip("Hotel Beika", "A", "10.00 A.M");
-        Trip trip3 = new Trip("Hotel A", "A", "12.00 P.M");
-        Trip trip4 = new Trip("Maruyu", "A", "14.00 P.M");
-
-        Itinerary day1 = new Itinerary();
-        ArrayList<Trip> tripDay1 = new ArrayList<>();
-        tripDay1.add(trip);
-        tripDay1.add(trip2);
-        tripDay1.add(trip3);
-        tripDay1.add(trip4);
-        day1.setTrips(tripDay1);
-
-        Trip tripday2 = new Trip("YKyoen Paku", "A", "8.00 A.M");
-        Trip tripday21 = new Trip("Hotel Yo", "A", "10.00 A.M");
-        Trip tripday22 = new Trip("Hotel A", "A", "12.00 P.M");
-        Trip tripday23 = new Trip("Bababapa", "A", "14.00 P.M");
-
-        Itinerary day2 = new Itinerary();
-        ArrayList<Trip> tripDay2 = new ArrayList<>();
-        tripDay2.add(tripday2);
-        tripDay2.add(tripday21);
-        tripDay2.add(tripday22);
-        tripDay2.add(tripday23);
-        day2.setTrips(tripDay2);
-
-        Trip tripday3 = new Trip("Settai ni", "A", "8.00 A.M");
-        Trip tripday31 = new Trip("Hotel Beika", "A", "10.00 A.M");
-        Trip tripday32 = new Trip("One piece", "A", "12.00 P.M");
-        Trip tripday33 = new Trip("Naruto ", "A", "14.00 P.M");
-
-        Itinerary day3 = new Itinerary();
-        ArrayList<Trip> tripDay3 = new ArrayList<>();
-        tripDay3.add(tripday3);
-        tripDay3.add(tripday31);
-        tripDay3.add(tripday32);
-        tripDay3.add(tripday33);
-        day3.setTrips(tripDay3);
+    private void mockUpDataForItinerariesCreation() {
 
         String tripName = mTripNameTv.getText().toString();
         String startDate = mStartDateTv.getText().toString();
         String endDate = mEndDateTv.getText().toString();
         String itineraryPreviewId = itineraryPreviewKey;
-        ArrayList<Itinerary> fullItineraries = new ArrayList<>();
-        fullItineraries.add(day1);
-        fullItineraries.add(day2);
-        fullItineraries.add(day3);
 
-        fullItinerary = new Itineraries(fullItineraries, tripName, startDate, endDate, itineraryPreviewId);
+        ArrayList<Trip> trips = new ArrayList<>(6);
+
+        ArrayList<Itinerary> itinerariesLists = new ArrayList<>(intervalDay);
+
+        for(int i = 0; i < intervalDay; i++) {
+            trips.clear();
+            for(int j = 0; j < 6; j++) {
+                //get trip data from web service.
+                trips.add(new Trip("Yoyogi Park", "A", "10:00 A.M"));
+            }
+            Itinerary itinerary = new Itinerary(trips);
+            itinerariesLists.add(itinerary);
+        }
+
+        fullItinerary = new Itineraries(itinerariesLists, tripName, startDate, endDate, itineraryPreviewId);
 
     }
 

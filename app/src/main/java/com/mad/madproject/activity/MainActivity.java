@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.drawerlayout)
     DrawerLayout drawerLayout;
+
     ActionBarDrawerToggle drawerToggle;
 
     private ItineraryPreviewAdapter mItineraryPreviewAdapter;
@@ -61,12 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
     //to get the details of the current user from the firebase
     private User currentUser;
-
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference mItineraryPreviewRef = database.getReference("ItineraryPreview");
-    private DatabaseReference usersRef = database.getReference("Users");
-
-    private TextView username;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,10 +76,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.view_itinerary_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
-
         //TODO: Use async task for this, maybe do this during the splash screen?
-        mItineraryPreviewRef.orderByChild("ownerId").equalTo(Util.getUserUid()).addValueEventListener(new ValueEventListener() {
+        Util.getDatabaseReference("ItineraryPreview").orderByChild("ownerId").equalTo(Util.getUserUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mItineraryPreviewList.clear();
@@ -103,9 +96,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
 
         //initialize the drawertoggle using the constructor (Activity, DrawerLayout, String, String)
         drawerToggle = new ActionBarDrawerToggle(
@@ -127,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         //to get the header file of the navigation file.
         View header = navigationView.getHeaderView(0);
         //find the username textview from the header.
-        username = (TextView) header.findViewById(R.id.username_nav_header);
+        final TextView username = (TextView) header.findViewById(R.id.username_nav_header);
 
         //set the navigation item handler for each item.
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
@@ -163,11 +153,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //TODO: Might need async task because this takes some time //do something in the background.
-        usersRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        Util.getDatabaseReference("Users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
-                username.setText(currentUser.getUsername());
+                username.setText(currentUser != null ? currentUser.getUsername() : "Anonymous");
             }
 
             @Override

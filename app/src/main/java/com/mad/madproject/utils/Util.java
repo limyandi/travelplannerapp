@@ -31,10 +31,9 @@ public class Util {
         return auth.getUid();
     }
 
-    public static DatabaseReference getUserDatabase() {
+    public static DatabaseReference getDatabaseReference(String reference) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference usersRef = database.getReference("Users");
-        return usersRef;
+        return database.getReference(reference);
     }
 
     public static int convertDateToDayInterval(String endDate, String startDate) {
