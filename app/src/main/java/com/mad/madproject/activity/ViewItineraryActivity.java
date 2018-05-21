@@ -145,7 +145,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        //TODO: This might be wrong.
+
         public static PlaceholderFragment newInstance(int sectionNumber, Itineraries itineraries) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();

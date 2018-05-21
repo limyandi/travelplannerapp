@@ -6,7 +6,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.maps.android.SphericalUtil;
-import com.mad.madproject.db.Firebase;
 
 /**
  * Created by limyandivicotrico on 5/13/18.

@@ -6,9 +6,6 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context="com.mad.madproject.activity.ViewItineraryActivity$PlaceholderFragment">
 
-    <!--TODO: Trip Name/Date GET FROM THE ACTIVITY. -->
-
-
     <TextView
         android:layout_marginTop="5dp"
         android:id="@+id/section_label"

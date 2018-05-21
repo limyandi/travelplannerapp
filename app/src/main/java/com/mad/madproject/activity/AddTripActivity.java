@@ -216,7 +216,6 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         dateDialog.show();
     }
 
-    //TODO: This two listener is really similar, fix this?
     private DatePickerDialog.OnDateSetListener startDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {

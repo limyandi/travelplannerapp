@@ -31,6 +31,7 @@ import com.mad.madproject.R;
 import com.mad.madproject.adapter.ItineraryPreviewAdapter;
 import com.mad.madproject.fragments.AboutFragment;
 import com.mad.madproject.fragments.HolidayNewsFragment;
+import com.mad.madproject.fragments.ItineraryPreviewFragment;
 import com.mad.madproject.fragments.MyTripFragment;
 import com.mad.madproject.fragments.SendFeedbackFragment;
 import com.mad.madproject.fragments.SettingsFragment;
@@ -72,31 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        //setting up the recycler view for viewing the created itinerary.
-        mRecyclerView = (RecyclerView) findViewById(R.id.view_itinerary_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        //TODO: Use async task for this, maybe do this during the splash screen?
-        Util.getDatabaseReference("ItineraryPreview").orderByChild("ownerId").equalTo(Util.getUserUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mItineraryPreviewList.clear();
-                for(DataSnapshot itineraryView: dataSnapshot.getChildren()) {
-                    Log.d(Constant.LOG_TAG, itineraryView.toString());
-                    ItineraryPreview crawledView = itineraryView.getValue(ItineraryPreview.class);
-                    Log.d(Constant.LOG_TAG, crawledView.toString());
-                    mItineraryPreviewList.add(crawledView);
-                }
-                mItineraryPreviewAdapter = new ItineraryPreviewAdapter(MainActivity.this, mItineraryPreviewList);
-                mRecyclerView.setAdapter(mItineraryPreviewAdapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
         //initialize the drawertoggle using the constructor (Activity, DrawerLayout, String, String)
         drawerToggle = new ActionBarDrawerToggle(
                 this,
@@ -130,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        //Initialise the first fragment as the homepage (Where we can see the itinerary).
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        tx.replace(R.id.fragment_container, new ItineraryPreviewFragment());
+        tx.commit();
 
         //listener for if user is already logged out.
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -179,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
     private void menuHandler(int menuId) {
         Fragment fragment = null;
         switch(menuId) {
+            case R.id.homepage:
+                fragment = new ItineraryPreviewFragment();
+                break;
             case R.id.mytrip:
                 fragment = new MyTripFragment();
                 break;
