@@ -10,9 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,48 +28,35 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by limyandivicotrico on 5/5/18.
+ * Created by limyandivicotrico on 5/20/18.
  */
 
-public class MyTripFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-
+public class ItineraryPreviewFragment extends Fragment {
     private ArrayList<ItineraryPreview> mItineraryPreviewList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private ItineraryPreviewAdapter mItineraryPreviewAdapter;
-    private Spinner mSpinner;
+    private ProgressBar mMainProgressBar;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_my_trip, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_itinerary_preview, container, false);
 
-        mSpinner = rootView.findViewById(R.id.spinner_filter_itinerary);
-
-        mSpinner.setOnItemSelectedListener(this);
-
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.view_itinerary_history_recycler_view);
+        mMainProgressBar = (ProgressBar) rootView.findViewById(R.id.fragment_itinerary_preview_whole_progress_bar);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.view_itinerary_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
 
-        //all acts as the default value.
-        getItineraryPreviewData(rootView, "All");
+        getItineraryPreviews(rootView);
 
         return rootView;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        //TODO: Call the databse from here?
-        Toast toast = Toast.makeText(parent.getContext(), parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT);
-        toast.show();
-        getItineraryPreviewData(view, parent.getItemAtPosition(pos).toString());
-    }
 
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
 
-    }
-
-    private void getItineraryPreviewData(final View rootView, final String status) {
+    private void getItineraryPreviews(final View rootView) {
+        //Progressbar before and after?
+        mMainProgressBar.setVisibility(View.VISIBLE);
+        //TODO: Put async task here? So not too many task done in the UI Thread.
         Util.getDatabaseReference("ItineraryPreview").orderByChild("ownerId").equalTo(Util.getUserUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -93,26 +78,15 @@ public class MyTripFragment extends Fragment implements AdapterView.OnItemSelect
                         e.printStackTrace();
                     }
 
-                    if(crawledView != null) {
-                        if(status.equals("All")) {
-                            Log.d(Constant.LOG_TAG, crawledView.toString());
-                            mItineraryPreviewList.add(crawledView);
-                        }
-                        if(status.equals("Past")) {
-                            if(endDate.before(todayDate)) {
-                                mItineraryPreviewList.add(crawledView);
-                            }
-                        }
-                        if(status.equals("Present")) {
-                            if(endDate.after(todayDate)) {
-                                mItineraryPreviewList.add(crawledView);
-                            }
-                        }
-
+                    if(crawledView != null && endDate.after(todayDate)) {
+                        Log.d(Constant.LOG_TAG, crawledView.toString());
+                        mItineraryPreviewList.add(crawledView);
                     }
                 }
                 mItineraryPreviewAdapter = new ItineraryPreviewAdapter(rootView.getContext(), mItineraryPreviewList);
                 mRecyclerView.setAdapter(mItineraryPreviewAdapter);
+                //TODO: Progress bar here?
+                mMainProgressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -121,6 +95,4 @@ public class MyTripFragment extends Fragment implements AdapterView.OnItemSelect
             }
         });
     }
-
-
 }

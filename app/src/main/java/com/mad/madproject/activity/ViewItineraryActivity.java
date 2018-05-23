@@ -19,10 +19,18 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.mad.madproject.R;
-import com.mad.madproject.adapter.ItineraryAdapter;
+import com.mad.madproject.adapter.TripAdapter;
+import com.mad.madproject.model.Itineraries;
 import com.mad.madproject.model.Itinerary;
+import com.mad.madproject.model.Trip;
 import com.mad.madproject.utils.Constant;
+import com.mad.madproject.utils.Util;
 
 import java.util.ArrayList;
 
@@ -30,9 +38,13 @@ public class ViewItineraryActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "ViewItinerary";
     private int mDays;
-    private String mCity;
-    private String mStartDate;
-    private String mEndDate;
+
+    private TextView mItineraryPlace;
+    private TextView mItineraryDate;
+
+    private String mPreviewId;
+    private Itineraries mCrawledItinerary;
+
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -57,19 +69,37 @@ public class ViewItineraryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mPreviewId = getIntent().getStringExtra("PreviewKey");
 
-        mCity = getIntent().getStringExtra("City");
-        mStartDate = getIntent().getStringExtra("Start Date");
-        mEndDate = getIntent().getStringExtra("End Date");
-        TextView itineraryPlace = (TextView) findViewById(R.id.view_itinerary_activity_place);
-        TextView itineraryDate = (TextView) findViewById(R.id.view_itinerary_activity_date);
-        itineraryPlace.setText(mCity);
-        itineraryDate.setText(mStartDate + " - " + mEndDate);
+        mItineraryPlace = (TextView) findViewById(R.id.view_itinerary_activity_place);
+        mItineraryDate = (TextView) findViewById(R.id.view_itinerary_activity_date);
+        getItinerariesDetails();
+
+    }
+
+    private void getItinerariesDetails() {
+
+        Util.getDatabaseReference("Itinerary").orderByChild("itineraryPreviewId").equalTo(mPreviewId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot itinerary: dataSnapshot.getChildren()) {
+                    mCrawledItinerary = itinerary.getValue(Itineraries.class);
+                    Log.d("ShowIt", mCrawledItinerary.toString());
+                }
+                mItineraryPlace.setText(mCrawledItinerary.getTripName());
+                mItineraryDate.setText(mCrawledItinerary.getStartDate() + " - " + mCrawledItinerary.getEndDate());
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+                // Set up the ViewPager with the sections adapter.
+                mViewPager.setAdapter(mSectionsPagerAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -99,8 +129,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        private ItineraryAdapter mItineraryAdapter;
-        private ArrayList<Itinerary> mItinerariesList = new ArrayList<>();
+        private TripAdapter mTripAdapter;
+        private ArrayList<Trip> mTripsList = new ArrayList<>();
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -109,20 +139,22 @@ public class ViewItineraryActivity extends AppCompatActivity {
 
         public PlaceholderFragment() {
 
-            Log.d(Constant.LOG_TAG, "Trying to adding to the itinerary");
-            //TODO: This lists is a mockup. Get the real data using distance matrix API or?
-            mItinerariesList.add(new Itinerary("10:00 A.M", "Yoyogi", "a"));
         }
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        //TODO: This might be wrong.
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+
+        public static PlaceholderFragment newInstance(int sectionNumber, Itineraries itineraries) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
+
+            Log.d(LOG_TAG, "Number of itinerary days: " + String.valueOf(itineraries.getItineraryLists().size() + 1));
+
+            //args.putSerializable(Itinerary)
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putSerializable("Itinerary Lists", itineraries.getItineraryLists().get(sectionNumber - 1));
             fragment.setArguments(args);
             return fragment;
         }
@@ -133,12 +165,16 @@ public class ViewItineraryActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_view_itinerary, container, false);
             TextView daylist = (TextView) rootView.findViewById(R.id.section_label);
 
-            mItineraryAdapter = new ItineraryAdapter(mItinerariesList, getActivity());
+            Itinerary itinerary = (Itinerary) getArguments().getSerializable("Itinerary Lists");
+
+            mTripsList = itinerary != null ? itinerary.getTrips() : null;
+
             daylist.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-//            itineraryTitle.setText(getString(R.string.example_string), getArguments().getInt(ARG_SECTION_NUMBER));
+
+            mTripAdapter = new TripAdapter(mTripsList, getActivity());
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.itinerary_view);
             recyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
-            recyclerView.setAdapter(mItineraryAdapter);
+            recyclerView.setAdapter(mTripAdapter);
             return rootView;
         }
     }
@@ -157,7 +193,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position + 1, mCrawledItinerary);
         }
 
         @Override

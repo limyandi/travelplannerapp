@@ -6,8 +6,8 @@
               android:tag="cards main container">
 
     <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardBackgroundColor="@color/colorTextAndIcons"
@@ -18,25 +18,48 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             >
+
+            <TextView
+                android:id="@+id/activity_main_view_itinerary_trip_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Trip Name"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_below="@id/activity_main_view_itinerary_trip_name"
+                android:background="@color/colorDivider"/>
+
 
             <ImageView
                 android:id="@+id/city_image_view"
-                android:tag="image_tag"
+                android:layout_below="@id/activity_main_view_itinerary_trip_name"
                 android:layout_width="90dp"
+                android:contentDescription="city image"
                 android:layout_height="90dp"
                 android:layout_margin="10dp"
-                android:src="@drawable/background"/>
+                android:src="@drawable/background"
+                android:tag="image_tag"/>
 
             <LinearLayout
 
-                android:layout_toRightOf="@id/city_image_view"
-                android:layout_toEndOf="@id/city_image_view"
-                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginTop="20dp"
+                android:layout_below="@id/activity_main_view_itinerary_trip_name"
+                android:layout_toEndOf="@id/city_image_view"
+                android:layout_toRightOf="@id/city_image_view"
                 android:orientation="vertical"
                 >
 

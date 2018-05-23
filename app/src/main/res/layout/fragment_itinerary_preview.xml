@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <Spinner
-        android:id="@+id/spinner_filter_itinerary"
-        android:layout_marginTop="15dp"
+
+    <ProgressBar
+        android:id="@+id/fragment_itinerary_preview_whole_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:entries="@array/itineraryfilter">
-
-    </Spinner>
+        android:layout_centerInParent="true"
+        />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/view_itinerary_history_recycler_view"
+        android:id="@+id/view_itinerary_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         />
-</LinearLayout>
+
+
+
+</RelativeLayout>

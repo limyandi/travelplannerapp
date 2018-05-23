@@ -1,8 +1,10 @@
 package com.mad.madproject.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -25,14 +28,28 @@ import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadata;
+import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
+import com.google.android.gms.location.places.PlacePhotoResponse;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.mad.madproject.R;
 import com.mad.madproject.adapter.CityAdapter;
 import com.mad.madproject.adapter.PlaceAutocompleteAdapter;
 import com.mad.madproject.model.Accommodation;
 import com.mad.madproject.model.City;
 import com.mad.madproject.utils.Constant;
+import com.mad.madproject.utils.Util;
+import com.mad.madproject.utils.Utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +71,7 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
     private City mCityInfo;
+    private GeoDataClient mGeoDataClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +83,7 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //initialising the geo data client for the Google Places API for android.
-        GeoDataClient geoDataClient = Places.getGeoDataClient(this);
+        mGeoDataClient = Places.getGeoDataClient(this);
         mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
@@ -77,7 +95,7 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
         //set the filter to city only.
         AutocompleteFilter cityFilter = new AutocompleteFilter.Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES).build();
         //intialising for the placeautocompleteadapter.
-        mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, geoDataClient, Constant.LAT_LNG_BOUNDS, cityFilter);
+        mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, Constant.LAT_LNG_BOUNDS, cityFilter);
 
         mSearchTextField.setAdapter(mPlaceAutocompleteAdapter);
         mSearchTextField.setOnItemClickListener(mAutoCompleteClickListener);
@@ -155,6 +173,7 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
             final Place place = places.get(0);
 
             try {
+
                 mCityInfo = new City();
                 mCityInfo.setImage("");
                 mCityInfo.setCity(place.getName().toString());
@@ -164,15 +183,59 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
                 Log.d(Constant.LOG_TAG, mCityInfo.getCountry());
                 Log.d(Constant.LOG_TAG, "" + mCityInfo.getLatLng());
 
+                final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(place.getId());
+
+                photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
+                    @Override
+                    public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
+                        // Get the list of photos.
+                        PlacePhotoMetadataResponse photos = task.getResult();
+                        // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
+                        PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                        // Get the first photo in the list.
+                        PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
+
+                        Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
+                        photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
+                            @Override
+                            public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
+                                PlacePhotoResponse photo = task.getResult();
+                                Bitmap bitmap = photo.getBitmap();
+
+                                final StorageReference photoReference = Util.getStorageReference("city").child(mCityInfo.getCity()+".jpg");
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                byte[] data = baos.toByteArray();
+
+                                photoReference.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                        Log.d(Constant.LOG_TAG,"" + downloadUrl);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(SearchCityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+
             } catch (NullPointerException e) {
                 Log.e(Constant.LOG_TAG, "onResult: NullPointerException: " + e.getMessage());
             }
 
+
+
             places.release();
             Intent intent = new Intent(SearchCityActivity.this, AddTripActivity.class);
-            //TODO: Its better to send the city object rather than doing this.
+
             intent.putExtra("City", mCityInfo.getCity());
             intent.putExtra("LatLng", mCityInfo.getLatLng());
+
             startActivity(intent);
         }
     };

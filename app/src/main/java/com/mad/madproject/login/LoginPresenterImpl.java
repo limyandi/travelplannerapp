@@ -29,6 +29,7 @@ public class LoginPresenterImpl implements LoginPresenter {
         } else {
             loginView.setProgressVisibility(true);
 
+            //TODO: Move this into the model/firebase packages.
             auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener((Activity) loginView, new OnCompleteListener<AuthResult>() {
                         @Override

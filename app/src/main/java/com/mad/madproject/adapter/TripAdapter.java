@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mad.madproject.R;
-import com.mad.madproject.model.Itinerary;
+import com.mad.madproject.model.Trip;
 import com.mad.madproject.utils.Constant;
 
 import java.util.ArrayList;
@@ -21,21 +21,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Created by limyandivicotrico on 5/15/18.
  */
 
-public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.ViewHolder> {
+public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
-    private ArrayList<Itinerary> mItineraryList;
+    private ArrayList<Trip> mTrip;
     private Context mContext;
     private LayoutInflater mInflater;
 
-    public ItineraryAdapter(ArrayList<Itinerary> itineraryList, Context context) {
-        mItineraryList = itineraryList;
+    public TripAdapter(ArrayList<Trip> trip, Context context) {
+        mTrip = trip;
         mContext = context;
         mInflater = LayoutInflater.from(context);
     }
 
     @NonNull
     @Override
-    public ItineraryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TripAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.itinerary_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
         Log.d(Constant.LOG_TAG, "onCreateViewHolder");
@@ -43,17 +43,17 @@ public class ItineraryAdapter extends RecyclerView.Adapter<ItineraryAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItineraryAdapter.ViewHolder holder, int position) {
-        Itinerary itinerary = mItineraryList.get(position);
-        holder.itineraryTimeTv.setText(itinerary.getItineraryTime());
-        holder.itineraryPlaceTv.setText(itinerary.getItineraryPlace());
+    public void onBindViewHolder(@NonNull TripAdapter.ViewHolder holder, int position) {
+        Trip trip = mTrip.get(position);
+        holder.itineraryTimeTv.setText(trip.getTripTime());
+        holder.itineraryPlaceTv.setText(trip.getTripPlace());
         //TODO: Fix this later. The Image should be dynamic, depending on the place.
         holder.circleImageView.setImageResource(R.drawable.background);
     }
 
     @Override
     public int getItemCount() {
-        return mItineraryList.size();
+        return mTrip.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

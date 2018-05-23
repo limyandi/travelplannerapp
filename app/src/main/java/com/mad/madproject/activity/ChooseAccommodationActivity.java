@@ -18,6 +18,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -69,6 +70,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     private GeoDataClient mGeoDataClient;
     private GoogleApiClient mGoogleApiClient;
     private LatLng mInitLatLng;
+    int PROXIMITY_RADIUS = 10000;
 
     private Accommodation mAccommodationInfo;
 
@@ -230,7 +232,8 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                                 Log.d(Constant.LOG_TAG, mAccommodationInfo.toString());
                                 //TODO: Key Naming.
                                 returnIntent.putExtra("Accommodation Address", mAccommodationInfo.getAddress());
-
+                                returnIntent.putExtra("Accommodation Latitude", mAccommodationInfo.getLatLng().latitude);
+                                returnIntent.putExtra("Accommodation Longitude", mAccommodationInfo.getLatLng().longitude);
 
                                 //TODO: The check might be too sluggish. (Might be better if we handle the error somewhere else, but where?)
                                 if(mAccommodationInfo != null) {
@@ -325,4 +328,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
             places.release();
         }
     };
+
+
 }

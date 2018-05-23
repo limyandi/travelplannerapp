@@ -6,6 +6,7 @@
               android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/username_setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -16,16 +17,17 @@
             android:layout_alignParentStart="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Change Username"
+            android:text="@string/change_username_text"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="20dp"
+            android:textSize="20sp"
             />
 
         <TextView
+            android:id="@+id/username_change_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/change_tv"
-            android:text="Limyandi"
+            android:text="@string/username_text"
             android:textColor="@color/colorSecondaryText"/>
 
     </RelativeLayout>
@@ -39,6 +41,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:id="@+id/delete_trip_history"
         android:layout_height="wrap_content">
 
         <TextView
@@ -47,16 +50,16 @@
             android:layout_alignParentStart="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Delete Trip History"
+            android:text="@string/delete_trip_history_text"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="20dp"
+            android:textSize="20sp"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/delete_trip_tv"
-            android:text="Delete all the trips that has already been done"
+            android:text="@string/delete_past_trips_text"
             android:textColor="@color/colorSecondaryText"/>
 
     </RelativeLayout>
@@ -78,19 +81,22 @@
             android:layout_alignParentStart="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Receive notifications"
+            android:layout_toLeftOf="@+id/settings_checkbox"
+            android:layout_toStartOf="@+id/settings_checkbox"
+            android:text="@string/receive_notifications_text"
             android:textColor="@color/colorPrimaryText"
-            android:textSize="20dp"
+            android:textSize="20sp"
             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/receive_notif_tv"
-            android:text="We will notify you daily when your trip is close"
+            android:text="@string/receive_notifications_text_details"
             android:textColor="@color/colorSecondaryText"/>
 
         <CheckBox
+            android:id="@+id/settings_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

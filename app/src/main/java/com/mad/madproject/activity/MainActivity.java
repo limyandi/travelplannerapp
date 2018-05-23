@@ -1,5 +1,6 @@
 package com.mad.madproject.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ import com.mad.madproject.R;
 import com.mad.madproject.adapter.ItineraryPreviewAdapter;
 import com.mad.madproject.fragments.AboutFragment;
 import com.mad.madproject.fragments.HolidayNewsFragment;
+import com.mad.madproject.fragments.ItineraryPreviewFragment;
 import com.mad.madproject.fragments.MyTripFragment;
 import com.mad.madproject.fragments.SendFeedbackFragment;
 import com.mad.madproject.fragments.SettingsFragment;
@@ -38,6 +41,7 @@ import com.mad.madproject.login.LoginActivity;
 import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.model.User;
 import com.mad.madproject.utils.Constant;
+import com.mad.madproject.utils.Util;
 
 import java.util.ArrayList;
 
@@ -48,11 +52,11 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.drawerlayout)
     DrawerLayout drawerLayout;
+
     ActionBarDrawerToggle drawerToggle;
 
     private ItineraryPreviewAdapter mItineraryPreviewAdapter;
     private ArrayList<ItineraryPreview> mItineraryPreviewList = new ArrayList<>();
-    private RecyclerView mRecyclerView;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -61,10 +65,7 @@ public class MainActivity extends AppCompatActivity {
     //to get the details of the current user from the firebase
     private User currentUser;
 
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference usersRef = database.getReference("Users");
-
-    private TextView username;
+    private ProgressBar mProgressBar;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,35 +75,6 @@ public class MainActivity extends AppCompatActivity {
         user = mAuth.getCurrentUser();
 
         ButterKnife.bind(this);
-
-        //setting up the recycler view for viewing the created itinerary.
-        mItineraryPreviewList.add(new ItineraryPreview("URL", "Kyoto, Japan", "3"));
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.view_itinerary_recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        //TODO: Use async task for this, maybe do this during the splash screen?
-        usersRef.child(user.getUid()).child("ItineraryPreview").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot itineraryView: dataSnapshot.getChildren()) {
-                    Log.d(Constant.LOG_TAG, itineraryView.toString());
-                    ItineraryPreview crawledView = itineraryView.getValue(ItineraryPreview.class);
-                    Log.d(Constant.LOG_TAG, crawledView.toString());
-                    mItineraryPreviewList.add(crawledView);
-                }
-                mItineraryPreviewAdapter = new ItineraryPreviewAdapter(MainActivity.this, mItineraryPreviewList);
-                mRecyclerView.setAdapter(mItineraryPreviewAdapter);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-
 
         //initialize the drawertoggle using the constructor (Activity, DrawerLayout, String, String)
         drawerToggle = new ActionBarDrawerToggle(
@@ -124,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         //to get the header file of the navigation file.
         View header = navigationView.getHeaderView(0);
         //find the username textview from the header.
-        username = (TextView) header.findViewById(R.id.username_nav_header);
+        final TextView username = (TextView) header.findViewById(R.id.username_nav_header);
 
         //set the navigation item handler for each item.
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
@@ -137,6 +109,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        //Initialise the first fragment as the homepage (Where we can see the itinerary).
+        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
+        tx.replace(R.id.fragment_container, new ItineraryPreviewFragment());
+        tx.commit();
+
+        //TODO: Find the method to set this (See if it works!)
+        navigationView.setCheckedItem(R.id.homepage);
 
         //listener for if user is already logged out.
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -160,11 +140,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //TODO: Might need async task because this takes some time //do something in the background.
-        usersRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        Util.getDatabaseReference("Users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
-                username.setText(currentUser.getUsername());
+                username.setText(currentUser != null ? currentUser.getUsername() : "Anonymous");
             }
 
             @Override
@@ -186,6 +166,9 @@ public class MainActivity extends AppCompatActivity {
     private void menuHandler(int menuId) {
         Fragment fragment = null;
         switch(menuId) {
+            case R.id.homepage:
+                fragment = new ItineraryPreviewFragment();
+                break;
             case R.id.mytrip:
                 fragment = new MyTripFragment();
                 break;
@@ -241,4 +224,6 @@ public class MainActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+
 }
