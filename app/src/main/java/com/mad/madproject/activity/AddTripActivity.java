@@ -3,6 +3,7 @@ package com.mad.madproject.activity;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.model.LatLng;
@@ -107,7 +109,7 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
 
                 intent.putExtra("PreviewKey", itineraryPreviewKey);
 
-                ItineraryPreview itineraryPreview = new ItineraryPreview(mTripNameTv.getText().toString(), "present", getIntent().getStringExtra("City"),  Util.getUserUid(), itineraryPreviewKey, mStartDateTv.getText().toString(), mEndDateTv.getText().toString());
+                ItineraryPreview itineraryPreview = new ItineraryPreview(mTripNameTv.getText().toString(), getIntent().getStringExtra("City"),  Util.getUserUid(), itineraryPreviewKey, mStartDateTv.getText().toString(), mEndDateTv.getText().toString());
                 databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
 
                 mockUpDataForItinerariesCreation();
@@ -285,9 +287,9 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
 
         String googlePlacesData;
         String url;
+        ProgressDialog mProgressDialog;
 
         public GetNearbyPlacesData() {
-
         }
 
         @Override
@@ -301,6 +303,18 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             }
 
             return googlePlacesData;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //TODO: Handle progress dialog.
+            mProgressDialog = new ProgressDialog(AddTripActivity.this);
+            mProgressDialog.setTitle("Fetching trip for your itinerary");
+            mProgressDialog.setMessage("Please wait...");
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.show();
         }
 
         @Override
@@ -325,6 +339,10 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
 
             if(mTrips.size() != 6) {
                 new GetNearbyPlacesData().execute((Object) url);
+            }
+            else {
+                //TODO: We should handle this one better.
+                mProgressDialog.dismiss();
             }
         }
     }

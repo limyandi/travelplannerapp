@@ -150,7 +150,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
 
-            Log.d(Constant.LOG_TAG, "Number of itinerary days: " + String.valueOf(itineraries.getItineraryLists().size() + 1));
+            Log.d(LOG_TAG, "Number of itinerary days: " + String.valueOf(itineraries.getItineraryLists().size() + 1));
 
             //args.putSerializable(Itinerary)
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);

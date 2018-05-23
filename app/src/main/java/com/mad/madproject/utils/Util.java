@@ -9,6 +9,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.maps.android.SphericalUtil;
 
+import java.util.Date;
+
 /**
  * Created by limyandivicotrico on 5/13/18.
  */
@@ -45,6 +47,10 @@ public class Util {
     public static int convertDateToDayInterval(String endDate, String startDate) {
         int intervalDay = Integer.valueOf(endDate.substring(0, 2)) - Integer.valueOf(startDate.substring(0, 2)) + 1;
         return intervalDay;
+    }
+
+    public static boolean isExpired(Date endDate, Date today) {
+        return today.after(endDate);
     }
 
     public static String getUrl(double latitude, double longitude, String nearbyPlace) {

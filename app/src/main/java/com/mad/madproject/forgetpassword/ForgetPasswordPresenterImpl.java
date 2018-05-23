@@ -32,7 +32,18 @@ public class ForgetPasswordPresenterImpl implements ForgetPasswordPresenter {
             mForgetPasswordView.showValidationError("Please entered your registered id");
         } else {
             mForgetPasswordView.setProgressVisibility(true);
+            auth.sendPasswordResetEmail(email)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                mForgetPasswordView.forgetPasswordSuccess();
+                            } else {
+                                mForgetPasswordView.forgetPasswordError();
+                            }
 
+                        }
+                    });
         }
     }
 
