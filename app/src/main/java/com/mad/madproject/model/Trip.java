@@ -1,10 +1,12 @@
 package com.mad.madproject.model;
 
+import java.io.Serializable;
+
 /**
  * Created by limyandivicotrico on 5/19/18.
  */
 
-public class Trip {
+public class Trip implements Serializable {
     private String mTripPlace;
     private String mItineraryImageURL;
     private String mTripTime;

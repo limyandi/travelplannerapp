@@ -15,9 +15,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+//ViewModel
 public class ForgetPasswordPresenterImpl implements ForgetPasswordPresenter {
     private FirebaseAuth auth ;
     private ForgetPasswordView mForgetPasswordView;
+
+    //LiveData.
 
     public ForgetPasswordPresenterImpl(FirebaseAuth auth) {
         this.auth = auth;
@@ -30,18 +33,6 @@ public class ForgetPasswordPresenterImpl implements ForgetPasswordPresenter {
         } else {
             mForgetPasswordView.setProgressVisibility(true);
 
-            auth.sendPasswordResetEmail(email)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                mForgetPasswordView.forgetPasswordSuccess();
-                            } else {
-                                mForgetPasswordView.forgetPasswordError();
-                            }
-
-                        }
-                    });
         }
     }
 

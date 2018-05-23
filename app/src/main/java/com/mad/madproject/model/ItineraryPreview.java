@@ -9,7 +9,6 @@ import com.mad.madproject.utils.Util;
 public class ItineraryPreview {
     private String mTripName;
     private String mCity;
-    private String mImageURL;
     private String mOwnerId;
     private String mItineraryPreviewId;
     private String mStartDate;
@@ -20,10 +19,9 @@ public class ItineraryPreview {
 
     }
 
-    public ItineraryPreview(String tripName, String imageURL, String city, String ownerId, String itineraryId, String startDate, String endDate) {
+    public ItineraryPreview(String tripName, String city, String ownerId, String itineraryId, String startDate, String endDate) {
         mTripName = tripName;
         mCity = city;
-        mImageURL = imageURL;
         mOwnerId = ownerId;
         mItineraryPreviewId = itineraryId;
         mStartDate = startDate;
@@ -39,13 +37,6 @@ public class ItineraryPreview {
         mTripName = tripName;
     }
 
-    public String getImageURL() {
-        return mImageURL;
-    }
-
-    public void setImageURL(String imageURL) {
-        mImageURL = imageURL;
-    }
 
     public String getCity() {
         return mCity;

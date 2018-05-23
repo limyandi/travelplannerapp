@@ -1,5 +1,6 @@
 package com.mad.madproject.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ItineraryPreviewAdapter mItineraryPreviewAdapter;
     private ArrayList<ItineraryPreview> mItineraryPreviewList = new ArrayList<>();
-    private RecyclerView mRecyclerView;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -63,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
 
     //to get the details of the current user from the firebase
     private User currentUser;
+
+    private ProgressBar mProgressBar;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
         tx.replace(R.id.fragment_container, new ItineraryPreviewFragment());
         tx.commit();
+
+        //TODO: Find the method to set this (See if it works!)
+        navigationView.setCheckedItem(R.id.homepage);
 
         //listener for if user is already logged out.
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -218,4 +224,6 @@ public class MainActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
+
+
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -32,17 +34,22 @@ import com.google.android.gms.location.places.PlacePhotoMetadataResponse;
 import com.google.android.gms.location.places.PlacePhotoResponse;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.mad.madproject.R;
 import com.mad.madproject.adapter.CityAdapter;
 import com.mad.madproject.adapter.PlaceAutocompleteAdapter;
 import com.mad.madproject.model.Accommodation;
 import com.mad.madproject.model.City;
 import com.mad.madproject.utils.Constant;
+import com.mad.madproject.utils.Util;
 import com.mad.madproject.utils.Utils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -167,34 +174,6 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
 
             try {
 
-                final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(place.getId());
-
-//                photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
-//                        // Get the list of photos.
-//                        PlacePhotoMetadataResponse photos = task.getResult();
-//                        // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
-//                        PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
-//                        // Get the first photo in the list.
-//                        PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
-//                        CharSequence attribution = photoMetadata.getAttributions();
-//                        // Get a full-size bitmap for the photo.
-//                        Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
-//                        photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
-//                                PlacePhotoResponse photo = task.getResult();
-//                                Bitmap bitmap = photo.getBitmap();
-//                            }
-//                        });
-//
-//                        Log.d(Constant.LOG_TAG, String.valueOf(photoMetadata.getAttributions()));
-//                        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-//                        StorageReference photoReference = storageRef.child("photos");
-//
-//                    }
-//                });
                 mCityInfo = new City();
                 mCityInfo.setImage("");
                 mCityInfo.setCity(place.getName().toString());
@@ -203,6 +182,47 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
                 Log.d(Constant.LOG_TAG, mCityInfo.getCity());
                 Log.d(Constant.LOG_TAG, mCityInfo.getCountry());
                 Log.d(Constant.LOG_TAG, "" + mCityInfo.getLatLng());
+
+                final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(place.getId());
+
+                photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
+                    @Override
+                    public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
+                        // Get the list of photos.
+                        PlacePhotoMetadataResponse photos = task.getResult();
+                        // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
+                        PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                        // Get the first photo in the list.
+                        PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
+
+                        Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
+                        photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
+                            @Override
+                            public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
+                                PlacePhotoResponse photo = task.getResult();
+                                Bitmap bitmap = photo.getBitmap();
+
+                                final StorageReference photoReference = Util.getStorageReference("city").child(mCityInfo.getCity()+".jpg");
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                byte[] data = baos.toByteArray();
+
+                                photoReference.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                    @Override
+                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                        Log.d(Constant.LOG_TAG,"" + downloadUrl);
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(SearchCityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
 
             } catch (NullPointerException e) {
                 Log.e(Constant.LOG_TAG, "onResult: NullPointerException: " + e.getMessage());

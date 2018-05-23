@@ -41,6 +41,10 @@ public class ForgetPasswordActivity extends AppCompatActivity implements ForgetP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
 
+        //create the model using the view model provider .of (classname)
+
+        //observe(livedata fields from the viewmodel)
+
         //bind butterknife after setContentView.
         ButterKnife.bind(this);
 
