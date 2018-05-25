@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
     <LinearLayout
+
         android:id="@+id/field_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,22 +19,25 @@
             android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/fieldback"
+            android:background="@drawable/roundwhite"
             android:drawableLeft="@drawable/email"
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/email"
+            android:textColorHint="@color/colorTextAndIcons"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:maxLines="1"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:textColor="@color/colorTextAndIcons"/>
 
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/fieldback"
+            android:background="@drawable/roundwhite"
             android:drawableLeft="@drawable/password"
+            android:textColorHint="@color/colorTextAndIcons"
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/password"
             android:focusableInTouchMode="true"
@@ -42,7 +46,8 @@
             android:imeOptions="actionUnspecified"
             android:inputType="textPassword"
             android:maxLines="1"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:textColor="@color/colorTextAndIcons"/>
 
     </LinearLayout>
 

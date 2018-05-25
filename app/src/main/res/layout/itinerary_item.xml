@@ -2,24 +2,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
                 >
 
     <LinearLayout
         android:id="@+id/arrival_details"
-        android:layout_width="90dp"
-        android:layout_height="40dp"
-        android:layout_margin="5dp"
-        android:orientation="vertical"
-        android:background="@color/green"
-        android:padding="12dp">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/clock_logo"
+            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
+            />
+
         <TextView
             android:id="@+id/itinerary_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="10:00 AM"
-            android:textColor="@android:color/white"
+            android:textColor="@color/colorPrimaryText"
             android:textStyle="bold" />
 
     </LinearLayout>
@@ -28,10 +35,6 @@
         android:id="@+id/platform_status_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
         android:layout_centerInParent="true"
         android:layout_toEndOf="@id/arrival_details"
         android:layout_toRightOf="@id/arrival_details"
@@ -41,24 +44,8 @@
             android:id="@+id/itinerary_place"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Yoyogi Park"
-            android:textColor="@android:color/holo_green_dark"
-            android:textSize="17sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="5dp"
-        android:orientation="vertical">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/itinerary_place_image"
-            android:layout_width="90dp"
-            android:layout_height="40dp"
-            android:src="@drawable/background"/>
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout

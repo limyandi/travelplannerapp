@@ -340,6 +340,7 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             if(mTrips.size() != 6) {
                 new GetNearbyPlacesData().execute((Object) url);
             }
+            //TODO: handle the progress dialog.
             else {
                 //TODO: We should handle this one better.
                 mProgressDialog.dismiss();

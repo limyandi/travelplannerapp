@@ -1,5 +1,6 @@
 package com.mad.madproject.activity;
 
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,12 +66,11 @@ public class ViewItineraryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_itinerary);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-
         mViewPager = (ViewPager) findViewById(R.id.container);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
         mPreviewId = getIntent().getStringExtra("PreviewKey");
 
         mItineraryPlace = (TextView) findViewById(R.id.view_itinerary_activity_place);
@@ -102,29 +102,6 @@ public class ViewItineraryActivity extends AppCompatActivity {
         });
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_view_itinerary, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -152,8 +129,9 @@ public class ViewItineraryActivity extends AppCompatActivity {
 
             Log.d(LOG_TAG, "Number of itinerary days: " + String.valueOf(itineraries.getItineraryLists().size() + 1));
 
-            //args.putSerializable(Itinerary)
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            //Use the itineraries object to get the itinerary for each day and use it to set the arguments for each fragment view.
+
             args.putSerializable("Itinerary Lists", itineraries.getItineraryLists().get(sectionNumber - 1));
             fragment.setArguments(args);
             return fragment;
@@ -163,13 +141,11 @@ public class ViewItineraryActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_view_itinerary, container, false);
-            TextView daylist = (TextView) rootView.findViewById(R.id.section_label);
 
             Itinerary itinerary = (Itinerary) getArguments().getSerializable("Itinerary Lists");
 
             mTripsList = itinerary != null ? itinerary.getTrips() : null;
 
-            daylist.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
 
             mTripAdapter = new TripAdapter(mTripsList, getActivity());
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.itinerary_view);
@@ -206,11 +182,15 @@ public class ViewItineraryActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Day 1";
                 case 1:
-                    return "SECTION 2";
+                    return "Day 2";
                 case 2:
-                    return "SECTION 3";
+                    return "Day 3";
+                case 3:
+                    return "Day 4";
+                case 4:
+                    return "Day 5";
             }
             return null;
         }

@@ -140,7 +140,7 @@ public class SettingsFragment extends Fragment {
         });
     }
 
-    //TODO: Firebase push notification?
+    //TODO: Firebase push notification? Change database to allow user to get firebase push notif.
 
 
 }
