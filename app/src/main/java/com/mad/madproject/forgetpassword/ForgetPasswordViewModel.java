@@ -42,7 +42,7 @@ public class ForgetPasswordViewModel extends BaseObservable {
         notifyPropertyChanged(R.id.email);
     }
 
-    public void onBackSuccess() {
+    public void onBackClick() {
         mListener.onBackSuccess();
     }
 

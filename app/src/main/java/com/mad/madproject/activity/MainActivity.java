@@ -83,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 R.string.open,
                 R.string.close
         );
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //add the drawerToggle toggle to the layout
@@ -115,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
         tx.replace(R.id.fragment_container, new ItineraryPreviewFragment());
         tx.commit();
 
-        //TODO: Find the method to set this (See if it works!)
         navigationView.setCheckedItem(R.id.homepage);
 
         //listener for if user is already logged out.

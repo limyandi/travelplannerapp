@@ -27,7 +27,7 @@
     <string name="btn_remove">Remove</string>
     <string name="btn_sign_out">Sign Out</string>
     <string name="lbl_forgot_password">Forgot password?</string>
-    <string name="forgot_password_msg">We just need your registered Email Id to sent you password reset instructions.</string>
+    <string name="forgot_password_msg">Give us your email ID and we will send you link to reset your password.</string>
     <string name="logo_txt">Logo</string>
     <string name="open">Open</string>
     <string name="close">Close</string>

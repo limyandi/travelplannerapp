@@ -1,5 +1,6 @@
 package com.mad.madproject.forgetpassword;
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -25,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ForgetPasswordActivity extends AppCompatActivity implements ForgetPasswordViewModel.ViewListener {
+public class ForgetPasswordActivity extends Activity implements ForgetPasswordViewModel.ViewListener {
 
     ForgetPasswordViewModel viewModel;
 

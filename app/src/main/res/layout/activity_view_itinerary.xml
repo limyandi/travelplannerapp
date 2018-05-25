@@ -12,44 +12,35 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
         android:paddingTop="@dimen/appbar_padding_top"
         android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <TextView
+            android:id="@+id/view_itinerary_activity_place"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
 
-        </android.support.v7.widget.Toolbar>
+        <TextView
+            android:id="@+id/view_itinerary_activity_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_itinerary_activity_place"
+            android:textAlignment="center"
+            android:textSize="15sp"/>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
     </android.support.design.widget.AppBarLayout>
-
-    <TextView
-        android:id="@+id/view_itinerary_activity_place"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/appbar"
-        android:text="Tokyo, Japan"
-        android:textAlignment="center"
-        android:textSize="20sp"/>
-
-    <TextView
-        android:id="@+id/view_itinerary_activity_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view_itinerary_activity_place"
-        android:text="02/02/2018 - 05/02/2018"
-        android:textAlignment="center"
-        android:textSize="15sp"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_below="@id/view_itinerary_activity_date"
+        android:layout_below="@id/appbar"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 

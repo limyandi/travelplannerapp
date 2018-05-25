@@ -16,9 +16,9 @@
     <de.hdodenhof.circleimageview.CircleImageView
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profile_image"
-        android:layout_width="96dp"
+        android:layout_width="90dp"
         android:src="@drawable/amu_bubble_mask"
-        android:layout_height="96dp"
+        android:layout_height="90dp"
         app:civ_border_width="2dp"
         app:civ_border_color="#FF000000"/>
 
@@ -28,7 +28,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
-        android:text="@string/username_text"
         android:textStyle="bold"
         android:inputType="textCapSentences"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>

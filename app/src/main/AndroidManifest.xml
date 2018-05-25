@@ -26,16 +26,19 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
 
-        <activity android:name=".login.LoginActivity">
+        <activity android:name=".login.LoginActivity"
+                  android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".register.RegisterActivity"/>
+        <activity android:name=".register.RegisterActivity"
+                  android:theme="@android:style/Theme.Black.NoTitleBar"/>
         <activity android:name=".activity.MainActivity"/>
-        <activity android:name=".forgetpassword.ForgetPasswordActivity"/>
+        <activity android:name=".forgetpassword.ForgetPasswordActivity"
+                  android:theme="@android:style/Theme.Black.NoTitleBar"/>
         <activity
             android:name=".activity.SearchCityActivity"
             android:parentActivityName=".activity.MainActivity">
@@ -52,7 +55,7 @@
             android:name=".activity.ViewItineraryActivity"
             android:label="@string/title_activity_view_itinerary"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            >
         </activity>
     </application>
 

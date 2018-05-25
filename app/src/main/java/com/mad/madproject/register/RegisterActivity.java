@@ -1,5 +1,6 @@
 package com.mad.madproject.register;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -29,7 +30,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisterActivity extends AppCompatActivity implements RegisterView {
+public class RegisterActivity extends Activity implements RegisterView {
 
     @BindView(R.id.username)
     EditText inputUsername;

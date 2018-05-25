@@ -8,6 +8,9 @@ import com.bumptech.glide.request.target.ViewTarget;
  * Created by limyandivicotrico on 5/21/18.
  */
 
+/**
+ * This class enable the access to glide older version API.
+ */
 public class App extends Application {
     @Override
     public void onCreate() {

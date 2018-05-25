@@ -47,8 +47,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
         Trip trip = mTrip.get(position);
         holder.itineraryTimeTv.setText(trip.getTripTime());
         holder.itineraryPlaceTv.setText(trip.getTripPlace());
-        //TODO: Fix this later. The Image should be dynamic, depending on the place.
-        holder.circleImageView.setImageResource(R.drawable.background);
     }
 
     @Override
@@ -58,13 +56,11 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView itineraryTimeTv, itineraryPlaceTv;
-        public CircleImageView circleImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itineraryTimeTv = (TextView) itemView.findViewById(R.id.itinerary_time);
             itineraryPlaceTv = (TextView) itemView.findViewById(R.id.itinerary_place);
-            circleImageView = (CircleImageView) itemView.findViewById(R.id.itinerary_place_image);
         }
     }
 }

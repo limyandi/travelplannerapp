@@ -1,109 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.mad.madproject.login.LoginActivity">
 
-    <!--&lt;!&ndash; Setting the background opacity &ndash;&gt;-->
-    <!--<View-->
-    <!--android:id="@+id/title"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:background="#000000"-->
-    <!--android:alpha="0.5"-->
-    <!--android:layout_alignParentTop="true" />-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/logo_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin">
+    <data>
 
+        <variable
+            name="loginViewModel"
+            type="com.mad.madproject.login.LoginViewModel"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/uikitbgclear"
+        android:fitsSystemWindows="true"
+        tools:context="com.mad.madproject.login.LoginActivity">
 
         <ImageView
-            android:layout_width="@dimen/logo_w_h"
-            android:layout_height="@dimen/logo_w_h"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:contentDescription="@string/logo_txt"
-            android:src="@mipmap/ic_launcher" />
-
-    </LinearLayout>
-
-    <include
-        android:id="@+id/text_field_layout"
-        layout="@layout/text_field"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/logo_layout" />
-
-    <LinearLayout
-        android:id="@+id/button_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/text_field_layout"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/activity_field_margin"
-        android:layout_marginRight="@dimen/activity_field_margin">
-
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@color/colorAccent"
-            android:text="@string/btn_signin"
-            android:textColor="@color/colorTextAndIcons"
-            android:textStyle="bold" />
+            android:scaleType="fitXY"
+            android:src="@drawable/transparent"
+            />
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal">
+        <!--&lt;!&ndash; Setting the background opacity &ndash;&gt;-->
+        <!--<View-->
+        <!--android:id="@+id/title"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:background="#000000"-->
+        <!--android:alpha="0.5"-->
+        <!--android:layout_alignParentTop="true" />-->
 
-        <Button
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:id="@+id/btn_reset_password"
+        <LinearLayout
+            android:id="@+id/logo_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="15dp"
-            android:layout_marginEnd="15dp"
-            android:background="@null"
-            android:text="@string/btn_forgot_password"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryLight" />
+            android:layout_centerHorizontal="true"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin">
 
-        <!-- Link to Login Screen -->
 
-        <Button
-            style="@style/Base.Widget.AppCompat.Button.Borderless"
-            android:id="@+id/btn_signup"
+            <ImageView
+                android:layout_width="@dimen/logo_w_h"
+                android:layout_height="@dimen/logo_w_h"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="@string/logo_txt"
+                android:src="@mipmap/ic_launcher"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/application_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo_layout"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="Riotei"
+            android:textColor="#fff"
+            android:textSize="40sp"/>
+
+        <include
+            android:id="@+id/text_field_layout"
+            layout="@layout/text_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
-            android:background="@null"
-            android:text="@string/btn_link_to_register"
-            android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryLight"
+            android:layout_below="@id/application_name"/>
 
-            android:textSize="15sp" />
+        <LinearLayout
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_field_layout"
+            android:layout_marginLeft="@dimen/activity_field_margin"
+            android:layout_marginRight="@dimen/activity_field_margin">
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/round"
+                android:text="@string/btn_signin"
+                android:textColor="@color/colorTextAndIcons"
+                android:textStyle="bold"/>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="20dp"
-        android:visibility="gone" />
-</RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_reset_password"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="15dp"
+                android:layout_marginRight="15dp"
+                android:background="@null"
+                android:text="@string/btn_forgot_password"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimaryLight"/>
+
+            <!-- Link to Login Screen -->
+
+            <Button
+                android:id="@+id/btn_signup"
+                style="@style/Base.Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginStart="15dp"
+                android:background="@null"
+                android:text="@string/btn_link_to_register"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimaryLight"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+
+</layout>

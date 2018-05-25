@@ -60,9 +60,6 @@ public class MyTripFragment extends Fragment implements AdapterView.OnItemSelect
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        //TODO: Call the databse from here?
-        Toast toast = Toast.makeText(parent.getContext(), parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT);
-        toast.show();
         getItineraryPreviewData(view, parent.getItemAtPosition(pos).toString());
     }
 
@@ -71,6 +68,11 @@ public class MyTripFragment extends Fragment implements AdapterView.OnItemSelect
 
     }
 
+    /**
+     * Call Database
+     * @param rootView refer to the view to send the database file to
+     * @param status the spinner status.
+     */
     private void getItineraryPreviewData(final View rootView, final String status) {
         Util.getDatabaseReference("ItineraryPreview").orderByChild("ownerId").equalTo(Util.getUserUid()).addValueEventListener(new ValueEventListener() {
             @Override

@@ -1,5 +1,6 @@
 package com.mad.madproject.login;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity implements LoginView {
+public class LoginActivity extends Activity implements LoginView {
 
     @BindView(R.id.email)
     EditText mInputEmail;

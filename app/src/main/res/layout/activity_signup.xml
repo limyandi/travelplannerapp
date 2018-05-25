@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.mad.madproject.register.RegisterActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/uikitbgclear"
+                android:fitsSystemWindows="true"
+                tools:context="com.mad.madproject.register.RegisterActivity">
 
     <!--&lt;!&ndash; Setting the background opacity &ndash;&gt;-->
     <!--<View-->
@@ -14,6 +15,13 @@
     <!--android:layout_alignParentTop="true"-->
     <!--android:alpha="0.5"-->
     <!--android:background="#000000" />-->
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/transparent"
+        />
 
     <LinearLayout
         android:id="@+id/logo_layout"
@@ -30,30 +38,44 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="10dp"
             android:contentDescription="@string/logo_txt"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@mipmap/ic_launcher"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/application_name"
+        android:layout_below="@+id/logo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Riotei"
+        android:textSize="40sp"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="40dp"/>
 
     <LinearLayout
         android:id="@+id/field_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/application_name"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/activity_field_margin"
         android:layout_marginRight="@dimen/activity_field_margin"
-        android:layout_below="@id/logo_layout"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/fieldback"
+            android:background="@drawable/roundwhite"
             android:drawableLeft="@drawable/username"
             android:drawablePadding="10dp"
             android:drawableStart="@drawable/username"
             android:hint="@string/uname_hint"
             android:inputType="textPersonName"
-            android:padding="10dp" />
+            android:padding="10dp"
+            android:textColor="@color/colorTextAndIcons"
+            android:textColorHint="@color/colorTextAndIcons"/>
 
     </LinearLayout>
 
@@ -62,7 +84,7 @@
         layout="@layout/text_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/field_layout" />
+        android:layout_below="@id/field_layout"/>
 
     <LinearLayout
         android:id="@+id/button_layout"
@@ -75,15 +97,15 @@
 
         <Button
             android:id="@+id/sign_up_button"
-            style="?android:textAppearanceSmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@color/colorAccent"
+            android:padding="10dp"
+            android:background="@drawable/round"
             android:text="@string/action_sign_in_short"
             android:textAllCaps="false"
             android:textColor="@color/colorTextAndIcons"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
     </LinearLayout>
 
@@ -105,7 +127,7 @@
             android:text="@string/btn_link_to_login"
             android:textAllCaps="false"
             android:textColor="@color/colorPrimaryLight"
-            android:textSize="15sp" />
+            android:textSize="15sp"/>
     </LinearLayout>
 
 
@@ -115,5 +137,5 @@
         android:layout_height="30dp"
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="20dp"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 </RelativeLayout>
