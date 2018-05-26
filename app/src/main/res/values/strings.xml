@@ -61,4 +61,5 @@
     <string name="delete_trip_history_text">Delete Trip History</string>
     <string name="receive_notifications_text">Receive notifications</string>
     <string name="receive_notifications_text_details">We will notify you daily when your trip is close</string>
+    <string name="default_text_no_itinerary">Oops, you have no trip planned. \n Want to plan a new trip?</string>
 </resources>

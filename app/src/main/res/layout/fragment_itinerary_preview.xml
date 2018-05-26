@@ -12,6 +12,17 @@
         android:layout_centerInParent="true"
         />
 
+    <TextView
+        android:id="@+id/text_no_itinerary"
+        android:layout_width="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:textColor="@color/colorSecondaryText"
+        android:text="@string/default_text_no_itinerary"
+        android:textSize="20sp"
+        android:visibility="gone"
+        android:layout_height="wrap_content"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/view_itinerary_recycler_view"
         android:layout_width="match_parent"

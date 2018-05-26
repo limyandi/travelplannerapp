@@ -85,9 +85,9 @@
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/round"
+                android:padding="15dp"
                 android:text="@string/btn_signin"
                 android:textColor="@color/colorTextAndIcons"
                 android:textStyle="bold"/>
@@ -134,9 +134,12 @@
             android:id="@+id/progressBar"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:layout_gravity="center|bottom"
+            android:layout_below="@id/button_layout"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="20dp"
-            android:visibility="gone"/>
+            android:layout_marginTop="10dp"
+            android:visibility="gone"
+            />
     </RelativeLayout>
 
 

@@ -10,21 +10,22 @@ import java.io.Serializable;
  * Created by limyandivicotrico on 5/7/18.
  */
 
+/**
+ * Not really part of the model for the database. Acts as Helper class to clean the code more, so the apps do not need to store 3 different fields like name, address, and mLatLng.
+ */
 public class Accommodation implements Serializable {
     private String name;
     private String address;
     private String phoneNumber;
     private Uri websiteUri;
     private LatLng mLatLng;
-    private float rating;
 
-    public Accommodation(String name, String address, String phoneNumber, Uri websiteUri, LatLng latLng, float rating) {
+    public Accommodation(String name, String address, String phoneNumber, Uri websiteUri, LatLng latLng) {
         this.name = name;
         this.address = address;
         this.phoneNumber = phoneNumber;
         this.websiteUri = websiteUri;
         mLatLng = latLng;
-        this.rating = rating;
     }
 
     public Accommodation() {
@@ -68,14 +69,6 @@ public class Accommodation implements Serializable {
 
     public void setLatLng(LatLng latLng) {
         mLatLng = latLng;
-    }
-
-    public float getRating() {
-        return rating;
-    }
-
-    public void setRating(float rating) {
-        this.rating = rating;
     }
 
     public String toString() {

@@ -19,13 +19,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Trip name"
-            android:textSize="10dp"
+            android:textSize="20sp"
             />
 
         <EditText
             android:id="@+id/addtrip_activity_trip_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="25sp"
             android:text="Trip to ..."
             />
 
@@ -36,22 +37,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/trip_to_layout"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Start Date"
-            android:textSize="15sp"/>
+            android:textStyle="bold"
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/start_date_tv"
             android:layout_width="wrap_content"
+            android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content"
+            android:textSize="15sp"
             android:layout_weight="1"
-            android:gravity="right"
-            android:text="Date"/>
+            />
 
     </LinearLayout>
 
@@ -60,22 +63,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/start_date_layout"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
+        android:layout_marginBottom="15dp"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="End Date"
-            android:textSize="15sp"/>
+            android:textStyle="bold"
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/end_date_tv"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:layout_height="0dp"
             android:layout_weight="1"
-            android:gravity="right"
-            android:text="Date"/>
+            />
 
     </LinearLayout>
 
@@ -90,11 +94,14 @@
             android:id="@+id/addtrip_activity_accommodation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:text="Accommodation"/>
 
         <TextView
             android:id="@+id/addtrip_activity_accommodation_details"
             android:layout_width="wrap_content"
+            android:textColor="@color/colorPrimary"
             android:layout_height="wrap_content"
             />
     </LinearLayout>
@@ -105,8 +112,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:layout_centerHorizontal="true"
-        android:text="Confirm"/>
+        android:textColor="@color/colorTextAndIcons"
+        android:background="@drawable/round"
+        android:textAllCaps="false"
+        android:text="Create a new Trip"/>
 
 
 </RelativeLayout>
