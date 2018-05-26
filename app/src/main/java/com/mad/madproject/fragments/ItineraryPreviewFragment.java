@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,6 +49,7 @@ public class ItineraryPreviewFragment extends Fragment {
 
         getItineraryPreviews(rootView);
 
+
         return rootView;
     }
 
@@ -78,15 +80,18 @@ public class ItineraryPreviewFragment extends Fragment {
                         e.printStackTrace();
                     }
 
-                    if(crawledView != null && endDate.after(todayDate)) {
+                    if(endDate.after(todayDate)) {
                         Log.d(Constant.LOG_TAG, crawledView.toString());
                         mItineraryPreviewList.add(crawledView);
                     }
                 }
                 mItineraryPreviewAdapter = new ItineraryPreviewAdapter(rootView.getContext(), mItineraryPreviewList);
                 mRecyclerView.setAdapter(mItineraryPreviewAdapter);
-                //TODO: Progress bar here?
                 mMainProgressBar.setVisibility(View.INVISIBLE);
+                if(mItineraryPreviewList.size() == 0) {
+                    TextView noItineraryTv = (TextView) rootView.findViewById(R.id.text_no_itinerary);
+                    noItineraryTv.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

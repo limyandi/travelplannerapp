@@ -11,20 +11,11 @@
             android:id="@+id/mytrip"
             android:icon="@drawable/drawer_traveler"
             android:title="My Trip"/>
-        <item
-            android:id="@+id/answerquestions"
-            android:icon="@drawable/drawer_questions"
-            android:title="Answer Questions"/>
 
         <item
             android:id="@+id/holidaynews"
             android:icon="@drawable/drawer_holiday"
             android:title="Holiday News"/>
-
-        <item
-            android:id="@+id/sendfeedback"
-            android:icon="@drawable/drawer_feedback"
-            android:title="Send Feedback"/>
 
         <item
             android:id="@+id/aboutus"

@@ -93,6 +93,11 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         String textTrip = "Trip to " + getIntent().getStringExtra("City");
         mTripNameTv.setText(textTrip);
 
+        Date today = new Date();
+        setInitialDate(mStartDateTv, today);
+        //make it tommorow.
+        setInitialDate(mEndDateTv, new Date(today.getTime() + (1000 * 60 * 60 * 24)));
+
         startDateLayout.setOnClickListener(this);
         endDateLayout.setOnClickListener(this);
 
@@ -260,6 +265,12 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         dateDisplay.setText(date);
     }
 
+    /**
+     * Function so we can check if the google play services is working properly. This
+     * function can be used by other class so only if the services is okay we can start doing something with the map.
+     * In this version, we dont need to use this, but lets use this in the next version.
+     * @return value whether the google play services working properly
+     */
     public boolean isServicesOK() {
         Log.d(Constant.LOG_TAG, "isServicesOK: checking google play services version");
 
@@ -280,6 +291,12 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             Toast.makeText(AddTripActivity.this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
+    }
+
+    private void setInitialDate(TextView dateTv, Date day) {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");//formating according to my need
+        String date = formatter.format(day);
+        dateTv.setText(date);
     }
 
 
@@ -325,6 +342,7 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             DataParser parser = new DataParser();
             nearbyPlaceList = parser.parse(s);
 
+            //TODO: Handle if nearbyPlaceList is empty. SUGGEST USER TO CHOOSE ANOTHER CITY?
             HashMap<String, String> googlePlace = nearbyPlaceList.get(mTrips.size() % 2);
 
             String placeName = googlePlace.get("place_name");

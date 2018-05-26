@@ -95,23 +95,21 @@ public class MyTripFragment extends Fragment implements AdapterView.OnItemSelect
                         e.printStackTrace();
                     }
 
-                    if(crawledView != null) {
-                        if(status.equals("All")) {
-                            Log.d(Constant.LOG_TAG, crawledView.toString());
+                    if(status.equals("All")) {
+                        Log.d(Constant.LOG_TAG, crawledView.toString());
+                        mItineraryPreviewList.add(crawledView);
+                    }
+                    if(status.equals("Past")) {
+                        if(endDate.before(todayDate)) {
                             mItineraryPreviewList.add(crawledView);
                         }
-                        if(status.equals("Past")) {
-                            if(endDate.before(todayDate)) {
-                                mItineraryPreviewList.add(crawledView);
-                            }
-                        }
-                        if(status.equals("Present")) {
-                            if(endDate.after(todayDate)) {
-                                mItineraryPreviewList.add(crawledView);
-                            }
-                        }
-
                     }
+                    if(status.equals("Present")) {
+                        if(endDate.after(todayDate)) {
+                            mItineraryPreviewList.add(crawledView);
+                        }
+                    }
+
                 }
                 mItineraryPreviewAdapter = new ItineraryPreviewAdapter(rootView.getContext(), mItineraryPreviewList);
                 mRecyclerView.setAdapter(mItineraryPreviewAdapter);

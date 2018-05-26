@@ -315,7 +315,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                 mAccommodationInfo = new Accommodation();
                 mAccommodationInfo.setName(place.getName().toString());
                 mAccommodationInfo.setAddress(place.getAddress().toString());
-                mAccommodationInfo.setRating(place.getRating());
                 mAccommodationInfo.setLatLng(place.getLatLng());
 
                 Log.d(Constant.LOG_TAG, "onResult: place: " + mAccommodationInfo.toString());
