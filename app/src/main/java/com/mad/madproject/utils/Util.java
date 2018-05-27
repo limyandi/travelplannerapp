@@ -1,5 +1,8 @@
 package com.mad.madproject.utils;
 
+
+import android.support.v4.app.Fragment;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,4 +69,15 @@ public class Util {
         return googleNearbyPlaceUrl.toString();
     }
 
+
+    /**
+     * Utility Function to set the fragment toolbar title.
+     * @param fragment determine which fragment to set
+     * @param title determine the title.
+     */
+    public static void setFragmentToolbarTitle(Fragment fragment, String title) {
+        if(fragment.getActivity() != null) {
+            fragment.getActivity().setTitle(title);
+        }
+    }
 }

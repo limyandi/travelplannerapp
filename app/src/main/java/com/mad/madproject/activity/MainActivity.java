@@ -73,13 +73,17 @@ public class MainActivity extends AppCompatActivity {
                 R.string.close
         );
 
-        //set the navigation view so it can be vieweed.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //set the action bar so that the item can be viewed/seen. assert condition not null to prevent crash if it returns null pointer exception.
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 
         //add the drawerToggle toggle to the layout
         drawerLayout.addDrawerListener(drawerToggle);
         //sync current state.
         drawerToggle.syncState();
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nv);
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MAD Project App</string>
+    <string name="app_name">Riote Travelapp</string>
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
@@ -62,4 +62,11 @@
     <string name="receive_notifications_text">Receive notifications</string>
     <string name="receive_notifications_text_details">We will notify you daily when your trip is close</string>
     <string name="default_text_no_itinerary">Oops, you have no trip planned. \n Want to plan a new trip?</string>
+    <string name="no_trip_text">Sorry! You do not have \n any trip here!</string>
+    <string name="end_date_text">End Date</string>
+    <string name="start_date_text">Start Date</string>
+    <string name="accommodation_text">Accommodation</string>
+    <string name="create_a_new_trip_text">Create a new Trip</string>
+    <string name="trip_name_text">Trip name</string>
+    <string name="trip_to_dotdot">Trip to ...</string>
 </resources>

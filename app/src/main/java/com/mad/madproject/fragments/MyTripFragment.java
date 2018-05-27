@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -33,24 +34,31 @@ import java.util.Locale;
  * Created by limyandivicotrico on 5/5/18.
  */
 
+/**
+ * My Trip Fragment handles displaying either all trip, past trip, or present trip, using spinner as the filter..
+ */
 public class MyTripFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private ArrayList<ItineraryPreview> mItineraryPreviewList = new ArrayList<>();
     private RecyclerView mRecyclerView;
     private ItineraryPreviewAdapter mItineraryPreviewAdapter;
-    private Spinner mSpinner;
+    private TextView mNoTripTextTv;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_my_trip, container, false);
+        Util.setFragmentToolbarTitle(this, "My Trips");
 
-        mSpinner = rootView.findViewById(R.id.spinner_filter_itinerary);
+        Spinner spinner = rootView.findViewById(R.id.spinner_filter_itinerary);
+        mNoTripTextTv = (TextView) rootView.findViewById(R.id.text_no_itinerary);
 
-        mSpinner.setOnItemSelectedListener(this);
+        //set the listener to the spinner.
+        spinner.setOnItemSelectedListener(this);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.view_itinerary_history_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(rootView.getContext()));
+
 
         //all acts as the default value.
         getItineraryPreviewData(rootView, "All");
@@ -74,15 +82,14 @@ public class MyTripFragment extends Fragment implements AdapterView.OnItemSelect
      * @param status the spinner status.
      */
     private void getItineraryPreviewData(final View rootView, final String status) {
+
         Util.getDatabaseReference("ItineraryPreview").orderByChild("ownerId").equalTo(Util.getUserUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mItineraryPreviewList.clear();
-
                 for(DataSnapshot itineraryView: dataSnapshot.getChildren()) {
                     Log.d(Constant.LOG_TAG, itineraryView.toString());
                     ItineraryPreview crawledView = itineraryView.getValue(ItineraryPreview.class);
-
                     Date endDate = new Date();
                     Date todayDate = new Date();
 
@@ -113,6 +120,12 @@ public class MyTripFragment extends Fragment implements AdapterView.OnItemSelect
                 }
                 mItineraryPreviewAdapter = new ItineraryPreviewAdapter(rootView.getContext(), mItineraryPreviewList);
                 mRecyclerView.setAdapter(mItineraryPreviewAdapter);
+                if(mItineraryPreviewList.size() == 0) {
+                    mNoTripTextTv.setVisibility(View.VISIBLE);
+                }
+                else {
+                    mNoTripTextTv.setVisibility(View.INVISIBLE);
+                }
             }
 
             @Override

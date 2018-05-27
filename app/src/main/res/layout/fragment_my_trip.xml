@@ -1,23 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <Spinner
-        android:id="@+id/spinner_filter_itinerary"
-        android:layout_marginTop="15dp"
+    <LinearLayout
+        android:id="@+id/spinner_layout"
         android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:entries="@array/itineraryfilter">
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimaryLight"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Itinerary Filter"
+            android:gravity="center"/>
 
-    </Spinner>
+        <!-- TODO: Problem with Spinner, text does not fits the spinner when change orientation. -->
+        <Spinner
+            android:id="@+id/spinner_filter_itinerary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:entries="@array/itineraryfilter">
+        </Spinner>
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/view_itinerary_history_recycler_view"
+        android:layout_below="@id/spinner_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
         />
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/text_no_itinerary"
+        android:layout_width="wrap_content"
+        android:textColor="@color/colorSecondaryText"
+        android:gravity="center"
+        android:text="@string/no_trip_text"
+        android:textSize="20sp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"
+        android:layout_height="wrap_content"/>
+</RelativeLayout>
