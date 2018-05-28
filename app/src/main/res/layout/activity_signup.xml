@@ -34,10 +34,10 @@
 
         <ImageView
             android:layout_width="@dimen/logo_w_h"
-            android:layout_height="@dimen/logo_w_h"
+            android:layout_height="55dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@string/logo_txt"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@drawable/logo"/>
     </LinearLayout>
 
     <TextView
@@ -45,7 +45,7 @@
         android:layout_below="@+id/logo_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Riotei"
+        android:text="Riote"
         android:textSize="40sp"
         android:textColor="#fff"
         android:gravity="center"

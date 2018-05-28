@@ -77,7 +77,7 @@ public class MyTripFragment extends Fragment implements AdapterView.OnItemSelect
     }
 
     /**
-     * Call Database
+     * Call database to get the data for the itinerary preview.
      * @param rootView refer to the view to send the database file to
      * @param status the spinner status.
      */

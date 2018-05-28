@@ -54,7 +54,6 @@ public class ItineraryPreviewFragment extends Fragment {
 
         setItineraryPreviews(rootView);
 
-
         return rootView;
     }
 

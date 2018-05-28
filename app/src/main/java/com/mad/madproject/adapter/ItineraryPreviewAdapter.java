@@ -6,6 +6,7 @@ package com.mad.madproject.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,6 +26,9 @@ import com.mad.madproject.utils.Util;
 
 import java.util.ArrayList;
 
+/**
+ * The adapter for the itinerary, inflate the view holder to be used for the recycler view.
+ */
 public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPreviewAdapter.MyViewHolder> {
 
     private ArrayList<ItineraryPreview> dataSet;
@@ -32,6 +36,9 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
     private LayoutInflater inflater;
     private StorageReference mCityStorageReference;
 
+    /**
+     * View holder class link the java object to all xml view.
+     */
     public static class MyViewHolder extends RecyclerView.ViewHolder {
 
         CardView rootView;
@@ -50,21 +57,27 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
         }
     }
 
+    /**
+     * Constructor to be called by another class, requires the context to be called in and the content of the data.
+     * @param context represents the environment to be instantiated for the adapter.
+     * @param data represents the data contained by the adapter
+     */
     public ItineraryPreviewAdapter(Context context, ArrayList<ItineraryPreview> data) {
         this.context = context;
         this.dataSet = data;
         inflater = LayoutInflater.from(context);
+        //to be used by the view holder GLIDE API to load the picture.
         mCityStorageReference = Util.getStorageReference("city");
     }
 
+    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent,
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                            int viewType) {
         View view = inflater
                 .inflate(R.layout.itinerary_card_item, parent, false);
 
-        MyViewHolder myViewHolder = new MyViewHolder(view);
-        return myViewHolder;
+        return new MyViewHolder(view);
     }
 
     @Override

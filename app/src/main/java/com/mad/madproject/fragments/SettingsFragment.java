@@ -32,6 +32,9 @@ import java.util.Locale;
  * Created by limyandivicotrico on 5/5/18.
  */
 
+/**
+ * Fragment that displays settings for user to change their username, delete the past trip history and receiving notifications.
+ */
 public class SettingsFragment extends Fragment {
 
     RelativeLayout mUsernameLayout;
@@ -80,7 +83,6 @@ public class SettingsFragment extends Fragment {
     /**
      *  Create a material dialog to handle user input to change the name.
      */
-
     private void usernameLayoutOnClick() {
         mUsernameLayout.setOnClickListener(new View.OnClickListener() {
             @Override

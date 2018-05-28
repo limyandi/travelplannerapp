@@ -69,4 +69,11 @@
     <string name="create_a_new_trip_text">Create a new Trip</string>
     <string name="trip_name_text">Trip name</string>
     <string name="trip_to_dotdot">Trip to ...</string>
+    <string name="home_nav_drawer_text">Home</string>
+    <string name="my_trip_nav_drawer_text">My Trip</string>
+    <string name="holiday_news_nav_drawer_text">Holiday News</string>
+    <string name="about_us_nav_drawer_text">About us</string>
+    <string name="settings_nav_drawer_text">Settings</string>
+    <string name="log_out_nav_drawer_text">Log out</string>
+    <string name="utility_nav_drawer_header">Utility</string>
 </resources>

@@ -5,36 +5,37 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/homepage"
-            android:icon="@drawable/background"
-            android:title="Home"/>
+            android:icon="@drawable/home"
+            android:title="@string/home_nav_drawer_text"/>
         <item
             android:id="@+id/mytrip"
             android:icon="@drawable/drawer_traveler"
-            android:title="My Trip"/>
+            android:title="@string/my_trip_nav_drawer_text"/>
 
         <item
             android:id="@+id/holidaynews"
             android:icon="@drawable/drawer_holiday"
-            android:title="Holiday News"/>
+            android:title="@string/holiday_news_nav_drawer_text"/>
 
         <item
             android:id="@+id/aboutus"
-            android:title="About us"/>
+            android:title="@string/about_us_nav_drawer_text"
+            android:icon="@drawable/aboutus"/>
 
 
     </group>
 
-    <item android:title="Utility">
+    <item android:title="@string/utility_nav_drawer_header">
         <menu>
             <item
                 android:id="@+id/settings"
                 android:icon="@drawable/drawer_settings"
-                android:title="Settings"/>
+                android:title="@string/settings_nav_drawer_text"/>
 
             <item
                 android:id="@+id/logout"
-                android:icon="@drawable/username"
-                android:title="Log out"/>
+                android:icon="@drawable/logout"
+                android:title="@string/log_out_nav_drawer_text"/>
         </menu>
     </item>
 </menu>

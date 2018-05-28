@@ -17,6 +17,9 @@ import com.mad.madproject.activity.MainActivity;
  * Created by limyandivicotrico on 5/27/18.
  */
 
+/**
+ * Service that handles
+ */
 public class FirebaseMessagingNotificationService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
