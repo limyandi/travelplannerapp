@@ -20,6 +20,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * The LoginActivity handles the view presented to user to login.
+ */
 public class LoginActivity extends Activity implements LoginView {
 
     @BindView(R.id.email)

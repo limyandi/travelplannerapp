@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,9 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,18 +21,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.madproject.R;
-import com.mad.madproject.adapter.ItineraryPreviewAdapter;
 import com.mad.madproject.fragments.AboutFragment;
 import com.mad.madproject.fragments.HolidayNewsFragment;
 import com.mad.madproject.fragments.ItineraryPreviewFragment;
 import com.mad.madproject.fragments.MyTripFragment;
 import com.mad.madproject.fragments.SettingsFragment;
 import com.mad.madproject.login.LoginActivity;
-import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.model.User;
 import com.mad.madproject.utils.Util;
-
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private FirebaseUser user;
+    private FirebaseUser mUser;
 
-    //to get the details of the current user from the firebase.
+    //to get the details of the current mUser from the firebase.
     private User currentUser;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
+        mUser = mAuth.getCurrentUser();
 
         ButterKnife.bind(this);
 
@@ -73,13 +66,17 @@ public class MainActivity extends AppCompatActivity {
                 R.string.close
         );
 
-        //set the navigation view so it can be vieweed.
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //set the action bar so that the item can be viewed/seen. assert condition not null to prevent crash if it returns null pointer exception.
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 
         //add the drawerToggle toggle to the layout
         drawerLayout.addDrawerListener(drawerToggle);
         //sync current state.
         drawerToggle.syncState();
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nv);
 
@@ -99,6 +96,9 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        //set the default checked item as the homepage (The main itinerary view).
+        navigationView.setCheckedItem(R.id.homepage);
 
         setDefaultFragment();
         setUserName(username);
@@ -157,12 +157,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setAuthenticationListener() {
-        //listener for if user is already logged out.
+        //listener for if mUser is already logged out.
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                if(user == null) {
+                mUser = firebaseAuth.getCurrentUser();
+                if(mUser == null) {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     finish();
                 }
@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUserName(final TextView username) {
-        Util.getDatabaseReference("Users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+        Util.getDatabaseReference("Users").child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);

@@ -8,6 +8,10 @@ import java.util.ArrayList;
  * Created by limyandivicotrico on 5/19/18.
  */
 
+/**
+ * This class acts as the parent class for the itinerary details, it holds the itinerarylists for all day, the tripname, startdate, enddate,
+ * and previewid(foreign key in database) so that it can be sent to database.
+ */
 public class Itineraries {
     private ArrayList<Itinerary> mItineraryLists;
     private String mTripName;
@@ -16,6 +20,14 @@ public class Itineraries {
     private String mItineraryPreviewId;
     private int mIntervalDay;
 
+    /**
+     * Constructor that takes the parameters of the itinerarylists, the trip name, start date, end date and itinerary previewId.
+     * @param itineraryLists Contains the itinerary lists for each day.
+     * @param tripName the trip name
+     * @param startDate the start date
+     * @param endDate the end date
+     * @param itineraryPreviewId the foreign key ItineraryPreviewID
+     */
     public Itineraries(ArrayList<Itinerary> itineraryLists, String tripName, String startDate, String endDate, String itineraryPreviewId) {
         mItineraryLists = itineraryLists;
         mTripName = tripName;
@@ -25,6 +37,9 @@ public class Itineraries {
         mIntervalDay = Util.convertDateToDayInterval(mEndDate, mStartDate);
     }
 
+    /**
+     * Default Constructor(Not used).
+     */
     public Itineraries() {
 
     }

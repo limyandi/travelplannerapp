@@ -6,6 +6,9 @@ import com.mad.madproject.utils.Util;
  * Created by limyandivicotrico on 5/17/18.
  */
 
+/**
+ *
+ */
 public class ItineraryPreview {
     private String mTripName;
     private String mCity;

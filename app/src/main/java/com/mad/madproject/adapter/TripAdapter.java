@@ -15,20 +15,26 @@ import com.mad.madproject.utils.Constant;
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 /**
  * Created by limyandivicotrico on 5/15/18.
  */
 
+/**
+ *  Adapter that holds the value to display to the user their itinerary details (where to go, what time).
+ */
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
-    private ArrayList<Trip> mTrip;
+    private ArrayList<Trip> mTrips;
     private Context mContext;
     private LayoutInflater mInflater;
 
-    public TripAdapter(ArrayList<Trip> trip, Context context) {
-        mTrip = trip;
+    /**
+     * Constructor to be called by another class, requires the context to be called in and the content of the trips details.
+     * @param trips lists of the trip object
+     * @param context represents the environment for the adapter to be instantiated.
+     */
+    public TripAdapter(ArrayList<Trip> trips, Context context) {
+        mTrips = trips;
         mContext = context;
         mInflater = LayoutInflater.from(context);
     }
@@ -44,16 +50,19 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TripAdapter.ViewHolder holder, int position) {
-        Trip trip = mTrip.get(position);
+        Trip trip = mTrips.get(position);
         holder.itineraryTimeTv.setText(trip.getTripTime());
         holder.itineraryPlaceTv.setText(trip.getTripPlace());
     }
 
     @Override
     public int getItemCount() {
-        return mTrip.size();
+        return mTrips.size();
     }
 
+    /**
+     * View holder class link the java object to all xml view.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView itineraryTimeTv, itineraryPlaceTv;
 

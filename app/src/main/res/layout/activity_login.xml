@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -46,11 +44,10 @@
 
             <ImageView
                 android:layout_width="@dimen/logo_w_h"
-                android:layout_height="@dimen/logo_w_h"
+                android:layout_height="55dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
                 android:contentDescription="@string/logo_txt"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@drawable/logo"/>
 
         </LinearLayout>
 
@@ -60,9 +57,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/logo_layout"
             android:layout_marginBottom="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
-            android:text="Riotei"
+            android:text="Riote"
             android:textColor="#fff"
             android:textSize="40sp"/>
 
