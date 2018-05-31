@@ -102,7 +102,8 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
         StorageReference cityReference = mCityStorageReference.child(itineraryPreview.getCity()+".jpg");
         Log.d("ItineraryPreview", itineraryPreview.getCity()+".jpg");
         //TODO: Set default picture if we cant find the picture?
-        Glide.with(holder.imageViewIcon.getContext()).using(new FirebaseImageLoader()).load(cityReference).into(holder.imageViewIcon);
+
+        Glide.with(holder.imageViewIcon.getContext()).using(new FirebaseImageLoader()).load(cityReference).error(R.drawable.question_mark).into(holder.imageViewIcon);
 
     }
 

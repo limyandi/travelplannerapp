@@ -18,6 +18,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -39,8 +40,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mad.madproject.NullOnEmptyConverterFactory;
 import com.mad.madproject.R;
-import com.mad.madproject.RetrofitNearbyPlaces;
+import com.mad.madproject.ApiService;
 import com.mad.madproject.adapter.PlaceAutocompleteAdapter;
 import com.mad.madproject.model.Accommodation;
 import com.mad.madproject.model.Itineraries;
@@ -106,6 +108,8 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         setContentView(R.layout.activity_choose_accommodation);
 
         ButterKnife.bind(this);
+
+        //Latitude and longitude for the city.
         latitude = getIntent().getDoubleExtra("Latitude", 0);
         longitude = getIntent().getDoubleExtra("Longitude", 0);
         numberOfTripDays = getIntent().getIntExtra("Day", 1);
@@ -268,7 +272,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
                                 //Start ProgressDialog
                                 initProgressDialog();
-                                getNearbyPlace("park", String.valueOf(latitude), String.valueOf(longitude));
+                                getNearbyPlace("park", String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
                             }
                         }).show();
             } catch (NullPointerException e) {
@@ -307,9 +311,10 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     private void getNearbyPlace(String type, final String latitude, final String longitude) {
         String baseUrl = "https://maps.googleapis.com/maps/";
 
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create()).build();
+        //add new null on emptyconverter to make sure that null does not give errors.
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(new NullOnEmptyConverterFactory()).addConverterFactory(GsonConverterFactory.create()).build();
 
-        RetrofitNearbyPlaces service = retrofit.create(RetrofitNearbyPlaces.class);
+        ApiService service = retrofit.create(ApiService.class);
 
         Call<PlacesResponse> call = service.getNearbyPlaces(type, latitude + "," + longitude, PROXIMITY_RADIUS);
 
@@ -317,43 +322,54 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
             @Override
             public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
                 //TODO: randomize this list. (Write an algorithm to say like for 8.00 A.M. only suggests something like park, amusement park.)
-                String[] placeList = {"department_store", "restaurant", "zoo", "shopping mall", "city_hall", "casino"};
 
-                //TODO: Handle no places found (Example some place we chose might not have any place nearby to be suggested to.
-                if (places.get(day).size() < 6 && day != numberOfTripDays) {
-                    response.body().getResults().get(0).setTimeToGo(startTime);
-                    places.get(day).add(response.body().getResults().get(0));
-                    double lat = response.body().getResults().get(0).getGeometry().getLocation().getLat();
-                    double lng = response.body().getResults().get(0).getGeometry().getLocation().getLng();
-                    getNearbyPlace(placeList[places.get(day).size() - 1], String.valueOf(lat), String.valueOf(lng));
-                } else {
-                    day++;
-                    if (day != (numberOfTripDays)) {
-                        getNearbyPlace("park", latitude, longitude);
+                String[] placeList = {"department_store", "restaurant", "zoo", "shopping mall", "city_hall", "casino"};
+                //TODO: Handle this part better.
+                //Handle if it does return any result.
+                if(response.body().getResults().size() != 0) {
+                    //TODO: Handle no places found (Example some place we chose might not have any place nearby to be suggested to.
+                    if (places.get(day).size() < 6 && day != numberOfTripDays) {
+                        response.body().getResults().get(0).setTimeToGo(startTime);
+                        places.get(day).add(response.body().getResults().get(0));
+                        double lat = response.body().getResults().get(0).getGeometry().getLocation().getLat();
+                        double lng = response.body().getResults().get(0).getGeometry().getLocation().getLng();
+                        getNearbyPlace(placeList[places.get(day).size() - 1], String.valueOf(lat), String.valueOf(lng));
                     } else {
-                        for (int j = 0; j < places.size(); j++) {
-                            mItineraryArrayList.add(new Itinerary(places.get(j)));
+                        day++;
+                        if (day != (numberOfTripDays)) {
+                            //Restart from the accommodation again.
+                            getNearbyPlace("park", String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
+                        } else {
+                            for (int j = 0; j < places.size(); j++) {
+                                mItineraryArrayList.add(new Itinerary(places.get(j)));
+                            }
+                            ItineraryPreview itineraryPreview = (ItineraryPreview) getIntent().getSerializableExtra("ItineraryPreview");
+                            //set the key here now, we dont set it in add trip activity.
+                            itineraryPreview.setItineraryPreviewId(itineraryPreviewKey);
+                            Itineraries itineraries = new Itineraries(mItineraryArrayList, itineraryPreview.getTripName(), itineraryPreview.getStartDate(), itineraryPreview.getEndDate(), itineraryPreviewKey);
+                            databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
+                            databaseReference.child("Itinerary").push().setValue(itineraries);
+                            //TODO: Handle progress dialog better.
+                            mPrgDialog.dismiss();
+                            Intent intent = new Intent(ChooseAccommodationActivity.this, ViewItineraryActivity.class);
+                            intent.putExtra("Day", itineraryPreview.getDayInterval());
+                            intent.putExtra("PreviewKey", itineraryPreviewKey);
+                            startActivity(intent);
                         }
-                        ItineraryPreview itineraryPreview = (ItineraryPreview) getIntent().getSerializableExtra("ItineraryPreview");
-                        //set the key here now, we dont set it in add trip activity.
-                        itineraryPreview.setItineraryPreviewId(itineraryPreviewKey);
-                        Itineraries itineraries = new Itineraries(mItineraryArrayList, itineraryPreview.getTripName(), itineraryPreview.getStartDate(), itineraryPreview.getEndDate(), itineraryPreviewKey);
-                        databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
-                        databaseReference.child("Itinerary").push().setValue(itineraries);
-                        //TODO: Handle progress dialog better.
-                        mPrgDialog.dismiss();
-                        Intent intent = new Intent(ChooseAccommodationActivity.this, ViewItineraryActivity.class);
-                        intent.putExtra("Day", itineraryPreview.getDayInterval());
-                        intent.putExtra("PreviewKey", itineraryPreviewKey);
-                        startActivity(intent);
                     }
                 }
+                else {
+                    //TODO: Show UI(Material Dialog) instead of showing toast.
+                    Toast.makeText(ChooseAccommodationActivity.this, "Sorry, our database can't suggest any places for this accommodation yet.", Toast.LENGTH_LONG).show();
+                    mPrgDialog.dismiss();
+                }
             }
+
 
             @Override
             public void onFailure(Call<PlacesResponse> call, Throwable t) {
                 //TODO: Handle on Failure. (For example we cannot find the place)
-
+                Log.d(Constant.LOG_TAG, "onResponse onFailure");
             }
         });
     }
@@ -363,6 +379,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         mPrgDialog.setMessage("Please wait while we are creating your itinerary");
         mPrgDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         mPrgDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mPrgDialog.setCancelable(false);
         mPrgDialog.show();
     }
     /*

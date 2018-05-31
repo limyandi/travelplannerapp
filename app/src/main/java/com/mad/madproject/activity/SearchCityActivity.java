@@ -194,34 +194,36 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
                         // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
                         PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
                         // Get the first photo in the list.
-                        PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
+                        if(photoMetadataBuffer.getCount() > 0) {
+                            PlacePhotoMetadata photoMetadata = photoMetadataBuffer.get(0);
 
-                        Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
-                        photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
-                            @Override
-                            public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
-                                PlacePhotoResponse photo = task.getResult();
-                                Bitmap bitmap = photo.getBitmap();
+                            Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
+                            photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
+                                @Override
+                                public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
+                                    PlacePhotoResponse photo = task.getResult();
+                                    Bitmap bitmap = photo.getBitmap();
 
-                                final StorageReference photoReference = Util.getStorageReference("city").child(mCityInfo.getCity()+".jpg");
-                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                                byte[] data = baos.toByteArray();
+                                    final StorageReference photoReference = Util.getStorageReference("city").child(mCityInfo.getCity()+".jpg");
+                                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                                    byte[] data = baos.toByteArray();
 
-                                photoReference.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                                        Log.d(Constant.LOG_TAG,"" + downloadUrl);
-                                    }
-                                }).addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Toast.makeText(SearchCityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
-                        });
+                                    photoReference.putBytes(data).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                                            Log.d(Constant.LOG_TAG,"" + downloadUrl);
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(SearchCityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            });
+                        }
                     }
                 });
 
