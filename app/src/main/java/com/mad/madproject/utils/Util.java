@@ -83,20 +83,6 @@ public class Util {
         return today.after(endDate);
     }
 
-    public static String getUrl(double latitude, double longitude, String nearbyPlace) {
-        StringBuilder googleNearbyPlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-        googleNearbyPlaceUrl.append("location="+latitude+","+longitude);
-        googleNearbyPlaceUrl.append("&radius=5000");
-        googleNearbyPlaceUrl.append("&rankby=prominence");
-        googleNearbyPlaceUrl.append("&type="+nearbyPlace);
-        googleNearbyPlaceUrl.append("&key="+"AIzaSyAUIVnQu5Pc9K48reQl0btDc2VrSrESzS8");
-
-//        StringBuilder googleNearbyPlaceUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=1500&type=restaurant&keyword=cruise&key=AIzaSyAUIVnQu5Pc9K48reQl0btDc2VrSrESzS8");
-
-        return googleNearbyPlaceUrl.toString();
-    }
-
-
     /**
      * Utility Function to set the fragment toolbar title.
      * @param fragment determine which fragment to set

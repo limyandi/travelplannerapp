@@ -2,6 +2,8 @@ package com.mad.madproject.model;
 
 import com.mad.madproject.utils.Util;
 
+import java.io.Serializable;
+
 /**
  * Created by limyandivicotrico on 5/17/18.
  */
@@ -9,7 +11,7 @@ import com.mad.madproject.utils.Util;
 /**
  *
  */
-public class ItineraryPreview {
+public class ItineraryPreview implements Serializable {
     private String mTripName;
     private String mCity;
     private String mOwnerId;

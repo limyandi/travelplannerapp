@@ -1,50 +1,35 @@
 package com.mad.madproject.activity;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mad.madproject.DataParser;
 import com.mad.madproject.R;
-import com.mad.madproject.model.Itineraries;
-import com.mad.madproject.model.Itinerary;
 import com.mad.madproject.model.ItineraryPreview;
-import com.mad.madproject.model.Trip;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
-import com.mad.madproject.utils.Utils;
 
-import java.io.IOException;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,24 +42,12 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
     TextView mEndDateTv;
     @BindView(R.id.addtrip_activity_trip_name)
     TextView mTripNameTv;
-    @BindView(R.id.addtrip_activity_accommodation)
-    TextView mAccommodationTv;
-    @BindView(R.id.addtrip_activity_accommodation_details)
-    TextView mAccommodationDetailsTv;
 
     //for handling if user google play services version is not valid / error
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    //Request to choose accommodation.
-    private static final int CHOOSE_ACCOMMODATION_REQUEST = 1;
 
-    private double mLatitude;
-    private double mLongitude;
-
-    private Itineraries fullItinerary;
-
-    private int intervalDay;
-
-    private ArrayList<Trip> mTrips = new ArrayList<>();
+    //setting initial interval day to prevent error.
+    private int intervalDay = 1;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
@@ -104,86 +77,23 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), ViewItineraryActivity.class);
+                Intent intent = new Intent(getBaseContext(), ChooseAccommodationActivity.class);
 
                 intervalDay = Util.convertDateToDayInterval(mEndDateTv.getText().toString(), mStartDateTv.getText().toString());
                 intent.putExtra("Day", intervalDay);
                 //TODO: Chaining intent put? is this bad practice?
-                intent.putExtra("Latitude", mLatitude);
-                intent.putExtra("Longitude", mLongitude);
+                intent.putExtra("Latitude", getIntent().getDoubleExtra("Latitude", 0));
+                intent.putExtra("Longitude", getIntent().getDoubleExtra("Longitude", 0));
 
-                intent.putExtra("PreviewKey", itineraryPreviewKey);
-
-                ItineraryPreview itineraryPreview = new ItineraryPreview(mTripNameTv.getText().toString(), getIntent().getStringExtra("City"),  Util.getUserUid(), itineraryPreviewKey, mStartDateTv.getText().toString(), mEndDateTv.getText().toString());
-                databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
-
-                mockUpDataForItinerariesCreation();
-                databaseReference.child("Itinerary").push().setValue(fullItinerary);
+                //Dont set the itinerary preview id for now.
+                ItineraryPreview itineraryPreview = new ItineraryPreview(mTripNameTv.getText().toString(), getIntent().getStringExtra("City"), Util.getUserUid(), "", mStartDateTv.getText().toString(), mEndDateTv.getText().toString());
+                //Itinerary Preview Data.
+                intent.putExtra("ItineraryPreview", itineraryPreview);
 
                 startActivity(intent);
             }
         });
 
-        if (isServicesOK()) initAddTripActivity();
-
-        //cannot use this because api level is too low
-        //mStartDateDp.setOnDateChangedListener();
-    }
-
-    private void mockUpDataForItinerariesCreation() {
-
-        String tripName = mTripNameTv.getText().toString();
-        String startDate = mStartDateTv.getText().toString();
-        String endDate = mEndDateTv.getText().toString();
-        String itineraryPreviewId = itineraryPreviewKey;
-
-        ArrayList<Trip> trips = new ArrayList<>(6);
-
-        ArrayList<Itinerary> itinerariesLists = new ArrayList<>(intervalDay);
-
-        for(int i = 0; i < intervalDay; i++) {
-            trips.clear();
-            for(int j = 0; j < 6; j++) {
-                trips.add(mTrips.get(j));
-            }
-            Itinerary itinerary = new Itinerary(trips);
-            itinerariesLists.add(itinerary);
-        }
-
-        fullItinerary = new Itineraries(itinerariesLists, tripName, startDate, endDate, itineraryPreviewId);
-
-    }
-
-    private void initAddTripActivity() {
-        mAccommodationTv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = getIntent();
-                //TODO: Chain passing of intent value?
-                LatLng lat = i.getParcelableExtra("LatLng");
-                Intent chooseAccommodationIntent = new Intent(AddTripActivity.this, ChooseAccommodationActivity.class);
-                chooseAccommodationIntent.putExtra("Latitudelongitude", lat);
-                startActivityForResult(chooseAccommodationIntent, CHOOSE_ACCOMMODATION_REQUEST);
-            }
-        });
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.d(Constant.LOG_TAG, "onActivityResult: Get Result from ChooseAccommodationActivity");
-        switch (requestCode) {
-            case CHOOSE_ACCOMMODATION_REQUEST:
-                if (resultCode == Activity.RESULT_OK) {
-                    mAccommodationDetailsTv.setText(data.getStringExtra("Accommodation Address"));
-                    mLatitude = data.getDoubleExtra("Accommodation Latitude", 0);
-                    mLongitude = data.getDoubleExtra("Accommodation Longitude", 0);
-
-                    String amusement_park = "amusement_park";
-                    String url = Util.getUrl(mLatitude, mLongitude, amusement_park);
-                    new GetNearbyPlacesData().execute((Object) url);
-                }
-        }
     }
 
     @Override
@@ -213,8 +123,9 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
                 year, month, day);
         DatePicker datePicker = dateDialog.getDatePicker();
         datePicker.setMinDate(cal.getTimeInMillis());
+
         //set the min date and max date for the end date text view, for min date, should be at least for a day,
-        // for max date, 5 day after the start date. (at least for current version).
+        // for max date, 5 day after the start date. (including this day) (at least for current version).
         if (dateSetListener == endDateSetListener) {
             Date date = cal.getTime();
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -243,8 +154,18 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             //add leading zeros to day less than 10.
             String leadingDay = df.format(day);
             String leadingMonth = df.format(month);
-            String date = leadingDay + "-" + leadingMonth + "-" + year;
-            updateDisplay(mStartDateTv, date);
+            String dateString = leadingDay + "-" + leadingMonth + "-" + year;
+            updateDisplay(mStartDateTv, dateString);
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            //TODO: Handle this better, should write a function because we keep using the parsing method.
+            Date date = null;
+            try {
+                date = dateFormat.parse(dateString);
+                updateDisplay(mEndDateTv, String.valueOf(dateFormat.format(new Date(date.getTime() + (1000 * 60 * 60 * 24)))));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }
     };
 
@@ -269,6 +190,7 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
      * Function so we can check if the google play services is working properly. This
      * function can be used by other class so only if the services is okay we can start doing something with the map.
      * In this version, we dont need to use this, but lets use this in the next version.
+     *
      * @return value whether the google play services working properly
      */
     public boolean isServicesOK() {
@@ -297,72 +219,5 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");//formating according to my need
         String date = formatter.format(day);
         dateTv.setText(date);
-    }
-
-
-    private class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
-
-        String googlePlacesData;
-        String url;
-        ProgressDialog mProgressDialog;
-
-        public GetNearbyPlacesData() {
-        }
-
-        @Override
-        protected String doInBackground(Object... objects) {
-            url = (String) objects[0];
-
-            try {
-                googlePlacesData = Utils.readUrl(url);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return googlePlacesData;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //TODO: Handle progress dialog.
-            mProgressDialog = new ProgressDialog(AddTripActivity.this);
-            mProgressDialog.setTitle("Fetching trip for your itinerary");
-            mProgressDialog.setMessage("Please wait...");
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            List<HashMap<String, String>> nearbyPlaceList = null;
-
-            //call to the data parser.
-            DataParser parser = new DataParser();
-            nearbyPlaceList = parser.parse(s);
-
-            //TODO: Handle if nearbyPlaceList is empty. SUGGEST USER TO CHOOSE ANOTHER CITY?
-            HashMap<String, String> googlePlace = nearbyPlaceList.get(mTrips.size() % 2);
-
-            String placeName = googlePlace.get("place_name");
-            double lat = Double.parseDouble(googlePlace.get("lat"));
-            double lng = Double.parseDouble(googlePlace.get("lng"));
-
-            mTrips.add(new Trip(placeName, "A", "10:00 A.M"));
-
-            String[] placeList = {"restaurant", "department_store", "gym", "store", "shopping mall", "casino"};
-
-            String url = Util.getUrl(lat, lng, placeList[mTrips.size() - 1]);
-
-            if(mTrips.size() != 6) {
-                new GetNearbyPlacesData().execute((Object) url);
-            }
-            //TODO: handle the progress dialog.
-            else {
-                //TODO: We should handle this one better.
-                mProgressDialog.dismiss();
-            }
-        }
     }
 }

@@ -4,7 +4,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,8 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,15 +19,12 @@ import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.madproject.R;
 import com.mad.madproject.adapter.TripAdapter;
 import com.mad.madproject.model.Itineraries;
 import com.mad.madproject.model.Itinerary;
-import com.mad.madproject.model.Trip;
-import com.mad.madproject.utils.Constant;
+import com.mad.madproject.model.Place;
 import com.mad.madproject.utils.Util;
 
 import java.util.ArrayList;
@@ -107,7 +101,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
      */
     public static class PlaceholderFragment extends Fragment {
         private TripAdapter mTripAdapter;
-        private ArrayList<Trip> mTripsList = new ArrayList<>();
+        private ArrayList<Place> mTripsList = new ArrayList<>();
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -145,7 +139,6 @@ public class ViewItineraryActivity extends AppCompatActivity {
             Itinerary itinerary = (Itinerary) getArguments().getSerializable("Itinerary Lists");
 
             mTripsList = itinerary != null ? itinerary.getTrips() : null;
-
 
             mTripAdapter = new TripAdapter(mTripsList, getActivity());
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.itinerary_view);
