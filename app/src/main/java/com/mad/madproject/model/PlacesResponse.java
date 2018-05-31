@@ -6,7 +6,7 @@ import java.util.List;
  * Created by limyandivicotrico on 5/30/18.
  */
 
-public class PlaceResponse {
+public class PlacesResponse {
     List<Place> results;
 
     public List<Place> getResults() {

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +15,8 @@ import android.widget.TextView;
 import com.mad.madproject.R;
 import com.mad.madproject.activity.AddTripActivity;
 import com.mad.madproject.model.City;
-import com.mad.madproject.model.User;
 import com.mad.madproject.utils.Constant;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import butterknife.BindView;

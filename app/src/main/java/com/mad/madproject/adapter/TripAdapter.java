@@ -51,7 +51,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull TripAdapter.ViewHolder holder, int position) {
         Place trip = mTrips.get(position);
-        holder.itineraryTimeTv.setText(trip.getVicinity());
+        holder.itineraryTimeTv.setText(trip.getTimeToGo());
         holder.itineraryPlaceTv.setText(trip.getName());
     }
 

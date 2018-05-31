@@ -1,5 +1,6 @@
 package com.mad.madproject.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -45,7 +46,7 @@ import com.mad.madproject.model.Accommodation;
 import com.mad.madproject.model.Itineraries;
 import com.mad.madproject.model.Itinerary;
 import com.mad.madproject.model.ItineraryPreview;
-import com.mad.madproject.model.PlaceResponse;
+import com.mad.madproject.model.PlacesResponse;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
 
@@ -87,9 +88,12 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     private int numberOfTripDays;
 
     private int day = 0;
+    private String startTime = "8:00 A.M.";
 
     private ArrayList<ArrayList<com.mad.madproject.model.Place>> places = new ArrayList<ArrayList<com.mad.madproject.model.Place>>();
     private ArrayList<Itinerary> mItineraryArrayList = new ArrayList<>();
+
+    private ProgressDialog mPrgDialog;
 
     //Database Reference
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -115,7 +119,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         //Create the bound for the city, so that the autocompleteadapter will suggest mostly places that are close to the chosen city.
         //TODO: Does not seems like it is fully working yet.
         LatLngBounds cityBound = Util.toBounds(latLng, 0);
-
 
         mGeoDataClient = Places.getGeoDataClient(this);
         mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).addApi(Places.PLACE_DETECTION_API)
@@ -263,6 +266,8 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                                 newIntent.putExtra("Accommodation Latitude", mAccommodationInfo.getLatLng().latitude);
                                 newIntent.putExtra("Accommodation Longitude", mAccommodationInfo.getLatLng().longitude);
 
+                                //Start ProgressDialog
+                                initProgressDialog();
                                 getNearbyPlace("park", String.valueOf(latitude), String.valueOf(longitude));
                             }
                         }).show();
@@ -306,22 +311,22 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
         RetrofitNearbyPlaces service = retrofit.create(RetrofitNearbyPlaces.class);
 
-        Call<PlaceResponse> call = service.getNearbyPlaces(type, latitude + "," + longitude, PROXIMITY_RADIUS);
+        Call<PlacesResponse> call = service.getNearbyPlaces(type, latitude + "," + longitude, PROXIMITY_RADIUS);
 
-        call.enqueue(new Callback<PlaceResponse>() {
+        call.enqueue(new Callback<PlacesResponse>() {
             @Override
-            public void onResponse(Call<PlaceResponse> call, Response<PlaceResponse> response) {
-                //TODO: randomize this list.
+            public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
+                //TODO: randomize this list. (Write an algorithm to say like for 8.00 A.M. only suggests something like park, amusement park.)
                 String[] placeList = {"department_store", "restaurant", "zoo", "shopping mall", "city_hall", "casino"};
 
-                //TODO: Handle no places found (Example some accommodation just
+                //TODO: Handle no places found (Example some place we chose might not have any place nearby to be suggested to.
                 if (places.get(day).size() < 6 && day != numberOfTripDays) {
+                    response.body().getResults().get(0).setTimeToGo(startTime);
                     places.get(day).add(response.body().getResults().get(0));
                     double lat = response.body().getResults().get(0).getGeometry().getLocation().getLat();
                     double lng = response.body().getResults().get(0).getGeometry().getLocation().getLng();
                     getNearbyPlace(placeList[places.get(day).size() - 1], String.valueOf(lat), String.valueOf(lng));
                 } else {
-                    ArrayList<com.mad.madproject.model.Place> day1 = places.get(day);
                     day++;
                     if (day != (numberOfTripDays)) {
                         getNearbyPlace("park", latitude, longitude);
@@ -335,6 +340,8 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                         Itineraries itineraries = new Itineraries(mItineraryArrayList, itineraryPreview.getTripName(), itineraryPreview.getStartDate(), itineraryPreview.getEndDate(), itineraryPreviewKey);
                         databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
                         databaseReference.child("Itinerary").push().setValue(itineraries);
+                        //TODO: Handle progress dialog better.
+                        mPrgDialog.dismiss();
                         Intent intent = new Intent(ChooseAccommodationActivity.this, ViewItineraryActivity.class);
                         intent.putExtra("Day", itineraryPreview.getDayInterval());
                         intent.putExtra("PreviewKey", itineraryPreviewKey);
@@ -344,31 +351,20 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
             }
 
             @Override
-            public void onFailure(Call<PlaceResponse> call, Throwable t) {
+            public void onFailure(Call<PlacesResponse> call, Throwable t) {
+                //TODO: Handle on Failure. (For example we cannot find the place)
 
             }
         });
     }
 
-//    private Itinerary getOneDayItinerary() {
-//        com.mad.madproject.model.Place places = getNearbyPlace("restaurant", String.valueOf(latitude), String.valueOf(longitude));
-//        String[] placeList = {"department_store", "gym", "store", "shopping mall", "casino"};
-//        Itinerary itinerary = new Itinerary();
-//        for(int i = 0; i < 5; i++) {
-//            com.mad.madproject.model.Place foundPlace = getNearbyPlace(placeList[i], String.valueOf(places.getGeometry().getLocation().getLat()), String.valueOf(places.getGeometry().getLocation().getLng()));
-//            itinerary.addPlace(foundPlace);
-//            places = foundPlace;
-//        }
-//
-//        return itinerary;
-//    }
-
-//    private Itineraries getFullItineraries() {
-//
-//    }
-
-
-
+    private void initProgressDialog() {
+        mPrgDialog = new ProgressDialog(ChooseAccommodationActivity.this);
+        mPrgDialog.setMessage("Please wait while we are creating your itinerary");
+        mPrgDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        mPrgDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mPrgDialog.show();
+    }
     /*
     ------------------------ google places API adapter ------------------------------- // Getting the details of one location clicked and showing dialog.
      */

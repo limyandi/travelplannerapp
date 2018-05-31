@@ -22,6 +22,7 @@ public class Place {
     @SerializedName("vicinity")
     private String mVicinity;
 
+    private String timeToGo;
 
 //    @BindingAdapter({"bind:imageUrl"})
 //    public static void loadImage(ImageView view, String url) {
@@ -65,4 +66,11 @@ public class Place {
         this.mVicinity = vicinity;
     }
 
+    public String getTimeToGo() {
+        return timeToGo;
+    }
+
+    public void setTimeToGo(String timeToGo) {
+        this.timeToGo = timeToGo;
+    }
 }
