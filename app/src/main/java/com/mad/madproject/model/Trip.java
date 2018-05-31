@@ -12,6 +12,7 @@ import java.io.Serializable;
 public class Trip implements Serializable {
     private String mTripPlace;
     private String mItineraryImageURL;
+//    private String latitude;
     private String mTripTime;
 
     /**

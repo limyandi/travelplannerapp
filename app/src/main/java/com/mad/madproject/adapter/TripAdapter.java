@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mad.madproject.R;
-import com.mad.madproject.model.Trip;
+import com.mad.madproject.model.Place;
 import com.mad.madproject.utils.Constant;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
  */
 public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
-    private ArrayList<Trip> mTrips;
+    private ArrayList<Place> mTrips;
     private Context mContext;
     private LayoutInflater mInflater;
 
@@ -33,7 +33,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
      * @param trips lists of the trip object
      * @param context represents the environment for the adapter to be instantiated.
      */
-    public TripAdapter(ArrayList<Trip> trips, Context context) {
+    public TripAdapter(ArrayList<Place> trips, Context context) {
         mTrips = trips;
         mContext = context;
         mInflater = LayoutInflater.from(context);
@@ -50,9 +50,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TripAdapter.ViewHolder holder, int position) {
-        Trip trip = mTrips.get(position);
-        holder.itineraryTimeTv.setText(trip.getTripTime());
-        holder.itineraryPlaceTv.setText(trip.getTripPlace());
+        Place trip = mTrips.get(position);
+        holder.itineraryTimeTv.setText(trip.getVicinity());
+        holder.itineraryPlaceTv.setText(trip.getName());
     }
 
     @Override

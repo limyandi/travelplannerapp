@@ -235,7 +235,8 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
             Intent intent = new Intent(SearchCityActivity.this, AddTripActivity.class);
 
             intent.putExtra("City", mCityInfo.getCity());
-            intent.putExtra("LatLng", mCityInfo.getLatLng());
+            intent.putExtra("Latitude", mCityInfo.getLatLng().latitude);
+            intent.putExtra("Longitude", mCityInfo.getLatLng().longitude);
 
             startActivity(intent);
         }
