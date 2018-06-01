@@ -2,8 +2,11 @@ package com.mad.madproject.login;
 
 import android.app.Activity;
 import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -16,10 +19,23 @@ import com.mad.madproject.model.User;
  */
 
 public class LoginViewModel extends ViewModel {
-    private LiveData<String> email;
-    private LiveData<String> password;
+    private MutableLiveData<String> email;
+    private MutableLiveData<String> password;
 
-    private ViewListener mViewListener;
+
+    public LoginViewModel() {
+        email = new MutableLiveData<>();
+        password = new MutableLiveData<>();
+
+    }
+
+    public void setEmail(MutableLiveData<String> email) {
+        this.email = email;
+    }
+
+    public void setPassword(MutableLiveData<String> password) {
+        this.password = password;
+    }
 
     public LiveData<String> getEmail() {
         return email;
@@ -35,17 +51,11 @@ public class LoginViewModel extends ViewModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(!task.isSuccessful()) {
-                            mViewListener.onLoginFailed();
+                            Log.d("MVVM", "Not successful!");
                         } else {
-                            mViewListener.onLoginSuccess();
+                            Log.d("MVVM", "Successful!");
                         }
                     }
                 });
-    }
-
-    public interface ViewListener {
-        void onLoginSuccess();
-
-        void onLoginFailed();
     }
 }

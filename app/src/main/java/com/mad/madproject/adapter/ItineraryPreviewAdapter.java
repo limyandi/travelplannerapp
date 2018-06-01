@@ -31,9 +31,11 @@ import java.util.ArrayList;
  */
 public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPreviewAdapter.MyViewHolder> {
 
-    private ArrayList<ItineraryPreview> dataSet;
-    private Context context;
-    private LayoutInflater inflater;
+    //contain all the itinerary preview lists.
+    private ArrayList<ItineraryPreview> mItineraryPreviews;
+    private Context mContext;
+    private LayoutInflater mInflater;
+    //initialised so it will be used created once and reused.
     private StorageReference mCityStorageReference;
 
     /**
@@ -58,14 +60,14 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
     }
 
     /**
-     * Constructor to be called by another class, requires the context to be called in and the content of the data.
+     * Constructor to be called by another class, requires the mContext to be called in and the content of the data.
      * @param context represents the environment to be instantiated for the adapter.
      * @param data represents the data contained by the adapter
      */
     public ItineraryPreviewAdapter(Context context, ArrayList<ItineraryPreview> data) {
-        this.context = context;
-        this.dataSet = data;
-        inflater = LayoutInflater.from(context);
+        this.mContext = context;
+        this.mItineraryPreviews = data;
+        mInflater = LayoutInflater.from(context);
         //to be used by the view holder GLIDE API to load the picture.
         mCityStorageReference = Util.getStorageReference("city");
     }
@@ -74,7 +76,7 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                            int viewType) {
-        View view = inflater
+        View view = mInflater
                 .inflate(R.layout.itinerary_card_item, parent, false);
 
         return new MyViewHolder(view);
@@ -82,7 +84,7 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
-        final ItineraryPreview itineraryPreview = dataSet.get(listPosition);
+        final ItineraryPreview itineraryPreview = mItineraryPreviews.get(listPosition);
 
         holder.rootView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +111,7 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
 
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return mItineraryPreviews.size();
     }
 
 

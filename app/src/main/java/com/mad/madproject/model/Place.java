@@ -12,6 +12,9 @@ import java.util.List;
  * Created by limyandivicotrico on 5/30/18.
  */
 
+/**
+ * The Place class is a POJO Model retrieved to define the place retrieved from web service.
+ */
 public class Place {
     @SerializedName("geometry")
     private Geometry mGeometry;
@@ -31,7 +34,6 @@ public class Place {
 //                .fitCenter()
 //                .into(view);
 //    }
-
 
     public Geometry getGeometry() {
         return mGeometry;

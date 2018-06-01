@@ -31,6 +31,10 @@ public class InstanceIDService extends FirebaseInstanceIdService {
         sendRegistrationToServer(refreshedToken);
     }
 
+    /**
+     * For later development to sent the token to server.
+     * @param token the token to be sent to server.
+     */
     private void sendRegistrationToServer(String token) {
         //for later development because currently we dont need to send any token to server.
     }

@@ -33,6 +33,10 @@ import com.mad.madproject.utils.Util;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * Main Activity contains different fragments that can be displayed through a click of the option in the navigation drawer.
+ * Also check if the user has a token session for authentication on, if it is off, user will be thrown to the login page.
+ */
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.drawerlayout)
@@ -40,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
     ActionBarDrawerToggle drawerToggle;
 
+    //TODO: This 3 attribute can be better if we choose to handle it in modelview.
     private FirebaseAuth mAuth;
+    //handle the listener for whether user has an existing token session for authentication.
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mUser;
 
@@ -196,6 +202,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Using firebase to set the user's username. (Should be in ViewModel Logic).
+     * @param username
+     */
     private void setUserName(final TextView username) {
         Util.getDatabaseReference("Users").child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

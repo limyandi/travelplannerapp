@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 
 /**
- *
+ * The ItineraryPreview model class contains the attribute defined by each Itinerary.
  */
 public class ItineraryPreview implements Serializable {
     private String mTripName;
@@ -24,11 +24,20 @@ public class ItineraryPreview implements Serializable {
 
     }
 
-    public ItineraryPreview(String tripName, String city, String ownerId, String itineraryId, String startDate, String endDate) {
+    /**
+     * Constructor to create an object of ItineraryPreview.
+     * @param tripName define the trip name
+     * @param city define the city name
+     * @param ownerId define the owner id of the itienrary preview.
+     * @param itineraryPreviewId define the itinerary id of the itinerary preview
+     * @param startDate define the start date
+     * @param endDate define the end date
+     */
+    public ItineraryPreview(String tripName, String city, String ownerId, String itineraryPreviewId, String startDate, String endDate) {
         mTripName = tripName;
         mCity = city;
         mOwnerId = ownerId;
-        mItineraryPreviewId = itineraryId;
+        mItineraryPreviewId = itineraryPreviewId;
         mStartDate = startDate;
         mEndDate = endDate;
         mDayInterval = Util.convertDateToDayInterval(mEndDate, mStartDate);
