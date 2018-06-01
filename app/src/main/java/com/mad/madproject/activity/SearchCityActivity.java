@@ -100,7 +100,7 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
         mSearchTextField.setAdapter(mPlaceAutocompleteAdapter);
         mSearchTextField.setOnItemClickListener(mAutoCompleteClickListener);
 
-        //initialising for the city adapter.
+        //initialising for the city adapter. TODO: Clear this later if do not want to use, currently not used.
         CityAdapter cityAdapter = new CityAdapter(this, mCities);
         mRecyclerView.setAdapter(cityAdapter);
 

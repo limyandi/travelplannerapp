@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -37,7 +38,6 @@ import java.util.Locale;
  */
 public class SettingsFragment extends Fragment {
 
-    RelativeLayout mUsernameLayout;
     RelativeLayout mDeleteTripHistoryLayout;
     CheckBox mReceiveNotifCheckbox;
     TextView mUsernameText;
@@ -48,10 +48,8 @@ public class SettingsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
         Util.setFragmentToolbarTitle(this, "Settings");
 
-        mUsernameLayout = (RelativeLayout) rootView.findViewById(R.id.username_setting);
         mDeleteTripHistoryLayout = (RelativeLayout) rootView.findViewById(R.id.delete_trip_history);
         mReceiveNotifCheckbox = (CheckBox) rootView.findViewById(R.id.settings_checkbox);
-        mUsernameText = (TextView) rootView.findViewById(R.id.username_change_setting);
 
         return rootView;
     }
@@ -60,54 +58,8 @@ public class SettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //get the user's username.
-        Util.getDatabaseReference("Users").child(Util.getUserUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if (user != null) {
-                    mUsernameText.setText(user.getUsername());
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        usernameLayoutOnClick();
         deleteTripOnClick();
     }
-
-    /**
-     *  Create a material dialog to handle user input to change the name.
-     */
-    private void usernameLayoutOnClick() {
-        mUsernameLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new MaterialDialog.Builder(view.getContext())
-                        .title("Change username")
-                        .positiveText("Confirm")
-                        .negativeText("Cancel")
-                        .inputType(InputType.TYPE_CLASS_TEXT)
-                        .input("Username", "", false, new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                mUsernameText.setText(input);
-                            }
-                        }).onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Log.d("Fragment2", mUsernameText.getText().toString());
-                        Util.getDatabaseReference("Users").child(Util.getUserUid()).child("username").setValue(mUsernameText.getText().toString());
-                    }
-                }).show();
-            }
-        });
-    }
-
 
     /**
      * create a material dialog to delete all past trips.

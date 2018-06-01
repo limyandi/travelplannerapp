@@ -18,9 +18,11 @@ import com.mad.madproject.activity.MainActivity;
  */
 
 /**
- * Service that handles
+ * Service that handles sending notification to user when the trip time is in a week or in 3 day.
+ * TODO: Handle the notifation sent by the server.
  */
 public class FirebaseMessagingNotificationService extends FirebaseMessagingService {
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -31,6 +33,10 @@ public class FirebaseMessagingNotificationService extends FirebaseMessagingServi
 
     }
 
+    /**
+     * Method to handle building the notification and sent it.
+     * @param messageBody the content of the messageBody.
+     */
     private void sendNotification(String messageBody) {
         //create the service intent that open the main activity.
         Intent intent = new Intent(this, MainActivity.class);

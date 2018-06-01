@@ -31,9 +31,9 @@ public class User implements Parcelable {
 
     /**
      * Alternate constructor that defines the user object that contains a username, email, and password
-     * @param username
-     * @param email
-     * @param password
+     * @param username define the username of the user.
+     * @param email define the email of the user.
+     * @param password define the password of the user.
      */
     public User(String username, String email, String password) {
         this.mUsername = username;
