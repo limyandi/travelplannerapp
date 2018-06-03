@@ -90,7 +90,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     private int numberOfTripDays;
 
     private int day = 0;
-    private String startTime = "8:00 A.M.";
+    private int startTime = 9;
 
     private ArrayList<ArrayList<com.mad.madproject.model.Place>> places = new ArrayList<ArrayList<com.mad.madproject.model.Place>>();
     private ArrayList<Itinerary> mItineraryArrayList = new ArrayList<>();
@@ -272,7 +272,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
                                 //Start ProgressDialog
                                 initProgressDialog();
-                                getNearbyPlace("park", String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
+                                getNearbyPlace("park", String.valueOf(mAccommodationInfo.getLatLng().latitude),  String.valueOf(mAccommodationInfo.getLatLng().longitude));
                             }
                         }).show();
             } catch (NullPointerException e) {
@@ -322,21 +322,26 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
             @Override
             public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
                 //TODO: randomize this list. (Write an algorithm to say like for 8.00 A.M. only suggests something like park, amusement park.)
-
                 String[] placeList = {"department_store", "restaurant", "zoo", "shopping mall", "city_hall", "casino"};
+
                 //TODO: Handle this part better.
                 //Handle if it does return any result.
                 if(response.body().getResults().size() != 0) {
-                    //TODO: Handle no places found (Example some place we chose might not have any place nearby to be suggested to.
                     if (places.get(day).size() < 6 && day != numberOfTripDays) {
+                        //static time.
                         response.body().getResults().get(0).setTimeToGo(startTime);
                         places.get(day).add(response.body().getResults().get(0));
                         double lat = response.body().getResults().get(0).getGeometry().getLocation().getLat();
                         double lng = response.body().getResults().get(0).getGeometry().getLocation().getLng();
+                        //TODO: Fix static timing.
+                        startTime += 2;
                         getNearbyPlace(placeList[places.get(day).size() - 1], String.valueOf(lat), String.valueOf(lng));
                     } else {
                         day++;
                         if (day != (numberOfTripDays)) {
+                            //restart from the starting time again.
+                            //static time.
+                            startTime = 9;
                             //Restart from the accommodation again.
                             getNearbyPlace("park", String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
                         } else {

@@ -1,8 +1,11 @@
 package com.mad.madproject.login;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -23,7 +26,59 @@ import butterknife.OnClick;
 /**
  * The LoginActivity handles the view presented to user to login.
  */
-public class LoginActivity extends Activity implements LoginView {
+public class LoginActivity extends AppCompatActivity implements LoginView {
+
+//    @BindView(R.id.email)
+//    EditText mInputEmail;
+//    @BindView(R.id.password)
+//    EditText mInputPassword;
+//    @BindView(R.id.btn_signup)
+//    Button mBtnSignup;
+//    @BindView(R.id.btn_login)
+//    Button mBtnLogin;
+//    @BindView(R.id.btn_reset_password)
+//    Button mBtnReset;
+//    @BindView(R.id.progressBar)
+//    ProgressBar mProgressBar;
+//
+//    LoginViewModel mLoginViewModel;
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_login);
+//        ButterKnife.bind(this);
+//
+//        mLoginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+//
+//        mBtnLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mLoginViewModel.onLoginClick();
+//            }
+//        });
+//
+//        observeEmail();
+//        observePassword();
+//    }
+//
+//    private void observeEmail() {
+//        mLoginViewModel.getEmail().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                mInputEmail.setText(s);
+//            }
+//        });
+//    }
+//
+//    private void observePassword() {
+//        mLoginViewModel.getPassword().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                mInputPassword.setText(s);
+//            }
+//        });
+//    }
 
     @BindView(R.id.email)
     EditText mInputEmail;
