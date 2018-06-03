@@ -25,8 +25,9 @@ public class Place {
     @SerializedName("vicinity")
     private String mVicinity;
 
-    private String timeToGo;
+    private int timeToGo;
 
+    private String placeType;
 //    @BindingAdapter({"bind:imageUrl"})
 //    public static void loadImage(ImageView view, String url) {
 //        Glide.with(view.getContext()).load(url)
@@ -68,11 +69,20 @@ public class Place {
         this.mVicinity = vicinity;
     }
 
-    public String getTimeToGo() {
+    public int getTimeToGo() {
         return timeToGo;
     }
 
-    public void setTimeToGo(String timeToGo) {
+    public void setTimeToGo(int timeToGo) {
         this.timeToGo = timeToGo;
+    }
+
+    public String getPlaceType() {
+        String[] placeList = {"department_store", "restaurant", "zoo", "shopping mall", "city_hall", "casino"};
+        if(timeToGo == 8) {
+            return placeList[0];
+        }
+
+        return placeList[0];
     }
 }

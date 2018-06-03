@@ -19,9 +19,8 @@ import com.mad.madproject.model.User;
  */
 
 public class LoginViewModel extends ViewModel {
-    private MutableLiveData<String> email;
-    private MutableLiveData<String> password;
-
+    public LiveData<String> email;
+    public LiveData<String> password;
 
     public LoginViewModel() {
         email = new MutableLiveData<>();

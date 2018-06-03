@@ -51,7 +51,6 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
-    String itineraryPreviewKey = databaseReference.child("ItineraryPreview").push().getKey();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
