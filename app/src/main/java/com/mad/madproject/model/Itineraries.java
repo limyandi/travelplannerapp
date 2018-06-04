@@ -18,7 +18,6 @@ public class Itineraries {
     private String mStartDate;
     private String mEndDate;
     private String mItineraryPreviewId;
-    private int mIntervalDay;
 
     /**
      * Constructor that takes the parameters of the itinerarylists, the trip name, start date, end date and itinerary previewId.
@@ -34,7 +33,6 @@ public class Itineraries {
         mStartDate = startDate;
         mEndDate = endDate;
         mItineraryPreviewId = itineraryPreviewId;
-        mIntervalDay = Util.convertDateToDayInterval(mEndDate, mStartDate);
     }
 
     /**
@@ -82,17 +80,5 @@ public class Itineraries {
 
     public void setEndDate(String endDate) {
         mEndDate = endDate;
-    }
-
-    public int getIntervalDay() {
-        return mIntervalDay;
-    }
-
-    public void setIntervalDay(int intervalDay) {
-        mIntervalDay = intervalDay;
-    }
-
-    public String toString() {
-        return mTripName + mIntervalDay + mEndDate;
     }
 }

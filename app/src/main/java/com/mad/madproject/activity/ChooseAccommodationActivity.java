@@ -112,6 +112,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         //Latitude and longitude for the city.
         latitude = getIntent().getDoubleExtra("Latitude", 0);
         longitude = getIntent().getDoubleExtra("Longitude", 0);
+        //TODO: Number of trip days redundant, do not need this.
         numberOfTripDays = getIntent().getIntExtra("Day", 1);
 
         for(int i = 0; i < numberOfTripDays; i++) {
