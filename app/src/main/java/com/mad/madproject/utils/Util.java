@@ -13,6 +13,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.maps.android.SphericalUtil;
 
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by limyandivicotrico on 5/13/18.
@@ -59,6 +60,45 @@ public class Util {
     public static StorageReference getStorageReference(String reference) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         return storage.getReference(reference);
+    }
+
+    //TODO: Redundant functions.
+    public static String getPlaceType(int timeToGo) {
+        RandomCollection rc;
+        //TODO: Suggest to food places at 11 a.m.
+        switch (timeToGo) {
+            case 9:
+                rc = new RandomCollection().add(40, "park").add(40, "amusement_park").add(20, "cafe");
+                return rc.next();
+            case 11:
+                rc = new RandomCollection().add(30, "department_store").add(30, "aquarium")
+                        .add(10, "convenience_store").add(30, "art_gallery");
+                return rc.next();
+            case 13:
+                rc = new RandomCollection().add(40, "aquarium").add(30, "city_hall")
+                        .add(30, "shopping_mall");
+                return rc.next();
+            case 15:
+                rc = new RandomCollection().add(40, "movie_theater").add(10, "home_goods_store")
+                        .add(50, "zoo");
+                return rc.next();
+            case 17:
+                rc = new RandomCollection().add(100, "restaurant");
+                return rc.next();
+            case 19:
+                rc = new RandomCollection().add(50, "casino").add(30, "night_club").add(20, "spa");
+                return rc.next();
+            default:
+                //return park if there is an error in time.
+                return "park";
+        }
+    }
+
+    public static int randomizeNumber() {
+        Random rand = new Random();
+        //return number from 0 to 1
+        int value = rand.nextInt(3);
+        return value;
     }
 
     //TODO: Redundant function, we have two similar function.
