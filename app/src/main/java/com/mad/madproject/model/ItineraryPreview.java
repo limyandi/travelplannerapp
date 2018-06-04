@@ -3,6 +3,10 @@ package com.mad.madproject.model;
 import com.mad.madproject.utils.Util;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by limyandivicotrico on 5/17/18.
@@ -40,7 +44,11 @@ public class ItineraryPreview implements Serializable {
         mItineraryPreviewId = itineraryPreviewId;
         mStartDate = startDate;
         mEndDate = endDate;
-        mDayInterval = Util.convertDateToDayInterval(mEndDate, mStartDate);
+        //we need to get the date format because we want to get the day interval dynamically,
+        // we dont want to say 31 June and 1 july means that the day interval is 1-31+1 (thus -29)
+        Date startDateFormat = convertDate(mStartDate);
+        Date endDateFormat = convertDate(mEndDate);
+        mDayInterval = Util.convertDateToDayInterval(endDateFormat, startDateFormat);
     }
 
     public String getTripName() {
@@ -98,6 +106,18 @@ public class ItineraryPreview implements Serializable {
 
     public void setDayInterval(int dayInterval) {
         mDayInterval = dayInterval;
+    }
+
+    private Date convertDate(String date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        Calendar cal = Calendar.getInstance();
+        Date dateformat = cal.getTime();
+        try {
+            dateformat = sdf.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateformat;
     }
 
     public String toString() {
