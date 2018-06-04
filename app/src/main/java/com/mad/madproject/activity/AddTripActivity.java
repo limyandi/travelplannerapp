@@ -28,6 +28,8 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -48,6 +50,9 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
 
     //setting initial interval day to prevent error.
     private int intervalDay = 1;
+
+    private Date mStartDate;
+    private Date mEndDate;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
@@ -78,7 +83,9 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), ChooseAccommodationActivity.class);
 
-                intervalDay = Util.convertDateToDayInterval(mEndDateTv.getText().toString(), mStartDateTv.getText().toString());
+                intervalDay = Util.convertDateToDayInterval(mEndDate, mStartDate);
+
+                Log.d("Time", String.valueOf(intervalDay));
                 intent.putExtra("Day", intervalDay);
                 //TODO: Chaining intent put? is this bad practice?
                 intent.putExtra("Latitude", getIntent().getDoubleExtra("Latitude", 0));
@@ -160,6 +167,10 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             Date date = null;
             try {
                 date = dateFormat.parse(dateString);
+                //set the local variable end date as the date format so we can find the day interval.
+                mStartDate = date;
+                Log.d("Time", mStartDate.toString());
+                //if start date is updated, update the end date to be only 1 day after the start date.
                 updateDisplay(mEndDateTv, String.valueOf(dateFormat.format(new Date(date.getTime() + (1000 * 60 * 60 * 24)))));
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -176,8 +187,21 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             DecimalFormat df = new DecimalFormat("00");
             String leadingDay = df.format(day);
             String leadingMonth = df.format(month);
-            String date = leadingDay + "-" + leadingMonth + "-" + year;
-            updateDisplay(mEndDateTv, date);
+            String dateString = leadingDay + "-" + leadingMonth + "-" + year;
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            Date date  = null;
+            try {
+                date = dateFormat.parse(dateString);
+                //if start date is updated, update the end date to be only 1 day after the start date.
+
+                //set the local variable end date as the date format so we can find the day interval.
+                mEndDate = date;
+                Log.d("Time", mEndDate.toString());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            updateDisplay(mEndDateTv, dateString);
         }
     };
 

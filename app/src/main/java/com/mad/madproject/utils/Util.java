@@ -61,6 +61,11 @@ public class Util {
         return storage.getReference(reference);
     }
 
+    //TODO: Redundant function, we have two similar function.
+    public static int convertDateToDayInterval(Date endDate, Date startDate) {
+        return (int) (((endDate.getTime() - startDate.getTime()) / 86400000) + 1);
+    }
+
     /**
      * TODO: Needs to be fix with time stamp instead, because in this, it could caused problem like if user choose 31 June and 2 May, the interval day would be 29.
      * Convert the date to day interval
