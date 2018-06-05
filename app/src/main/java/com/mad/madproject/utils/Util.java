@@ -97,7 +97,7 @@ public class Util {
     public static int randomizeNumber() {
         Random rand = new Random();
         //return number from 0 to 1
-        int value = rand.nextInt(2);
+        int value = rand.nextInt(5);
         return value;
     }
 

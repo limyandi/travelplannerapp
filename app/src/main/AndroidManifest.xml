@@ -60,7 +60,7 @@
         <activity
             android:name=".activity.ViewItineraryActivity"
             android:label="Itinerary"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityame=".activity.MainActivity"
             >
         </activity>
 

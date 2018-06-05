@@ -327,8 +327,9 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                 if(response.body().getResults().size() != 0) {
                     if (places.get(day).size() < 6 && day != numberOfTripDays) {
 
-                        //randomize the number of place to go (0 to 2).
-                        int placeToGoIndex = Util.randomizeNumber();
+                        //randomize the number of place to go (0 to 5).
+                        int placeToGoIndex = handlePlaceSearchIndexError(response.body().getResults().size());
+
                         response.body().getResults().get(placeToGoIndex).setTimeToGo(startTime);
                         String placeType = response.body().getResults().get(placeToGoIndex).getPlaceType();
                         places.get(day).add(response.body().getResults().get(placeToGoIndex));
@@ -444,7 +445,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         int randomNumber = Util.randomizeNumber();
 
         if(randomNumber > size) {
-            randomNumber = 0;
+            randomNumber = size - 1;
         }
 
         return randomNumber;
