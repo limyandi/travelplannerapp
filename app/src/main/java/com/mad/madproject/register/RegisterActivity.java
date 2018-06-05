@@ -1,7 +1,11 @@
 package com.mad.madproject.register;
 
 import android.app.Activity;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -22,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.mad.madproject.R;
 import com.mad.madproject.activity.MainActivity;
+import com.mad.madproject.databinding.ActivitySignupBinding;
 import com.mad.madproject.login.LoginActivity;
 import com.mad.madproject.model.User;
 import com.mad.madproject.utils.Utils;
@@ -30,14 +35,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisterActivity extends Activity implements RegisterView {
+public class RegisterActivity extends AppCompatActivity {
 
-    @BindView(R.id.username)
-    EditText inputUsername;
-    @BindView(R.id.email)
-    EditText inputEmail;
-    @BindView(R.id.password)
-    EditText inputPassword;
     @BindView(R.id.sign_in_button)
     Button btnSignIn;
     @BindView(R.id.sign_up_button)
@@ -45,62 +44,51 @@ public class RegisterActivity extends Activity implements RegisterView {
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
 
-    private RegisterPresenter mRegisterPresenter;
+    RegisterViewModel mRegisterViewModel;
 
-    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        ActivitySignupBinding binding = DataBindingUtil.setContentView(
+                this, R.layout.activity_signup
+        );
 
         ButterKnife.bind(this);
 
-        //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
+        mRegisterViewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
 
-        mRegisterPresenter = new RegisterPresenterImpl(auth);
-        mRegisterPresenter.attachView(this);
-    }
+        binding.setViewModel(mRegisterViewModel);
 
-    @OnClick(R.id.sign_up_button) void onRegisterButtonClick() {
-        mRegisterPresenter.signUp(inputUsername.getText().toString().trim(),
-                inputEmail.getText().toString().trim(), inputPassword.getText().toString().trim());
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+                mRegisterViewModel.onRegisterClicked();
+            }
+        });
+
+        observeRegister();
     }
 
     @OnClick(R.id.sign_in_button) void onSignInButtonClick() {
         Utils.setIntent(this, LoginActivity.class);
     }
 
-    @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
-    public void showValidationError() {
-        Utils.showMessage(this, "Check email and password");
-    }
-
-    @Override
-    public void signUpSuccess() {
-        Utils.setIntent(this, MainActivity.class);
-    }
-
-    @Override
-    public void signUpError() {
-        Utils.showMessage(this, "Failed signing up!");
-    }
-
-    @Override
-    public void setProgressVisibility(boolean visibility) {
-        if (visibility) progressBar.setVisibility(View.VISIBLE);
-        else progressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mRegisterPresenter.detachView();
+    private void observeRegister() {
+        mRegisterViewModel.getIsSuccessful().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isSuccessful) {
+                if(isSuccessful) {
+                    Utils.setIntent(RegisterActivity.this, MainActivity.class);
+                    progressBar.setVisibility(View.GONE);
+                }
+                //TODO: Handle else.
+                else {
+                    Toast.makeText(RegisterActivity.this, "Failed Registering", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 }

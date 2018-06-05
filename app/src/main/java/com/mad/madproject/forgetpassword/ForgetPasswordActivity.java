@@ -1,6 +1,8 @@
 package com.mad.madproject.forgetpassword;
 
 import android.app.Activity;
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
@@ -8,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,6 +21,7 @@ import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mad.madproject.R;
+import com.mad.madproject.activity.MainActivity;
 import com.mad.madproject.databinding.ActivityForgetPasswordBinding;
 import com.mad.madproject.login.LoginActivity;
 import com.mad.madproject.utils.Utils;
@@ -26,39 +30,60 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ForgetPasswordActivity extends Activity implements ForgetPasswordViewModel.ViewListener {
+public class ForgetPasswordActivity extends AppCompatActivity {
 
-    ForgetPasswordViewModel viewModel;
+    @BindView(R.id.btn_reset_password)
+    Button btnReset;
+    @BindView(R.id.progressBar)
+    ProgressBar progressBar;
+
+    ForgetPasswordViewModel mForgetPasswordViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //create the model using the view model provider .of (classname)
+        //create the view model using the view model provider .of (classname)
         //observe(livedata fields from the viewmodel)
-
         ActivityForgetPasswordBinding binding = DataBindingUtil.setContentView(
                 this, R.layout.activity_forget_password
         );
 
-        viewModel = new ForgetPasswordViewModel();
+        ButterKnife.bind(this);
 
-        viewModel.setViewListener(this);
-        binding.setViewModel(viewModel);
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressBar.setVisibility(View.VISIBLE);
+                mForgetPasswordViewModel.onForgetPasswordClick();
+            }
+        });
+
+        mForgetPasswordViewModel = ViewModelProviders.of(this).get(ForgetPasswordViewModel.class);
+
+        binding.setViewModel(mForgetPasswordViewModel);
+
+        observeForgetPassword();
     }
 
-    @Override
-    public void onEmailSentSuccess() {
+    //TODO: Handling if and else here seems not right.
+    private void observeForgetPassword() {
+        mForgetPasswordViewModel.getIsSuccessful().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isSuccessful) {
+                if(isSuccessful) {
+                    Utils.setIntent(ForgetPasswordActivity.this, LoginActivity.class);
+                    progressBar.setVisibility(View.GONE);
+                } else {
+                    //TODO: Handle is not successful
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
+    }
+
+    @OnClick(R.id.btn_back) void onButtonBackClicked() {
         Utils.setIntent(this, LoginActivity.class);
     }
 
-    @Override
-    public void onBackSuccess() {
-        Utils.setIntent(this, LoginActivity.class);
-    }
-
-    @Override
-    public void onMessage(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme);
-        builder.setTitle(title).setMessage(message).create().show();
-    }
 }
