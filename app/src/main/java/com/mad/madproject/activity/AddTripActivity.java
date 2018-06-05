@@ -70,10 +70,8 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         String textTrip = "Trip to " + getIntent().getStringExtra("City");
         mTripNameTv.setText(textTrip);
 
-        Date today = new Date();
-        setInitialDate(mStartDateTv, today);
-        //make it tommorow.
-        setInitialDate(mEndDateTv, new Date(today.getTime() + (1000 * 60 * 60 * 24)));
+        setInitialDate(mStartDateTv);
+        setInitialDate(mEndDateTv);
 
         startDateLayout.setOnClickListener(this);
         endDateLayout.setOnClickListener(this);
@@ -238,9 +236,22 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         return false;
     }
 
-    private void setInitialDate(TextView dateTv, Date day) {
+    private void setInitialDate(TextView dateTv) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");//formating according to my need
-        String date = formatter.format(day);
-        dateTv.setText(date);
+
+        Date today = new Date();
+
+        if(dateTv == mStartDateTv) {
+            mStartDate = today;
+            dateTv.setText(formatter.format(today));
+        }
+
+        //start from tommorow.
+        if(dateTv == mEndDateTv) {
+            Date oneDayAfter = new Date(today.getTime() + (1000 * 60 * 60 * 24));
+            mEndDate = oneDayAfter;
+            dateTv.setText(formatter.format(oneDayAfter));
+        }
+
     }
 }

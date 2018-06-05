@@ -47,14 +47,16 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
         TextView tripNameTv;
         ImageView imageViewIcon;
         TextView placeTv;
-        TextView inDaysTv;
+        TextView dateTv;
+        TextView daysIntervalTv;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             this.rootView = (CardView) itemView.findViewById(R.id.card_view);
             this.tripNameTv = (TextView) itemView.findViewById(R.id.activity_main_view_itinerary_trip_name);
             this.placeTv = (TextView) itemView.findViewById(R.id.activity_main_place);
-            this.inDaysTv = (TextView) itemView.findViewById(R.id.activity_main_days);
+            this.dateTv = (TextView) itemView.findViewById(R.id.activity_date_tv);
+            this.daysIntervalTv = (TextView) itemView.findViewById(R.id.activity_main_days);
             this.imageViewIcon = (ImageView) itemView.findViewById(R.id.city_image_view);
         }
     }
@@ -98,13 +100,14 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
 
         holder.tripNameTv.setText(itineraryPreview.getTripName());
         holder.placeTv.setText(itineraryPreview.getCity());
-        holder.inDaysTv.setText(itineraryPreview.getDayInterval() + " days trip");
-        //TODO: Fix this, should have its own picture.
+        //TODO: Fix warning.
+        holder.dateTv.setText(itineraryPreview.getStartDate() + " - " + itineraryPreview.getEndDate());
+        holder.daysIntervalTv.setText(itineraryPreview.getDayInterval() + " days trip");
 
         StorageReference cityReference = mCityStorageReference.child(itineraryPreview.getCity()+".jpg");
         Log.d("ItineraryPreview", itineraryPreview.getCity()+".jpg");
-        //TODO: Set default picture if we cant find the picture?
 
+        //handle error with .error and put a default picture.
         Glide.with(holder.imageViewIcon.getContext()).using(new FirebaseImageLoader()).load(cityReference).error(R.drawable.question_mark).into(holder.imageViewIcon);
 
     }

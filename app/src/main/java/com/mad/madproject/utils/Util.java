@@ -62,7 +62,7 @@ public class Util {
         return storage.getReference(reference);
     }
 
-    //TODO: Redundant functions.
+    //TODO: Redundant functions, we have one similar function in main activity.
     public static String getPlaceType(int timeToGo) {
         RandomCollection rc;
         //TODO: Suggest to food places at 11 a.m.
@@ -97,13 +97,8 @@ public class Util {
     public static int randomizeNumber() {
         Random rand = new Random();
         //return number from 0 to 1
-        int value = rand.nextInt(3);
+        int value = rand.nextInt(2);
         return value;
-    }
-
-    //TODO: Redundant function, we have two similar function.
-    public static int convertDateToDayInterval(Date endDate, Date startDate) {
-        return (int) (((endDate.getTime() - startDate.getTime()) / 86400000) + 1);
     }
 
     /**
@@ -113,9 +108,8 @@ public class Util {
      * @param startDate refer to the date of the trip starting
      * @return the day interval
      */
-    public static int convertDateToDayInterval(String endDate, String startDate) {
-        int intervalDay = Integer.valueOf(endDate.substring(0, 2)) - Integer.valueOf(startDate.substring(0, 2)) + 1;
-        return intervalDay;
+    public static int convertDateToDayInterval(Date endDate, Date startDate) {
+        return (int) (((endDate.getTime() - startDate.getTime()) / 86400000) + 1);
     }
 
     /**

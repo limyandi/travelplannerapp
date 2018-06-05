@@ -4,12 +4,40 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/appbar_padding_top"
+        android:theme="@style/AppTheme.AppBarOverlay">
+        <TextView
+            android:id="@+id/view_itinerary_activity_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Riote Travelapp"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/view_itinerary_activity_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view_itinerary_activity_place"
+            android:textAlignment="center"
+            android:text="Your upcoming Trip"
+            android:layout_marginBottom="20dp"
+            android:textSize="18sp"/>
+
+    </android.support.design.widget.AppBarLayout>
+
 
     <ProgressBar
         android:id="@+id/fragment_itinerary_preview_whole_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:visibility="gone"
         />
 
     <TextView
@@ -24,6 +52,7 @@
         android:layout_height="wrap_content"/>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/appbar"
         android:id="@+id/view_itinerary_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

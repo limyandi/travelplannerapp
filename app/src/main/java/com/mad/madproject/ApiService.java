@@ -14,7 +14,7 @@ public interface ApiService {
     //URL FOR ACCESSING GOOGLE MAPS API.
     String baseUrl = "https://maps.googleapis.com/maps/";
 
-    @GET("api/place/nearbysearch/json?key=AIzaSyAUIVnQu5Pc9K48reQl0btDc2VrSrESzS8&rankby=prominence")
+    @GET("api/place/nearbysearch/json?rankby=prominence&language=en&key=AIzaSyAUIVnQu5Pc9K48reQl0btDc2VrSrESzS8")
     Call<PlacesResponse> getNearbyPlaces(@Query("type") String type, @Query("location") String location, @Query("radius") int radius);
 
 }

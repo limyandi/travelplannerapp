@@ -21,7 +21,6 @@ import java.io.Serializable;
 public class User implements Parcelable {
     private String mUsername;
     private String mEmail;
-    private String mPassword;
 
     /**
      * Default Constructor
@@ -33,12 +32,10 @@ public class User implements Parcelable {
      * Alternate constructor that defines the user object that contains a username, email, and password
      * @param username define the username of the user.
      * @param email define the email of the user.
-     * @param password define the password of the user.
      */
-    public User(String username, String email, String password) {
+    public User(String username, String email) {
         this.mUsername = username;
         this.mEmail = email;
-        this.mPassword = password;
     }
 
     /**
@@ -48,7 +45,6 @@ public class User implements Parcelable {
     protected User(Parcel in) {
         mUsername = in.readString();
         mEmail = in.readString();
-        mPassword = in.readString();
     }
 
     public static final Creator<User> CREATOR = new Creator<User>() {
@@ -79,14 +75,6 @@ public class User implements Parcelable {
         this.mEmail = email;
     }
 
-    public String getPassword() {
-        return mPassword;
-    }
-
-    public void setPassword(String password) {
-        mPassword = password;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -96,6 +84,5 @@ public class User implements Parcelable {
     public void writeToParcel(Parcel parcel, int flags) {
         parcel.writeString(mUsername);
         parcel.writeString(mEmail);
-        parcel.writeString(mPassword);
     }
 }
