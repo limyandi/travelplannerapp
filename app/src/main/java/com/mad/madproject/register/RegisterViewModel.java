@@ -29,6 +29,9 @@ public class RegisterViewModel extends ViewModel {
         mIsSuccessful = new MutableLiveData<>();
     }
 
+    /**
+     * The utility function to be called when the register button is clicked.
+     */
     public void onRegisterClicked() {
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.get(), password.get())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -53,6 +56,10 @@ public class RegisterViewModel extends ViewModel {
                 });
     }
 
+    /**
+     * Share the live data to observe it.
+     * @return whether the register is successful or not.
+     */
     public LiveData<Boolean> getIsSuccessful() {
         return mIsSuccessful;
     }

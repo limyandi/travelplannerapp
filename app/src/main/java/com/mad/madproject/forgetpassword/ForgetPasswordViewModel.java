@@ -29,6 +29,9 @@ public class ForgetPasswordViewModel extends ViewModel {
         mIsSuccessful = new MutableLiveData<>();
     }
 
+    /**
+     * Handle the call when the forget password button is clicked
+     */
     public void onForgetPasswordClick() {
         FirebaseAuth.getInstance().sendPasswordResetEmail(email.get())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -46,6 +49,10 @@ public class ForgetPasswordViewModel extends ViewModel {
                 });
     }
 
+    /**
+     * Share the live data to check whether the forget password utility is successful
+     * @return the successful boolean.
+     */
     public LiveData<Boolean> getIsSuccessful() {
         return mIsSuccessful;
     }

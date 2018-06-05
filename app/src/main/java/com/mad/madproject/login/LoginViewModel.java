@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginViewModel extends ViewModel {
 
+    //create the live data to observe the value whether the login is successful.
     private MutableLiveData<Boolean> mIsSuccessful;
 
     //should be declared final becasue bindings only detect changes in the field's value, not of the field itself.
@@ -34,6 +35,9 @@ public class LoginViewModel extends ViewModel {
         mIsSuccessful.postValue(true);
     }
 
+    /**
+     * Firebase Login Utility. TODO: Create repository for this.
+     */
     public void onLoginClick() {
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email.get(), password.get())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

@@ -66,6 +66,9 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         observeForgetPassword();
     }
 
+    /**
+     * Observe the successfulness of the forget password.
+     */
     //TODO: Handling if and else here seems not right.
     private void observeForgetPassword() {
         mForgetPasswordViewModel.getIsSuccessful().observe(this, new Observer<Boolean>() {
