@@ -223,6 +223,9 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
                                     });
                                 }
                             });
+
+                            //to release the databuffer object.
+                            photoMetadataBuffer.release();
                         }
                     }
                 });

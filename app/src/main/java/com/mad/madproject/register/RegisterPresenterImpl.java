@@ -39,7 +39,7 @@ public class RegisterPresenterImpl implements RegisterPresenter {
                             if (!task.isSuccessful()) {
                                 registerView.signUpError();
                             } else {
-                                User user = new User(username, email, password);
+                                User user = new User(username, email);
                                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                                 //get Users branch.
                                 final DatabaseReference ref = database.getReference("Users");

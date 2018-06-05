@@ -82,7 +82,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GeoDataClient mGeoDataClient;
     private GoogleApiClient mGoogleApiClient;
-    int PROXIMITY_RADIUS = 5000;
+    int PROXIMITY_RADIUS = 50000;
     double latitude = 0;
     double longitude = 0;
 
@@ -273,7 +273,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
                                 //Start ProgressDialog
                                 initProgressDialog();
-                                getNearbyPlace("park", String.valueOf(mAccommodationInfo.getLatLng().latitude),  String.valueOf(mAccommodationInfo.getLatLng().longitude));
+                                getNearbyPlace(Util.getPlaceType(startTime), String.valueOf(mAccommodationInfo.getLatLng().latitude),  String.valueOf(mAccommodationInfo.getLatLng().longitude));
                             }
                         }).show();
             } catch (NullPointerException e) {
@@ -322,21 +322,23 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         call.enqueue(new Callback<PlacesResponse>() {
             @Override
             public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
-                //TODO: randomize this list. (Write an algorithm to say like for 8.00 A.M. only suggests something like park, amusement park.)
-                String[] placeList = {"department_store", "restaurant", "zoo", "shopping mall", "city_hall", "casino"};
-
                 //TODO: Handle this part better.
                 //Handle if it does return any result.
                 if(response.body().getResults().size() != 0) {
                     if (places.get(day).size() < 6 && day != numberOfTripDays) {
-                        //static time.
-                        response.body().getResults().get(0).setTimeToGo(startTime);
-                        places.get(day).add(response.body().getResults().get(0));
-                        double lat = response.body().getResults().get(0).getGeometry().getLocation().getLat();
-                        double lng = response.body().getResults().get(0).getGeometry().getLocation().getLng();
+
+                        //randomize the number of place to go (0 to 5).
+                        int placeToGoIndex = handlePlaceSearchIndexError(response.body().getResults().size());
+
+                        response.body().getResults().get(placeToGoIndex).setTimeToGo(startTime);
+                        String placeType = response.body().getResults().get(placeToGoIndex).getPlaceType();
+                        places.get(day).add(response.body().getResults().get(placeToGoIndex));
+                        double lat = response.body().getResults().get(placeToGoIndex).getGeometry().getLocation().getLat();
+                        double lng = response.body().getResults().get(placeToGoIndex).getGeometry().getLocation().getLng();
+                        response.body().getResults().get(placeToGoIndex).setTimeToGo(startTime);
                         //TODO: Fix static timing.
                         startTime += 2;
-                        getNearbyPlace(placeList[places.get(day).size() - 1], String.valueOf(lat), String.valueOf(lng));
+                        getNearbyPlace(placeType, String.valueOf(lat), String.valueOf(lng));
                     } else {
                         day++;
                         if (day != (numberOfTripDays)) {
@@ -344,7 +346,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                             //static time.
                             startTime = 9;
                             //Restart from the accommodation again.
-                            getNearbyPlace("park", String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
+                            getNearbyPlace(Util.getPlaceType(startTime), String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
                         } else {
                             for (int j = 0; j < places.size(); j++) {
                                 mItineraryArrayList.add(new Itinerary(places.get(j)));
@@ -438,5 +440,14 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         }
     };
 
+    //sometimes the places search might not return any value, or just 1 value or 2 value
+    public int handlePlaceSearchIndexError(int size) {
+        int randomNumber = Util.randomizeNumber();
 
+        if(randomNumber > size) {
+            randomNumber = size - 1;
+        }
+
+        return randomNumber;
+    }
 }
