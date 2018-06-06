@@ -29,8 +29,8 @@
             android:imeOptions="actionSearch"
             android:layout_margin="10dp"
             android:textSize="16sp" />
-
     </RelativeLayout>
+
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"

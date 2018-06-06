@@ -115,7 +115,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         //TODO: Number of trip days redundant, do not need this.
         numberOfTripDays = getIntent().getIntExtra("Day", 1);
 
-        for(int i = 0; i < numberOfTripDays; i++) {
+        for (int i = 0; i < numberOfTripDays; i++) {
             places.add(new ArrayList<com.mad.madproject.model.Place>());
         }
 
@@ -274,7 +274,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
                                 //Start ProgressDialog
                                 initProgressDialog();
-                                getNearbyPlace(Util.getPlaceType(startTime), String.valueOf(mAccommodationInfo.getLatLng().latitude),  String.valueOf(mAccommodationInfo.getLatLng().longitude));
+                                getNearbyPlace(Util.getPlaceType(startTime), String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
                             }
                         }).show();
             } catch (NullPointerException e) {
@@ -325,49 +325,51 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
             public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
                 //TODO: Handle this part better.
                 //Handle if it does return any result.
-                if(response.body().getResults().size() != 0) {
-                    if (places.get(day).size() < 6 && day != numberOfTripDays) {
+                if (response.body() != null) {
+                    if (response.body().getResults().size() != 0) {
+                        if (places.get(day).size() < 6 && day != numberOfTripDays) {
 
-                        //randomize the number of place to go (0 to 5).
-                        int placeToGoIndex = handlePlaceSearchIndexError(response.body().getResults().size());
+                            //randomize the number of place to go (0 to 5).
+                            int placeToGoIndex = handlePlaceSearchIndexError(response.body().getResults().size());
 
-                        response.body().getResults().get(placeToGoIndex).setTimeToGo(startTime);
-                        String placeType = response.body().getResults().get(placeToGoIndex).getPlaceType();
-                        places.get(day).add(response.body().getResults().get(placeToGoIndex));
-                        double lat = response.body().getResults().get(placeToGoIndex).getGeometry().getLocation().getLat();
-                        double lng = response.body().getResults().get(placeToGoIndex).getGeometry().getLocation().getLng();
-                        response.body().getResults().get(placeToGoIndex).setTimeToGo(startTime);
-                        //TODO: Fix static timing.
-                        startTime += 2;
-                        getNearbyPlace(placeType, String.valueOf(lat), String.valueOf(lng));
-                    } else {
-                        day++;
-                        if (day != (numberOfTripDays)) {
-                            //restart from the starting time again.
-                            //static time.
-                            startTime = 9;
-                            //Restart from the accommodation again.
-                            getNearbyPlace(Util.getPlaceType(startTime), String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
+                            response.body().getResults().get(placeToGoIndex).setTimeToGo(startTime);
+                            String placeType = response.body().getResults().get(placeToGoIndex).getPlaceType();
+                            places.get(day).add(response.body().getResults().get(placeToGoIndex));
+                            double lat = response.body().getResults().get(placeToGoIndex).getGeometry().getLocation().getLat();
+                            double lng = response.body().getResults().get(placeToGoIndex).getGeometry().getLocation().getLng();
+                            response.body().getResults().get(placeToGoIndex).setTimeToGo(startTime);
+                            //TODO: Fix static timing.
+                            startTime += 2;
+                            getNearbyPlace(placeType, String.valueOf(lat), String.valueOf(lng));
                         } else {
-                            for (int j = 0; j < places.size(); j++) {
-                                mItineraryArrayList.add(new Itinerary(places.get(j)));
+                            day++;
+                            if (day != (numberOfTripDays)) {
+                                //restart from the starting time again.
+                                //static time.
+                                startTime = 9;
+                                //Restart from the accommodation again.
+                                getNearbyPlace(Util.getPlaceType(startTime), String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
+                            } else {
+                                for (int j = 0; j < places.size(); j++) {
+                                    mItineraryArrayList.add(new Itinerary(places.get(j)));
+                                }
+                                ItineraryPreview itineraryPreview = (ItineraryPreview) getIntent().getSerializableExtra("ItineraryPreview");
+                                //set the key here now, we dont set it in add trip activity.
+                                itineraryPreview.setItineraryPreviewId(itineraryPreviewKey);
+                                Itineraries itineraries = new Itineraries(mItineraryArrayList, itineraryPreview.getTripName(), itineraryPreview.getStartDate(), itineraryPreview.getEndDate(), itineraryPreviewKey);
+                                databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
+                                databaseReference.child("Itinerary").push().setValue(itineraries);
+                                //TODO: Handle progress dialog better.
+                                mPrgDialog.dismiss();
+                                Intent intent = new Intent(ChooseAccommodationActivity.this, ViewItineraryActivity.class);
+                                intent.putExtra("Day", itineraryPreview.getDayInterval());
+                                intent.putExtra("PreviewKey", itineraryPreviewKey);
+                                startActivity(intent);
                             }
-                            ItineraryPreview itineraryPreview = (ItineraryPreview) getIntent().getSerializableExtra("ItineraryPreview");
-                            //set the key here now, we dont set it in add trip activity.
-                            itineraryPreview.setItineraryPreviewId(itineraryPreviewKey);
-                            Itineraries itineraries = new Itineraries(mItineraryArrayList, itineraryPreview.getTripName(), itineraryPreview.getStartDate(), itineraryPreview.getEndDate(), itineraryPreviewKey);
-                            databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
-                            databaseReference.child("Itinerary").push().setValue(itineraries);
-                            //TODO: Handle progress dialog better.
-                            mPrgDialog.dismiss();
-                            Intent intent = new Intent(ChooseAccommodationActivity.this, ViewItineraryActivity.class);
-                            intent.putExtra("Day", itineraryPreview.getDayInterval());
-                            intent.putExtra("PreviewKey", itineraryPreviewKey);
-                            startActivity(intent);
                         }
                     }
-                }
-                else {
+
+                } else {
                     //TODO: Show UI(Material Dialog) instead of showing toast.
                     Toast.makeText(ChooseAccommodationActivity.this, "Sorry, our database can't suggest any places for this accommodation yet.", Toast.LENGTH_LONG).show();
                     mPrgDialog.dismiss();
@@ -445,7 +447,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     public int handlePlaceSearchIndexError(int size) {
         int randomNumber = Util.randomizeNumber();
 
-        if(randomNumber > size) {
+        if (randomNumber > size) {
             randomNumber = size - 1;
         }
 

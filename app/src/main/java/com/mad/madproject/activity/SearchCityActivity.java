@@ -61,8 +61,6 @@ import butterknife.ButterKnife;
 public class SearchCityActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 
-    private ArrayList<City> mCities = new ArrayList<>();
-
     @BindView(R.id.search_field)
     AutoCompleteTextView mSearchTextField;
 
@@ -175,7 +173,6 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
                 Log.d(Constant.LOG_TAG, mCityInfo.getCountry());
                 Log.d(Constant.LOG_TAG, "" + mCityInfo.getLatLng());
 
-                //TODO: Wrap this in a try catch, some place might not have photo associated (so might cause error).
                 final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(place.getId());
 
                 photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
