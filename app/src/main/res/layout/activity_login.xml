@@ -23,16 +23,6 @@
             android:src="@drawable/transparent"
             />
 
-
-        <!--&lt;!&ndash; Setting the background opacity &ndash;&gt;-->
-        <!--<View-->
-        <!--android:id="@+id/title"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="#000000"-->
-        <!--android:alpha="0.5"-->
-        <!--android:layout_alignParentTop="true" />-->
-
         <LinearLayout
             android:id="@+id/logo_layout"
             android:layout_width="wrap_content"
@@ -63,18 +53,58 @@
             android:textColor="#fff"
             android:textSize="40sp"/>
 
-        <include
-            android:id="@+id/text_field_layout"
-            layout="@layout/text_field"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/field_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/application_name"/>
+            android:layout_below="@id/application_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/activity_field_margin"
+            android:layout_marginRight="@dimen/activity_field_margin"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundwhite"
+                android:drawableLeft="@drawable/email"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/email"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:text="@={loginViewModel.email}"
+                android:textColor="@color/colorTextAndIcons"
+                android:textColorHint="@color/colorTextAndIcons"/>
+
+            <EditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/roundwhite"
+                android:drawableLeft="@drawable/password"
+                android:drawablePadding="10dp"
+                android:drawableStart="@drawable/password"
+                android:focusableInTouchMode="true"
+                android:hint="@string/hint_password"
+                android:imeActionId="@+id/login"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:padding="10dp"
+                android:text="@={loginViewModel.password}"
+                android:textColor="@color/colorTextAndIcons"
+                android:textColorHint="@color/colorTextAndIcons"/>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/button_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text_field_layout"
+            android:layout_below="@id/field_layout"
             android:layout_marginLeft="@dimen/activity_field_margin"
             android:layout_marginRight="@dimen/activity_field_margin">
 

@@ -37,11 +37,11 @@
         </activity>
         <activity
             android:name=".register.RegisterActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".activity.MainActivity"/>
         <activity
             android:name=".forgetpassword.ForgetPasswordActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".activity.SearchCityActivity"
             android:label="Choose The City"
@@ -60,7 +60,7 @@
         <activity
             android:name=".activity.ViewItineraryActivity"
             android:label="Itinerary"
-            android:parentActivityame=".activity.MainActivity"
+            android:parentActivityName=".activity.MainActivity"
             >
         </activity>
 

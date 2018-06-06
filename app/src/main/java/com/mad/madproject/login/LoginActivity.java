@@ -1,19 +1,17 @@
 package com.mad.madproject.login;
 
-import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.mad.madproject.R;
+import com.mad.madproject.databinding.ActivityLoginBinding;
 import com.mad.madproject.forgetpassword.ForgetPasswordActivity;
 import com.mad.madproject.activity.MainActivity;
 import com.mad.madproject.register.RegisterActivity;
@@ -26,94 +24,59 @@ import butterknife.OnClick;
 /**
  * The LoginActivity handles the view presented to user to login.
  */
-public class LoginActivity extends AppCompatActivity implements LoginView {
+public class LoginActivity extends AppCompatActivity {
 
-//    @BindView(R.id.email)
-//    EditText mInputEmail;
-//    @BindView(R.id.password)
-//    EditText mInputPassword;
-//    @BindView(R.id.btn_signup)
-//    Button mBtnSignup;
-//    @BindView(R.id.btn_login)
-//    Button mBtnLogin;
-//    @BindView(R.id.btn_reset_password)
-//    Button mBtnReset;
-//    @BindView(R.id.progressBar)
-//    ProgressBar mProgressBar;
-//
-//    LoginViewModel mLoginViewModel;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_login);
-//        ButterKnife.bind(this);
-//
-//        mLoginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-//
-//        mBtnLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mLoginViewModel.onLoginClick();
-//            }
-//        });
-//
-//        observeEmail();
-//        observePassword();
-//    }
-//
-//    private void observeEmail() {
-//        mLoginViewModel.getEmail().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                mInputEmail.setText(s);
-//            }
-//        });
-//    }
-//
-//    private void observePassword() {
-//        mLoginViewModel.getPassword().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                mInputPassword.setText(s);
-//            }
-//        });
-//    }
-
-    @BindView(R.id.email)
-    EditText mInputEmail;
-    @BindView(R.id.password)
-    EditText mInputPassword;
-    @BindView(R.id.btn_signup)
-    Button mBtnSignup;
     @BindView(R.id.btn_login)
     Button mBtnLogin;
-    @BindView(R.id.btn_reset_password)
-    Button mBtnReset;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
 
-    private FirebaseAuth mAuth;
-    private LoginPresenter mLoginPresenter;
+    LoginViewModel mLoginViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        //bind the layout with data binding.
+        ActivityLoginBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         ButterKnife.bind(this);
 
-        //Get Firebase mAuth instance
-        mAuth = FirebaseAuth.getInstance();
-        mLoginPresenter = new LoginPresenterImpl(mAuth);
+        //create the view model.
+        mLoginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        binding.setLoginViewModel(mLoginViewModel);
 
-        mLoginPresenter.attachView(this);
-        mLoginPresenter.checkLogin();
+        //set the click listener.
+        mBtnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mProgressBar.setVisibility(View.VISIBLE);
+                mLoginViewModel.onLoginClick();
+            }
+        });
+
+        //handle the authentication handler.
+        if(mLoginViewModel.getIsLoggedIn()) {
+            Utils.setIntent(LoginActivity.this, MainActivity.class);
+            finish();
+        }
+
+        observeLogin();
     }
 
-    @OnClick(R.id.btn_login) void onLoginButtonClick() {
-        String email_text = mInputEmail.getText().toString().trim();
-        String password_text = mInputPassword.getText().toString().trim();
-        mLoginPresenter.login(email_text, password_text);
+    /**
+     * Create an observer lifecycle for the live data is successful.
+     */
+    private void observeLogin() {
+        mLoginViewModel.getIsSuccessful().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isSuccessful) {
+                //TODO: Handle logic here might not be right.
+                if(isSuccessful) {
+                    Utils.setIntent(LoginActivity.this, MainActivity.class);
+                    mProgressBar.setVisibility(View.GONE);
+                }
+
+            }
+        });
     }
 
     @OnClick(R.id.btn_signup) void onSignUpButtonClick() {
@@ -122,49 +85,5 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
     @OnClick(R.id.btn_reset_password) void onResetPasswordButtonClick() {
         Utils.setIntent(this, ForgetPasswordActivity.class);
-    }
-
-    @Override
-    public Context getContext() {
-        return this;
-    }
-
-    @Override
-    public void loginSuccess() {
-        Utils.setIntent(this, MainActivity.class);
-    }
-
-    @Override
-    public void loginError() {
-        //TODO: Handle error here. (Instead of showing toast, show the default error for a textview?).
-        Utils.showMessage(this, "Login Error ! ");
-    }
-
-    @Override
-    public void showValidationError(String message) {
-        //TODO: Handle validation.
-        Utils.showMessage(this, message);
-    }
-
-    @Override
-    public void isLogin(boolean isLogin) {
-        if (isLogin) {
-            Utils.setIntent(this, MainActivity.class);
-            finish();
-        }
-    }
-
-    @Override
-    public void setProgressVisibility(boolean visibility) {
-        if (visibility)
-            mProgressBar.setVisibility(View.VISIBLE);
-        else
-            mProgressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mLoginPresenter.detachView();
     }
 }
