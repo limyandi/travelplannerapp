@@ -18,10 +18,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.mad.madproject.R;
-import com.mad.madproject.activity.MainActivity;
 import com.mad.madproject.databinding.ActivityForgetPasswordBinding;
 import com.mad.madproject.login.LoginActivity;
 import com.mad.madproject.utils.Utils;
@@ -36,6 +36,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     Button btnReset;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.failed_forget_password)
+    TextView mFailedForgetPasswordTv;
 
     ForgetPasswordViewModel mForgetPasswordViewModel;
 
@@ -54,6 +56,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mFailedForgetPasswordTv.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 mForgetPasswordViewModel.onForgetPasswordClick();
             }
@@ -61,7 +64,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
         mForgetPasswordViewModel = ViewModelProviders.of(this).get(ForgetPasswordViewModel.class);
 
-        binding.setViewModel(mForgetPasswordViewModel);
+        binding.setForgetPasswordViewModel(mForgetPasswordViewModel);
 
         observeForgetPassword();
     }
@@ -80,6 +83,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                 } else {
                     //TODO: Handle is not successful
                     progressBar.setVisibility(View.GONE);
+                    mFailedForgetPasswordTv.setVisibility(View.VISIBLE);
                 }
             }
         });

@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.mad.madproject.R;
 import com.mad.madproject.databinding.ActivityLoginBinding;
@@ -48,17 +49,13 @@ public class LoginActivity extends AppCompatActivity {
         mBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ((TextView) findViewById(R.id.failed_identity)).setVisibility(View.INVISIBLE);
                 mProgressBar.setVisibility(View.VISIBLE);
                 mLoginViewModel.onLoginClick();
             }
         });
 
-        //handle the authentication handler.
-        if(mLoginViewModel.getIsLoggedIn()) {
-            Utils.setIntent(LoginActivity.this, MainActivity.class);
-            finish();
-        }
-
+        authenticationHandling();
         observeLogin();
     }
 
@@ -70,9 +67,14 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onChanged(@Nullable Boolean isSuccessful) {
                 //TODO: Handle logic here might not be right.
+                mProgressBar.setVisibility(View.GONE);
                 if(isSuccessful) {
                     Utils.setIntent(LoginActivity.this, MainActivity.class);
                     mProgressBar.setVisibility(View.GONE);
+                }
+                else {
+                    mProgressBar.setVisibility(View.GONE);
+                    ((TextView) findViewById(R.id.failed_identity)).setVisibility(View.VISIBLE);
                 }
 
             }
@@ -85,5 +87,16 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_reset_password) void onResetPasswordButtonClick() {
         Utils.setIntent(this, ForgetPasswordActivity.class);
+    }
+
+    /**
+     * Handle if the user currently has an active session in our application.
+     */
+    private void authenticationHandling() {
+        //handle the authentication handler.
+        if(mLoginViewModel.getIsLoggedIn()) {
+            Utils.setIntent(LoginActivity.this, MainActivity.class);
+            finish();
+        }
     }
 }

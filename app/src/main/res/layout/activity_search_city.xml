@@ -29,16 +29,15 @@
             android:imeOptions="actionSearch"
             android:layout_margin="10dp"
             android:textSize="16sp" />
-
     </RelativeLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/activity_search_city_search_layout"
-        android:layout_marginTop="10dp">
 
-    </android.support.v7.widget.RecyclerView>
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:id="@+id/map"
+              android:name="com.google.android.gms.maps.SupportMapFragment"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              tools:context=".MapsActivity"/>
 
 </RelativeLayout>

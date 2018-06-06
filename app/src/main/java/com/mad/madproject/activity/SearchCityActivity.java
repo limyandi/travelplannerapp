@@ -61,12 +61,8 @@ import butterknife.ButterKnife;
 public class SearchCityActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 
-    private ArrayList<City> mCities = new ArrayList<>();
-
     @BindView(R.id.search_field)
     AutoCompleteTextView mSearchTextField;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
 
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
@@ -79,8 +75,6 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
         setContentView(R.layout.activity_search_city);
 
         ButterKnife.bind(this);
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //initialising the geo data client for the Google Places API for android.
         mGeoDataClient = Places.getGeoDataClient(this);
@@ -99,10 +93,6 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
 
         mSearchTextField.setAdapter(mPlaceAutocompleteAdapter);
         mSearchTextField.setOnItemClickListener(mAutoCompleteClickListener);
-
-        //initialising for the city adapter. TODO: Clear this later if do not want to use, currently not used.
-        CityAdapter cityAdapter = new CityAdapter(this, mCities);
-        mRecyclerView.setAdapter(cityAdapter);
 
         mSearchTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -183,7 +173,6 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
                 Log.d(Constant.LOG_TAG, mCityInfo.getCountry());
                 Log.d(Constant.LOG_TAG, "" + mCityInfo.getLatLng());
 
-                //TODO: Wrap this in a try catch, some place might not have photo associated (so might cause error).
                 final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(place.getId());
 
                 photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {

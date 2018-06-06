@@ -14,9 +14,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.mad.madproject.FirebaseAuthenticationRepository;
 import com.mad.madproject.model.User;
+import com.mad.madproject.validator.Validator;
 
 public class RegisterViewModel extends ViewModel {
+
+    private FirebaseAuthenticationRepository mFirebaseAuthenticationRepository = new FirebaseAuthenticationRepository();
 
     private MutableLiveData<Boolean> mIsSuccessful;
 
@@ -24,6 +28,9 @@ public class RegisterViewModel extends ViewModel {
     public final ObservableField<String> email = new ObservableField<>();
     public final ObservableField<String> password = new ObservableField<>();
 
+    public final ObservableField<String> errorUsername = new ObservableField<>();
+    public final ObservableField<String> errorEmail = new ObservableField<>();
+    public final ObservableField<String> errorPassword = new ObservableField<>();
 
     public RegisterViewModel() {
         mIsSuccessful = new MutableLiveData<>();
@@ -33,27 +40,43 @@ public class RegisterViewModel extends ViewModel {
      * The utility function to be called when the register button is clicked.
      */
     public void onRegisterClicked() {
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.get(), password.get())
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(!task.isSuccessful()) {
-                            Log.d("MVVM", "Not successful!!");
-                            mIsSuccessful.postValue(false);
-                        }
-                        else {
-                            User user = new User(username.get(), email.get());
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            //get Users branch.
-                            final DatabaseReference ref = database.getReference("Users");
-                            //TODO: Handle if auth null.
-                            ref.child(FirebaseAuth.getInstance().getUid()).setValue(user);
-                            mIsSuccessful.postValue(true);
-                        }
-                    }
+        if(inputIsValidated()) {
+            mFirebaseAuthenticationRepository.register(username.get(), email.get(), password.get(), mIsSuccessful);
+        } else {
+            mIsSuccessful.postValue(false);
+        }
 
+    }
 
-                });
+    private boolean inputIsValidated() {
+        boolean isValid = true;
+
+        if(username.get() == null || !Validator.isUsernameValid(username.get())) {
+            errorUsername.set("Invalid username!");
+            isValid = false;
+        } else {
+            errorUsername.set(null);
+        }
+
+        if (email.get() == null || !Validator.isEmailValid(email.get())) {
+
+            errorEmail.set("Invalid Email");
+            isValid = false;
+
+        } else {
+            errorEmail.set(null);
+        }
+
+        if (password.get() == null || password.get().length() < 4) {
+            errorPassword.set("Password too short");
+
+            isValid = false;
+
+        } else {
+            errorPassword.set(null);
+        }
+
+        return isValid;
     }
 
     /**
