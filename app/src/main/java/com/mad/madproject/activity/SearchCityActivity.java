@@ -65,8 +65,6 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
 
     @BindView(R.id.search_field)
     AutoCompleteTextView mSearchTextField;
-    @BindView(R.id.recycler_view)
-    RecyclerView mRecyclerView;
 
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GoogleApiClient mGoogleApiClient;
@@ -79,8 +77,6 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
         setContentView(R.layout.activity_search_city);
 
         ButterKnife.bind(this);
-
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //initialising the geo data client for the Google Places API for android.
         mGeoDataClient = Places.getGeoDataClient(this);
@@ -99,10 +95,6 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
 
         mSearchTextField.setAdapter(mPlaceAutocompleteAdapter);
         mSearchTextField.setOnItemClickListener(mAutoCompleteClickListener);
-
-        //initialising for the city adapter. TODO: Clear this later if do not want to use, currently not used.
-        CityAdapter cityAdapter = new CityAdapter(this, mCities);
-        mRecyclerView.setAdapter(cityAdapter);
 
         mSearchTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
