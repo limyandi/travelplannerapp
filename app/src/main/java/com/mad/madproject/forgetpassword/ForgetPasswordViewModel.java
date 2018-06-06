@@ -15,11 +15,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mad.madproject.FirebaseAuthenticationRepository;
 import com.mad.madproject.validator.Validator;
 
 
 //ViewModel
 public class ForgetPasswordViewModel extends ViewModel {
+
+    public FirebaseAuthenticationRepository mFirebaseAuthenticationRepository = new FirebaseAuthenticationRepository();
 
     private MutableLiveData<Boolean> mIsSuccessful;
 
@@ -37,19 +40,7 @@ public class ForgetPasswordViewModel extends ViewModel {
      */
     public void onForgetPasswordClick() {
         if(inputIsValidated()) {
-            FirebaseAuth.getInstance().sendPasswordResetEmail(email.get())
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (!task.isSuccessful()) {
-                                Log.d("MVVM", "Not Successful!");
-                                mIsSuccessful.postValue(false);
-                            } else {
-                                Log.d("MVVM", "Successful!");
-                                mIsSuccessful.postValue(true);
-                            }
-                        }
-                    });
+            mFirebaseAuthenticationRepository.forgetPassword(email.get(), mIsSuccessful);
         }
         else {
             mIsSuccessful.postValue(false);

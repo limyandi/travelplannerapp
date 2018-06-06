@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mad.madproject.FirebaseAuthenticationRepository;
 import com.mad.madproject.validator.Validator;
 
 /**
@@ -19,6 +20,7 @@ import com.mad.madproject.validator.Validator;
 
 public class LoginViewModel extends ViewModel {
 
+    private FirebaseAuthenticationRepository mFirebaseAuthenticationRepository = new FirebaseAuthenticationRepository();
     //create the live data to observe the value whether the login is successful.
     private MutableLiveData<Boolean> mIsSuccessful;
 
@@ -44,18 +46,7 @@ public class LoginViewModel extends ViewModel {
      */
     public void onLoginClick() {
         if(validateInputs()) {
-            FirebaseAuth.getInstance().signInWithEmailAndPassword(email.get(), password.get())
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(!task.isSuccessful()) {
-                                //TODO: Handle error.
-                                mIsSuccessful.postValue(false);
-                            } else {
-                                loginSuccessful();
-                            }
-                        }
-                    });
+            mFirebaseAuthenticationRepository.login(email.get(), password.get(), mIsSuccessful);
         } else {
             mIsSuccessful.postValue(false);
         }
