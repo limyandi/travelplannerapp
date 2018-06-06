@@ -59,6 +59,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.okhttp3:okhttp:3.10.0'
     compile "com.andkulikov:transitionseverywhere:1.7.9"
+    compile 'com.github.Ilhasoft:data-binding-validator:1.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     testCompile 'junit:junit:4.12'

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -63,40 +64,51 @@
             android:layout_marginRight="@dimen/activity_field_margin"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/email"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/roundwhite"
-                android:drawableLeft="@drawable/email"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/email"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:padding="10dp"
-                android:text="@={loginViewModel.email}"
-                android:textColor="@color/colorTextAndIcons"
-                android:textColorHint="@color/colorTextAndIcons"/>
+                app:error="@{loginViewModel.errorEmail}">
 
-            <EditText
-                android:id="@+id/password"
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/roundwhite"
+                    android:drawableLeft="@drawable/email"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/email"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:text="@={loginViewModel.email}"
+                    android:textColor="@color/colorTextAndIcons"
+                    android:textColorHint="@color/colorTextAndIcons"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/roundwhite"
-                android:drawableLeft="@drawable/password"
-                android:drawablePadding="10dp"
-                android:drawableStart="@drawable/password"
-                android:focusableInTouchMode="true"
-                android:hint="@string/hint_password"
-                android:imeActionId="@+id/login"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:padding="10dp"
-                android:text="@={loginViewModel.password}"
-                android:textColor="@color/colorTextAndIcons"
-                android:textColorHint="@color/colorTextAndIcons"/>
+                app:error="@{loginViewModel.errorPassword}">
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/roundwhite"
+                    android:drawableLeft="@drawable/password"
+                    android:drawablePadding="10dp"
+                    android:drawableStart="@drawable/password"
+                    android:focusableInTouchMode="true"
+                    android:hint="@string/hint_password"
+                    android:imeOptions="actionUnspecified"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:text="@={loginViewModel.password}"
+                    android:textColor="@color/colorTextAndIcons"
+                    android:textColorHint="@color/colorTextAndIcons"/>
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 
@@ -119,6 +131,25 @@
                 android:textColor="@color/colorTextAndIcons"
                 android:textStyle="bold"/>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:id="@+id/failed_identity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lines="2"
+                android:text="Your username and password does not match, try loggging in again!"
+                android:visibility="gone"
+                android:textColor="@color/colorError"
+                />
         </LinearLayout>
 
         <LinearLayout

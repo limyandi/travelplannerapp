@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mad.madproject.R;
@@ -28,6 +29,9 @@ public class RegisterActivity extends AppCompatActivity {
     Button btnSignUp;
     @BindView(R.id.progressBar)
     ProgressBar progressBar;
+    @BindView(R.id.register_failed_text)
+    TextView mRegisterUnsuccessfulTv;
+
 
     RegisterViewModel mRegisterViewModel;
 
@@ -42,11 +46,12 @@ public class RegisterActivity extends AppCompatActivity {
 
         mRegisterViewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
 
-        binding.setViewModel(mRegisterViewModel);
+        binding.setRegisterViewModel(mRegisterViewModel);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mRegisterUnsuccessfulTv.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
                 mRegisterViewModel.onRegisterClicked();
             }
@@ -72,8 +77,8 @@ public class RegisterActivity extends AppCompatActivity {
                 }
                 //TODO: Handle else.
                 else {
-                    Toast.makeText(RegisterActivity.this, "Failed Registering", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
+                    mRegisterUnsuccessfulTv.setVisibility(View.VISIBLE);
                 }
             }
         });

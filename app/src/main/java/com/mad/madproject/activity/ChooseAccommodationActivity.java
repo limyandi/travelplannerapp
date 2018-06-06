@@ -220,6 +220,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         }
     }
 
+
     //TODO: This might be bad.
     private void initEditText() {
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {

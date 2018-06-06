@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mad.madproject.validator.Validator;
 
 
 //ViewModel
@@ -23,6 +24,8 @@ public class ForgetPasswordViewModel extends ViewModel {
     private MutableLiveData<Boolean> mIsSuccessful;
 
     public final ObservableField<String> email = new ObservableField<>();
+
+    public final ObservableField<String> errorEmail = new ObservableField<>();
 
 
     public ForgetPasswordViewModel() {
@@ -33,20 +36,39 @@ public class ForgetPasswordViewModel extends ViewModel {
      * Handle the call when the forget password button is clicked
      */
     public void onForgetPasswordClick() {
-        FirebaseAuth.getInstance().sendPasswordResetEmail(email.get())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(!task.isSuccessful()) {
-                            Log.d("MVVM", "Not Successful!");
-                            mIsSuccessful.postValue(false);
+        if(inputIsValidated()) {
+            FirebaseAuth.getInstance().sendPasswordResetEmail(email.get())
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (!task.isSuccessful()) {
+                                Log.d("MVVM", "Not Successful!");
+                                mIsSuccessful.postValue(false);
+                            } else {
+                                Log.d("MVVM", "Successful!");
+                                mIsSuccessful.postValue(true);
+                            }
                         }
-                        else {
-                            Log.d("MVVM", "Successful!");
-                            mIsSuccessful.postValue(true);
-                        }
-                    }
-                });
+                    });
+        }
+        else {
+            mIsSuccessful.postValue(false);
+        }
+    }
+
+    private boolean inputIsValidated() {
+        boolean isValid = true;
+
+        if (email.get() == null || !Validator.isEmailValid(email.get())) {
+
+            errorEmail.set("Invalid Email");
+            isValid = false;
+
+        } else {
+            errorEmail.set(null);
+        }
+
+        return isValid;
     }
 
     /**

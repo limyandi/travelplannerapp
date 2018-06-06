@@ -1,6 +1,7 @@
 package com.mad.madproject.activity;
 
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -71,6 +72,16 @@ public class ViewItineraryActivity extends AppCompatActivity {
         mItineraryDate = (TextView) findViewById(R.id.view_itinerary_activity_date);
         getItinerariesDetails();
 
+    }
+
+    /**
+     * Return to parent activity.
+     */
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //return to the parent activity.
+        NavUtils.navigateUpFromSameTask(this);
     }
 
     private void getItinerariesDetails() {
