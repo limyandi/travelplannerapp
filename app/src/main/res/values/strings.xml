@@ -76,4 +76,5 @@
     <string name="settings_nav_drawer_text">Settings</string>
     <string name="log_out_nav_drawer_text">Log out</string>
     <string name="utility_nav_drawer_header">Utility</string>
+    <string name="confirm_text">Confirm</string>
 </resources>

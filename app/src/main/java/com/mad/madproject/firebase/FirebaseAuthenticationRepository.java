@@ -1,4 +1,4 @@
-package com.mad.madproject;
+package com.mad.madproject.firebase;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;

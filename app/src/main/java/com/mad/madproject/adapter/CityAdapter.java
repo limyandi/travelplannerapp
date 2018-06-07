@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mad.madproject.R;
-import com.mad.madproject.activity.AddTripActivity;
+import com.mad.madproject.tripdetails.AddTripDetailsActivity;
 import com.mad.madproject.model.City;
 import com.mad.madproject.utils.Constant;
 
@@ -73,7 +73,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
         holder.viewLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, AddTripActivity.class);
+                Intent intent = new Intent(mContext, AddTripDetailsActivity.class);
                 mContext.startActivity(intent);
             }
         });

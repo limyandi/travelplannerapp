@@ -1,101 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="@dimen/activity_vertical_margin"
-    tools:context="com.mad.madproject.activity.AddTripActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-        android:id="@+id/trip_to_layout"
+    <data>
+
+        <variable
+            name="addTripDetailsViewModel"
+            type="com.mad.madproject.tripdetails.AddTripDetailsViewModel"/>
+    </data>
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_vertical_margin">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/trip_name_text"
-            android:textSize="16sp"
-            />
-
-        <EditText
-            android:id="@+id/addtrip_activity_trip_name"
+        <LinearLayout
+            android:id="@+id/trip_to_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/trip_to_dotdot"
-            />
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/trip_name_text"
+                android:textSize="16sp"
+                />
 
-    <LinearLayout
-        android:id="@+id/start_date_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/trip_to_layout"
-        android:layout_marginBottom="15dp"
-        android:orientation="vertical">
+            <EditText
+                android:id="@+id/addtrip_activity_trip_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={addTripDetailsViewModel.tripName}"
+                android:textSize="20sp"
+                />
 
-        <TextView
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/start_date_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/trip_to_layout"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/start_date_text"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/start_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@={addTripDetailsViewModel.startDate}"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/end_date_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start_date_layout"
+            android:layout_marginBottom="15dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/end_date_text"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/end_date_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="@={addTripDetailsViewModel.endDate}"
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/addtrip_activity_confirm_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_date_text"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/round"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="@string/confirm_text"
+            android:textAllCaps="false"
+            android:textColor="@color/colorTextAndIcons"/>
 
-        <TextView
-            android:id="@+id/start_date_tv"
-            android:layout_width="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:layout_height="0dp"
-            android:textSize="14sp"
-            android:layout_weight="1"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/end_date_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/start_date_layout"
-        android:layout_marginBottom="15dp"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/end_date_text"
-            android:textStyle="bold"
-            android:textSize="16sp"/>
-
-        <TextView
-            android:id="@+id/end_date_tv"
-            android:layout_width="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:textSize="14sp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/addtrip_activity_confirm_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/colorTextAndIcons"
-        android:background="@drawable/round"
-        android:textAllCaps="false"
-        android:text="@string/create_a_new_trip_text"/>
-
-
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

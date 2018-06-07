@@ -1,8 +1,10 @@
-package com.mad.madproject.activity;
+package com.mad.madproject.tripdetails;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +19,9 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.mad.madproject.databinding.ActivityAddTripBinding;
 import com.mad.madproject.R;
+import com.mad.madproject.activity.ChooseAccommodationActivity;
 import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
@@ -28,15 +30,13 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Period;
-import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddTripActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddTripDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
     @BindView(R.id.start_date_tv)
     TextView mStartDateTv;
@@ -54,50 +54,29 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
     private Date mStartDate;
     private Date mEndDate;
 
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = database.getReference();
+    private AddTripDetailsViewModel mTripDetailsViewModel;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_trip);
-
+        ActivityAddTripBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_add_trip);
         ButterKnife.bind(this);
+
+        mTripDetailsViewModel = ViewModelProviders.of(this).get(AddTripDetailsViewModel.class);
+        binding.setAddTripDetailsViewModel(mTripDetailsViewModel);
 
         LinearLayout startDateLayout = (LinearLayout) findViewById(R.id.start_date_layout);
         LinearLayout endDateLayout = (LinearLayout) findViewById(R.id.end_date_layout);
-        Button confirmBtn = (Button) findViewById(R.id.addtrip_activity_confirm_btn);
-
-        String textTrip = "Trip to " + getIntent().getStringExtra("City");
-        mTripNameTv.setText(textTrip);
-
-        setInitialDate(mStartDateTv);
-        setInitialDate(mEndDateTv);
 
         startDateLayout.setOnClickListener(this);
         endDateLayout.setOnClickListener(this);
 
-        confirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), ChooseAccommodationActivity.class);
+        //TODO: Does not use the advantage of the view model if we call this because it wont survive the configuration changes.
+        mStartDate = mTripDetailsViewModel.setAndGetInitialStartDate();
+        mEndDate = mTripDetailsViewModel.setAndGetInitialEndDate();
+        //Set up data using the trip details.
+        mTripDetailsViewModel.setInitialTripName(getIntent().getStringExtra("City"));
 
-                intervalDay = Util.convertDateToDayInterval(mEndDate, mStartDate);
-
-                Log.d("Time", String.valueOf(intervalDay));
-                intent.putExtra("Day", intervalDay);
-                //TODO: Chaining intent put? is this bad practice?
-                intent.putExtra("Latitude", getIntent().getDoubleExtra("Latitude", 0));
-                intent.putExtra("Longitude", getIntent().getDoubleExtra("Longitude", 0));
-
-                //Dont set the itinerary preview id for now.
-                ItineraryPreview itineraryPreview = new ItineraryPreview(mTripNameTv.getText().toString(), getIntent().getStringExtra("City"), Util.getUserUid(), "", mStartDateTv.getText().toString(), mEndDateTv.getText().toString());
-                //Itinerary Preview Data.
-                intent.putExtra("ItineraryPreview", itineraryPreview);
-
-                startActivity(intent);
-            }
-        });
-
+        onConfirmClicked();
     }
 
     @Override
@@ -121,7 +100,7 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
                 dateSetListener = null;
         }
 
-        DatePickerDialog dateDialog = new DatePickerDialog(AddTripActivity.this,
+        DatePickerDialog dateDialog = new DatePickerDialog(AddTripDetailsActivity.this,
                 android.R.style.Theme_Holo_Dialog,
                 dateSetListener,
                 year, month, day);
@@ -150,6 +129,54 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         dateDialog.show();
     }
 
+    private void onConfirmClicked() {
+        ((Button) findViewById(R.id.addtrip_activity_confirm_btn)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), ChooseAccommodationActivity.class);
+                intervalDay = Util.convertDateToDayInterval(mEndDate, mStartDate);
+                Log.d("Time", String.valueOf(intervalDay));
+                intent.putExtra("Day", intervalDay);
+                //TODO: Chaining intent put? is this bad practice?
+                intent.putExtra("Latitude", getIntent().getDoubleExtra("Latitude", 0));
+                intent.putExtra("Longitude", getIntent().getDoubleExtra("Longitude", 0));
+                //Dont set the itinerary preview id for now.
+                ItineraryPreview itineraryPreview = mTripDetailsViewModel.onNextClick(getIntent().getStringExtra("City"));
+                //Itinerary Preview Data.
+                intent.putExtra("ItineraryPreview", itineraryPreview);
+                startActivity(intent);
+            }
+        });
+    }
+
+//
+//    private void observeStartDate() {
+//        mTripDetailsViewModel.getStartDateLive().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String date) {
+//                mStartDateTv.setText(date);
+//            }
+//        });
+//    }
+
+//    private void onStartDateLayoutClicked() {
+//        ((LinearLayout) findViewById(R.id.start_date_layout)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mTripDetailsViewModel.setStartDate();
+//            }
+//        });
+//    }
+//
+//    private void onEndDateLayoutClicked() {
+//        ((LinearLayout) findViewById(R.id.end_date_layout)).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mTripDetailsViewModel.setStartDate();
+//            }
+//        });
+//    }
+
     private DatePickerDialog.OnDateSetListener startDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -173,7 +200,6 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
     };
 
@@ -187,18 +213,15 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
             String leadingMonth = df.format(month);
             String dateString = leadingDay + "-" + leadingMonth + "-" + year;
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            Date date  = null;
+            Date date = null;
             try {
                 date = dateFormat.parse(dateString);
-                //if start date is updated, update the end date to be only 1 day after the start date.
-
                 //set the local variable end date as the date format so we can find the day interval.
                 mEndDate = date;
                 Log.d("Time", mEndDate.toString());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
             updateDisplay(mEndDateTv, dateString);
         }
     };
@@ -217,7 +240,7 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
     public boolean isServicesOK() {
         Log.d(Constant.LOG_TAG, "isServicesOK: checking google play services version");
 
-        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(AddTripActivity.this);
+        int available = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(AddTripDetailsActivity.this);
 
         if (available == ConnectionResult.SUCCESS) {
             //success means user can make map requests
@@ -226,32 +249,13 @@ public class AddTripActivity extends AppCompatActivity implements View.OnClickLi
         } else if (GoogleApiAvailability.getInstance().isUserResolvableError(available)) {
             //handle issue with google play services version not compatible.
             //use Dialog (Google Dialog to handle the issue, google handle it for us and will display a dialog to help user to resolve it.)
-            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(AddTripActivity.this, available, ERROR_DIALOG_REQUEST);
+            Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(AddTripDetailsActivity.this, available, ERROR_DIALOG_REQUEST);
             dialog.show();
         } else {
             //cannot resolve at all
             //TODO: Clean this.
-            Toast.makeText(AddTripActivity.this, "You can't make map requests", Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddTripDetailsActivity.this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
-    }
-
-    private void setInitialDate(TextView dateTv) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");//formating according to my need
-
-        Date today = new Date();
-
-        if(dateTv == mStartDateTv) {
-            mStartDate = today;
-            dateTv.setText(formatter.format(today));
-        }
-
-        //start from tommorow.
-        if(dateTv == mEndDateTv) {
-            Date oneDayAfter = new Date(today.getTime() + (1000 * 60 * 60 * 24));
-            mEndDate = oneDayAfter;
-            dateTv.setText(formatter.format(oneDayAfter));
-        }
-
     }
 }

@@ -49,14 +49,14 @@
             android:parentActivityName=".activity.MainActivity">
         </activity>
         <activity
-            android:name=".activity.AddTripActivity"
+            android:name=".tripdetails.AddTripDetailsActivity"
             android:label="Itinerary Details"
             android:parentActivityName=".activity.SearchCityActivity">
         </activity>
         <activity
             android:name=".activity.ChooseAccommodationActivity"
             android:label="Choose the Accommodation"
-            android:parentActivityName=".activity.AddTripActivity">
+            android:parentActivityName=".tripdetails.AddTripDetailsActivity">
         </activity>
         <activity
             android:name=".activity.ViewItineraryActivity"

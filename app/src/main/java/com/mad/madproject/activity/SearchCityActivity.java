@@ -8,8 +8,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -37,23 +35,19 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mad.madproject.R;
-import com.mad.madproject.adapter.CityAdapter;
 import com.mad.madproject.adapter.PlaceAutocompleteAdapter;
-import com.mad.madproject.model.Accommodation;
 import com.mad.madproject.model.City;
+import com.mad.madproject.tripdetails.AddTripDetailsActivity;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
-import com.mad.madproject.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -226,7 +220,7 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
 
 
             places.release();
-            Intent intent = new Intent(SearchCityActivity.this, AddTripActivity.class);
+            Intent intent = new Intent(SearchCityActivity.this, AddTripDetailsActivity.class);
 
             intent.putExtra("City", mCityInfo.getCity());
             intent.putExtra("Latitude", mCityInfo.getLatLng().latitude);
