@@ -36,41 +36,4 @@ public class Utils<Data> {
 
         return intent ;
     }
-
-    public static void showMessage(Context context, String message) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-    }
-
-    public static String readUrl(String theUrl) throws IOException {
-        String data = "";
-        InputStream inputStream = null;
-        HttpURLConnection urlConnection = null;
-        try {
-            URL url = new URL(theUrl);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.connect();
-
-            inputStream = urlConnection.getInputStream();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuffer stringBuffer = new StringBuffer();
-
-            String line = "";
-            while((line = bufferedReader.readLine()) != null) {
-                stringBuffer.append(line);
-            }
-
-            data = stringBuffer.toString();
-            bufferedReader.close();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            inputStream.close();
-            urlConnection.disconnect();
-        }
-
-        return data;
-    }
 }

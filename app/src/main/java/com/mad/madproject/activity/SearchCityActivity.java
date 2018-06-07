@@ -40,7 +40,7 @@ import com.google.firebase.storage.UploadTask;
 import com.mad.madproject.R;
 import com.mad.madproject.adapter.PlaceAutocompleteAdapter;
 import com.mad.madproject.model.City;
-import com.mad.madproject.tripdetails.AddTripDetailsActivity;
+import com.mad.madproject.addtripdetails.AddTripDetailsActivity;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
 

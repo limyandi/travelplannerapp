@@ -7,7 +7,7 @@
 
         <variable
             name="addTripDetailsViewModel"
-            type="com.mad.madproject.tripdetails.AddTripDetailsViewModel"/>
+            type="com.mad.madproject.addtripdetails.AddTripDetailsViewModel"/>
     </data>
 
     <RelativeLayout

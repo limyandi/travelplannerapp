@@ -1,4 +1,4 @@
-package com.mad.madproject.tripdetails;
+package com.mad.madproject.addtripdetails;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -133,6 +133,24 @@ public class AddTripDetailsActivity extends AppCompatActivity implements View.On
         ((Button) findViewById(R.id.addtrip_activity_confirm_btn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                Date date = null;
+                try {
+                    date = dateFormat.parse(mStartDateTv.getText().toString());
+                    //set the local variable end date as the date format so we can find the day interval.
+                    mStartDate = date;
+                    Log.d("Time", mStartDate.toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    date = dateFormat.parse(mEndDateTv.getText().toString());
+                    mEndDate = date;
+                    Log.d("Time", mEndDate.toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 Intent intent = new Intent(getBaseContext(), ChooseAccommodationActivity.class);
                 intervalDay = Util.convertDateToDayInterval(mEndDate, mStartDate);
                 Log.d("Time", String.valueOf(intervalDay));
@@ -192,9 +210,6 @@ public class AddTripDetailsActivity extends AppCompatActivity implements View.On
             Date date = null;
             try {
                 date = dateFormat.parse(dateString);
-                //set the local variable end date as the date format so we can find the day interval.
-                mStartDate = date;
-                Log.d("Time", mStartDate.toString());
                 //if start date is updated, update the end date to be only 1 day after the start date.
                 updateDisplay(mEndDateTv, String.valueOf(dateFormat.format(new Date(date.getTime() + (1000 * 60 * 60 * 24)))));
             } catch (ParseException e) {
@@ -212,16 +227,6 @@ public class AddTripDetailsActivity extends AppCompatActivity implements View.On
             String leadingDay = df.format(day);
             String leadingMonth = df.format(month);
             String dateString = leadingDay + "-" + leadingMonth + "-" + year;
-            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            Date date = null;
-            try {
-                date = dateFormat.parse(dateString);
-                //set the local variable end date as the date format so we can find the day interval.
-                mEndDate = date;
-                Log.d("Time", mEndDate.toString());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
             updateDisplay(mEndDateTv, dateString);
         }
     };

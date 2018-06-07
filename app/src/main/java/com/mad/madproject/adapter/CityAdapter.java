@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mad.madproject.R;
-import com.mad.madproject.tripdetails.AddTripDetailsActivity;
+import com.mad.madproject.addtripdetails.AddTripDetailsActivity;
 import com.mad.madproject.model.City;
 import com.mad.madproject.utils.Constant;
 
