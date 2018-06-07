@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     ActionBarDrawerToggle drawerToggle;
 
-    //TODO: This 3 attribute can be better if we choose to handle it in modelview.
+    //TODO: This 3 attribute can be better if we choose to handle it in view model.
     private FirebaseAuth mAuth;
     //handle the listener for whether user has an existing token session for authentication.
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
         View header = navigationView.getHeaderView(0);
         //find the username textview from the header.
         final TextView username = (TextView) header.findViewById(R.id.username_nav_header);
+        final TextView email = (TextView) header.findViewById(R.id.email_nav_header);
 
         //set the navigation item handler for each item.
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
@@ -107,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setCheckedItem(R.id.homepage);
 
         setDefaultFragment();
-        setUserName(username);
+        setUserDetails(username, email);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -205,13 +206,15 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Using firebase to set the user's username. (Should be in ViewModel Logic).
      * @param username
+     * @param email
      */
-    private void setUserName(final TextView username) {
+    private void setUserDetails(final TextView username, final TextView email) {
         Util.getDatabaseReference("Users").child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 currentUser = dataSnapshot.getValue(User.class);
                 username.setText(currentUser != null ? currentUser.getUsername() : "Anonymous");
+                email.setText(currentUser.getEmail());
             }
 
             @Override
