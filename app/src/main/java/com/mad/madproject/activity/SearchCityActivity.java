@@ -82,49 +82,12 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
 
         //set the filter to city only.
         AutocompleteFilter cityFilter = new AutocompleteFilter.Builder().setTypeFilter(AutocompleteFilter.TYPE_FILTER_CITIES).build();
+
         //intialising for the placeautocompleteadapter.
         mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGeoDataClient, Constant.LAT_LNG_BOUNDS, cityFilter);
 
         mSearchTextField.setAdapter(mPlaceAutocompleteAdapter);
         mSearchTextField.setOnItemClickListener(mAutoCompleteClickListener);
-
-        mSearchTextField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if(actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE ||
-                        keyEvent.getAction() == KeyEvent.ACTION_DOWN || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
-
-                    geoLocate();
-                }
-                return false;
-            }
-        });
-    }
-
-    private void geoLocate() {
-        Log.d(Constant.LOG_TAG, "geoLocate: geolocating");
-
-        String searchString = mSearchTextField.getText().toString();
-
-        Geocoder geocoder = new Geocoder(SearchCityActivity.this);
-        //List is abstract, we instantiate it with a new ArrayList.
-        List<Address> addresses = new ArrayList<>();
-        try {
-            //maximum number of result is 1.
-            addresses = geocoder.getFromLocationName(searchString, 1);
-        } catch (IOException e) {
-            Log.e(Constant.LOG_TAG, "geoLocate: IOException: " + e.getMessage());
-        }
-
-        if(addresses.size() > 0) {
-            Address address = addresses.get(0);
-            Log.d(Constant.LOG_TAG, "geoLocate: found a location:");
-        }
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
     }
 
 
@@ -159,9 +122,7 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
             try {
 
                 mCityInfo = new City();
-                mCityInfo.setImage("");
                 mCityInfo.setCity(place.getName().toString());
-                mCityInfo.setCountry("");
                 mCityInfo.setLatLng(place.getLatLng());
                 Log.d(Constant.LOG_TAG, mCityInfo.getCity());
                 Log.d(Constant.LOG_TAG, mCityInfo.getCountry());
@@ -217,8 +178,6 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
                 Log.e(Constant.LOG_TAG, "onResult: NullPointerException: " + e.getMessage());
             }
 
-
-
             places.release();
             Intent intent = new Intent(SearchCityActivity.this, AddTripDetailsActivity.class);
 
@@ -229,4 +188,13 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
             startActivity(intent);
         }
     };
+
+    /**
+     * Handle onConnectionFailed.
+     * @param connectionResult
+     */
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

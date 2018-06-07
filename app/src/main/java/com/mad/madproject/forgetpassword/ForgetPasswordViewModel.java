@@ -64,8 +64,4 @@ public class ForgetPasswordViewModel extends ViewModel {
         return mIsSuccessful;
     }
 
-
-
-
-
 }

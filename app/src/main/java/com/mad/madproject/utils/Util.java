@@ -101,6 +101,17 @@ public class Util {
         return value;
     }
 
+    //sometimes the places search might not return any value, or just 1 value or 2 value
+    public static int handlePlaceSearchIndexError(int size) {
+        int randomNumber = Util.randomizeNumber();
+
+        if (randomNumber > size) {
+            randomNumber = size - 1;
+        }
+
+        return randomNumber;
+    }
+
     /**
      * TODO: Needs to be fix with time stamp instead, because in this, it could caused problem like if user choose 31 June and 2 May, the interval day would be 29.
      * Convert the date to day interval
