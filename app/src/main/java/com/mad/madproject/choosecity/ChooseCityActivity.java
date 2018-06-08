@@ -1,20 +1,15 @@
-package com.mad.madproject.activity;
+package com.mad.madproject.choosecity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -45,14 +40,11 @@ import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SearchCityActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class ChooseCityActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 
     @BindView(R.id.search_field)
@@ -162,7 +154,7 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
                                     }).addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(SearchCityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(ChooseCityActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                 }
@@ -179,7 +171,7 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
             }
 
             places.release();
-            Intent intent = new Intent(SearchCityActivity.this, AddTripDetailsActivity.class);
+            Intent intent = new Intent(ChooseCityActivity.this, AddTripDetailsActivity.class);
 
             intent.putExtra("City", mCityInfo.getCity());
             intent.putExtra("Latitude", mCityInfo.getLatLng().latitude);
@@ -195,6 +187,6 @@ public class SearchCityActivity extends AppCompatActivity implements GoogleApiCl
      */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT);
     }
 }

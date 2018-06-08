@@ -28,7 +28,6 @@ import com.mad.madproject.utils.Util;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,7 +35,7 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddTripDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddTripDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.start_date_tv)
     TextView mStartDateTv;
@@ -64,95 +63,24 @@ public class AddTripDetailsActivity extends AppCompatActivity implements View.On
         mTripDetailsViewModel = ViewModelProviders.of(this).get(AddTripDetailsViewModel.class);
         binding.setAddTripDetailsViewModel(mTripDetailsViewModel);
 
-        LinearLayout startDateLayout = (LinearLayout) findViewById(R.id.start_date_layout);
-        LinearLayout endDateLayout = (LinearLayout) findViewById(R.id.end_date_layout);
-
-        startDateLayout.setOnClickListener(this);
-        endDateLayout.setOnClickListener(this);
-
-        //TODO: Does not use the advantage of the view model if we call this because it wont survive the configuration changes.
-        mStartDate = mTripDetailsViewModel.setAndGetInitialStartDate();
-        mEndDate = mTripDetailsViewModel.setAndGetInitialEndDate();
         //Set up data using the trip details.
         mTripDetailsViewModel.setInitialTripName(getIntent().getStringExtra("City"));
 
+        onStartDateLayoutClicked();
+        onEndDateLayoutClicked();
         onConfirmClicked();
-    }
-
-    @Override
-    public void onClick(View v) {
-        Calendar cal = Calendar.getInstance();
-        //initialise the current year, month and day.
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog.OnDateSetListener dateSetListener;
-
-        switch (v.getId()) {
-            case R.id.start_date_layout:
-                dateSetListener = startDateSetListener;
-                break;
-            case R.id.end_date_layout:
-                dateSetListener = endDateSetListener;
-                break;
-            default:
-                dateSetListener = null;
-        }
-
-        DatePickerDialog dateDialog = new DatePickerDialog(AddTripDetailsActivity.this,
-                android.R.style.Theme_Holo_Dialog,
-                dateSetListener,
-                year, month, day);
-        DatePicker datePicker = dateDialog.getDatePicker();
-        datePicker.setMinDate(cal.getTimeInMillis());
-
-        //set the min date and max date for the end date text view, for min date, should be at least for a day,
-        // for max date, 5 day after the start date. (including this day) (at least for current version).
-        if (dateSetListener == endDateSetListener) {
-            Date date = cal.getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-            try {
-                date = sdf.parse(mStartDateTv.getText().toString());
-            } catch (ParseException e) {
-                //TODO: Handle catch.
-                e.printStackTrace();
-            }
-            Log.d(Constant.LOG_TAG, date.toString());
-            long minDate = date.getTime();
-            long maxDate = date.getTime() + Constant.DAY_LIMIT;
-            Log.d(Constant.LOG_TAG, String.valueOf(maxDate));
-            datePicker.setMinDate(minDate);
-            datePicker.setMaxDate(maxDate);
-        }
-        dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dateDialog.show();
     }
 
     private void onConfirmClicked() {
         ((Button) findViewById(R.id.addtrip_activity_confirm_btn)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                Date date = null;
-                try {
-                    date = dateFormat.parse(mStartDateTv.getText().toString());
-                    //set the local variable end date as the date format so we can find the day interval.
-                    mStartDate = date;
-                    Log.d("Time", mStartDate.toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    date = dateFormat.parse(mEndDateTv.getText().toString());
-                    mEndDate = date;
-                    Log.d("Time", mEndDate.toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+
+                mStartDate = Util.parseDate(mStartDateTv.getText().toString());
+                mEndDate = Util.parseDate(mEndDateTv.getText().toString());
+                intervalDay = Util.convertDateToDayInterval(mEndDate, mStartDate);
 
                 Intent intent = new Intent(getBaseContext(), ChooseAccommodationActivity.class);
-                intervalDay = Util.convertDateToDayInterval(mEndDate, mStartDate);
                 Log.d("Time", String.valueOf(intervalDay));
                 intent.putExtra("Day", intervalDay);
                 //TODO: Chaining intent put? is this bad practice?
@@ -167,69 +95,84 @@ public class AddTripDetailsActivity extends AppCompatActivity implements View.On
         });
     }
 
-//
-//    private void observeStartDate() {
-//        mTripDetailsViewModel.getStartDateLive().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String date) {
-//                mStartDateTv.setText(date);
-//            }
-//        });
-//    }
+    private void onStartDateLayoutClicked() {
+        ((LinearLayout) findViewById(R.id.start_date_layout)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerSetup(startDateSetListener);
+            }
+        });
+    }
 
-//    private void onStartDateLayoutClicked() {
-//        ((LinearLayout) findViewById(R.id.start_date_layout)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mTripDetailsViewModel.setStartDate();
-//            }
-//        });
-//    }
-//
-//    private void onEndDateLayoutClicked() {
-//        ((LinearLayout) findViewById(R.id.end_date_layout)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mTripDetailsViewModel.setStartDate();
-//            }
-//        });
-//    }
+    private void onEndDateLayoutClicked() {
+        ((LinearLayout) findViewById(R.id.end_date_layout)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerSetup(endDateSetListener);
+            }
+        });
+    }
 
     private DatePickerDialog.OnDateSetListener startDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-            month = month + 1;
-            DecimalFormat df = new DecimalFormat("00");
-            //add leading zeros to day less than 10.
-            String leadingDay = df.format(day);
-            String leadingMonth = df.format(month);
-            String dateString = leadingDay + "-" + leadingMonth + "-" + year;
+            String dateString = initialSetUpListener(year, month, day);
             updateDisplay(mStartDateTv, dateString);
             DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            //TODO: Handle this better, should write a function because we keep using the parsing method.
-            Date date = null;
-            try {
-                date = dateFormat.parse(dateString);
-                //if start date is updated, update the end date to be only 1 day after the start date.
-                updateDisplay(mEndDateTv, String.valueOf(dateFormat.format(new Date(date.getTime() + (1000 * 60 * 60 * 24)))));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
+            Date date = Util.parseDate(dateString);
+            //if start date is updated, update the end date to be only 1 day after the start date.
+            updateDisplay(mEndDateTv, String.valueOf(dateFormat.format(new Date(date.getTime() + (1000 * 60 * 60 * 24)))));
         }
     };
 
     private DatePickerDialog.OnDateSetListener endDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-            month = month + 1;
-            //add leading zeros to day less than 10.
-            DecimalFormat df = new DecimalFormat("00");
-            String leadingDay = df.format(day);
-            String leadingMonth = df.format(month);
-            String dateString = leadingDay + "-" + leadingMonth + "-" + year;
+            String dateString = initialSetUpListener(year, month, day);
             updateDisplay(mEndDateTv, dateString);
         }
     };
+
+    private void datePickerSetup(DatePickerDialog.OnDateSetListener listener) {
+        Calendar cal = Calendar.getInstance();
+        //initialise the current year, month and day.
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dateDialog = new DatePickerDialog(AddTripDetailsActivity.this,
+                android.R.style.Theme_Holo_Dialog,
+                listener,
+                year, month, day);
+
+        if(listener == endDateSetListener) {
+            DatePicker datePicker = dateDialog.getDatePicker();
+            Date date = Util.parseDate(mStartDateTv.getText().toString());
+            Log.d(Constant.LOG_TAG, date.toString());
+            //set up min date and max date.
+            long minDate = date.getTime();
+            long maxDate = date.getTime() + Constant.DAY_LIMIT;
+            Log.d(Constant.LOG_TAG, String.valueOf(maxDate));
+            datePicker.setMinDate(minDate);
+            datePicker.setMaxDate(maxDate);
+        }
+
+        DatePicker datePicker = dateDialog.getDatePicker();
+        datePicker.setMinDate(cal.getTimeInMillis());
+        dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dateDialog.show();
+    }
+
+    private String initialSetUpListener(int year, int month, int day) {
+        month = month + 1;
+        DecimalFormat df = new DecimalFormat("00");
+        //add leading zeros to day and month less than 10.
+        String leadingDay = df.format(day);
+        String leadingMonth = df.format(month);
+        String dateString = leadingDay + "-" + leadingMonth + "-" + year;
+        return dateString;
+    }
+
 
     private void updateDisplay(TextView dateDisplay, String date) {
         dateDisplay.setText(date);

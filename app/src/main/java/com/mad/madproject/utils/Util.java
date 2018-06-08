@@ -2,6 +2,7 @@ package com.mad.madproject.utils;
 
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -12,7 +13,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.maps.android.SphericalUtil;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -142,5 +148,23 @@ public class Util {
         if(fragment.getActivity() != null) {
             fragment.getActivity().setTitle(title);
         }
+    }
+
+    /**
+     * Get a string and parse it into date
+     * @param dateString the date in string.
+     * @return date format.
+     */
+    public static Date parseDate(String dateString) {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        Date date = Calendar.getInstance().getTime();
+        try {
+            date = dateFormat.parse(dateString);
+            //set the local variable end date as the date format so we can find the day interval.
+            Log.d("Time", date.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 }

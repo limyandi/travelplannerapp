@@ -1,6 +1,5 @@
 package com.mad.madproject.addtripdetails;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableField;
 
@@ -12,20 +11,15 @@ import java.util.Date;
 
 public class AddTripDetailsViewModel extends ViewModel {
 
-    private MutableLiveData<String> startDateLive;
-    private MutableLiveData<String> endDateLive;
-
     public final ObservableField<String> startDate = new ObservableField<>();
     public final ObservableField<String> endDate = new ObservableField<>();
     public final ObservableField<String> tripName = new ObservableField<>();
 
     public AddTripDetailsViewModel() {
 
-        startDateLive = new MutableLiveData<>();
-        endDateLive = new MutableLiveData<>();
-
-        startDateLive.setValue(startDate.get());
-        endDateLive.setValue(endDate.get());
+        //set the initial start date and end date when trip details view model is created.
+        setInitialStartDate();
+        setInitialEndDate();
     }
 
     public ItineraryPreview onNextClick(String cityName) {
@@ -37,35 +31,19 @@ public class AddTripDetailsViewModel extends ViewModel {
         tripName.set("Trip to " + cityName);
     }
 
-    public MutableLiveData<String> getStartDateLive() {
-        return startDateLive;
-    }
 
-    public MutableLiveData<String> getEndDateLive() {
-        return endDateLive;
-    }
-
-    public void setStartDate() {
-        startDateLive.postValue(startDate.get());
-    }
-
-
-    public Date setAndGetInitialStartDate() {
+    private void setInitialStartDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");//formating according to my need
 
         Date today = new Date();
         startDate.set(formatter.format(today));
-
-        return today;
     }
 
-    public Date setAndGetInitialEndDate() {
+    private void setInitialEndDate() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");//formating according to my need
 
         Date today = new Date();
         Date oneDayAfter = new Date(today.getTime() + (1000 * 60 * 60 * 24));
         endDate.set(formatter.format(oneDayAfter));
-
-        return oneDayAfter;
     }
 }

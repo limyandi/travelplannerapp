@@ -44,14 +44,14 @@
             android:name=".forgetpassword.ForgetPasswordActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
-            android:name=".activity.SearchCityActivity"
+            android:name=".choosecity.ChooseCityActivity"
             android:label="Choose The City"
             android:parentActivityName=".activity.MainActivity">
         </activity>
         <activity
             android:name=".addtripdetails.AddTripDetailsActivity"
             android:label="Itinerary Details"
-            android:parentActivityName=".activity.SearchCityActivity">
+            android:parentActivityName=".choosecity.ChooseCityActivity">
         </activity>
         <activity
             android:name=".activity.ChooseAccommodationActivity"

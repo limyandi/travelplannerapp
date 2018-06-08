@@ -21,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.madproject.R;
+import com.mad.madproject.choosecity.ChooseCityActivity;
 import com.mad.madproject.fragments.AboutFragment;
 import com.mad.madproject.fragments.HolidayNewsFragment;
 import com.mad.madproject.fragments.ItineraryPreviewFragment;
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SearchCityActivity.class);
+                Intent intent = new Intent(MainActivity.this, ChooseCityActivity.class);
                 startActivity(intent);
             }
         });
