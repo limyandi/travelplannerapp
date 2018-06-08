@@ -57,7 +57,7 @@
     <string name="section_format">Itinerary Day: %1$d</string>
     <string name="username_text">Limyandi Vicotrico</string>
     <string name="change_username_text">Change Username</string>
-    <string name="delete_past_trips_text">Delete past trips</string>
+    <string name="delete_past_trips_text">Delete past places</string>
     <string name="delete_trip_history_text">Delete Trip History</string>
     <string name="receive_notifications_text">Receive notifications</string>
     <string name="receive_notifications_text_details">We will notify you daily when your trip is close</string>

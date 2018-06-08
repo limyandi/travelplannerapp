@@ -130,7 +130,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        //TODO: Handle connection failed.
+                        Log.d("MVVM", connectionResult.getErrorMessage());
                     }
                 }).build();
 
@@ -219,7 +219,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
             ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
         }
     }
-
 
     //TODO: This might be bad.
     private void initEditText() {
@@ -362,11 +361,22 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                             }
                         }
                     }
-
+                    //TODO: Double dismiss?
+                    else {
+                        mPrgDialog.dismiss();
+                        MaterialDialog dialog = new MaterialDialog.Builder(ChooseAccommodationActivity.this)
+                                .title("Sorry!")
+                                .content("Our database can't suggest any places for this accommodation yet. Try another address!")
+                                .positiveText("Close")
+                                .show();
+                    }
                 } else {
-                    //TODO: Show UI(Material Dialog) instead of showing toast.
-                    Toast.makeText(ChooseAccommodationActivity.this, "Sorry, our database can't suggest any places for this accommodation yet.", Toast.LENGTH_LONG).show();
                     mPrgDialog.dismiss();
+                    MaterialDialog dialog = new MaterialDialog.Builder(ChooseAccommodationActivity.this)
+                            .title("Sorry!")
+                            .content("Our database can't suggest any places for this accommodation yet. Try another address!")
+                            .positiveText("Close")
+                            .show();
                 }
             }
 

@@ -68,7 +68,7 @@ public class ChooseCityActivity extends AppCompatActivity implements GoogleApiCl
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        //TODO: Handle connection failed.
+                        Log.d("MVVM", connectionResult.getErrorMessage());
                     }
                 }).build();
 

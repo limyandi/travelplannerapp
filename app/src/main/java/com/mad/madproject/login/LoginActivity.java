@@ -66,8 +66,6 @@ public class LoginActivity extends AppCompatActivity {
         mLoginViewModel.getIsSuccessful().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isSuccessful) {
-                //TODO: Handle logic here might not be right.
-                mProgressBar.setVisibility(View.GONE);
                 if(isSuccessful) {
                     Utils.setIntent(LoginActivity.this, MainActivity.class);
                     mProgressBar.setVisibility(View.GONE);

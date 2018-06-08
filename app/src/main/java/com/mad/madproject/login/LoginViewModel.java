@@ -37,9 +37,6 @@ public class LoginViewModel extends ViewModel {
         mIsSuccessful.postValue(true);
     }
 
-    /**
-     * Firebase Login Utility. TODO: Create repository for this.
-     */
     public void onLoginClick() {
         if(validateInputs()) {
             mFirebaseAuthenticationRepository.login(email.get(), password.get(), mIsSuccessful);
@@ -73,7 +70,6 @@ public class LoginViewModel extends ViewModel {
     }
 
 
-    //TODO: Might not be right. the logic in here does not feel right.
     public boolean getIsLoggedIn() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 

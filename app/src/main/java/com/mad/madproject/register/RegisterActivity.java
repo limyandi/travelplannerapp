@@ -74,7 +74,6 @@ public class RegisterActivity extends AppCompatActivity {
                     Utils.setIntent(RegisterActivity.this, MainActivity.class);
                     progressBar.setVisibility(View.GONE);
                 }
-                //TODO: Handle else.
                 else {
                     progressBar.setVisibility(View.GONE);
                     mRegisterUnsuccessfulTv.setVisibility(View.VISIBLE);

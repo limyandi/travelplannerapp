@@ -65,7 +65,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull CityAdapter.ViewHolder holder, int position) {
         City city = mCities.get(position);
 
-        //TODO: Fix this later (Not all have the same images)
         holder.cityImage.setImageResource(R.drawable.background);
         holder.city.setText(city.getCity());
         holder.country.setText(city.getCountry());

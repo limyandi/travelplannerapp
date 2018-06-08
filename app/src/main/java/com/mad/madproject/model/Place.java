@@ -27,15 +27,7 @@ public class Place {
     private String mVicinity;
 
     private int timeToGo;
-
     private String placeType;
-//    @BindingAdapter({"bind:imageUrl"})
-//    public static void loadImage(ImageView view, String url) {
-//        Glide.with(view.getContext()).load(url)
-//                .crossFade()
-//                .fitCenter()
-//                .into(view);
-//    }
 
     public Geometry getGeometry() {
         return mGeometry;
@@ -84,14 +76,13 @@ public class Place {
      */
     public String getPlaceType() {
         RandomCollection rc;
-        //TODO: Suggest to food places at 11 a.m.
         switch (timeToGo) {
             case 9:
                 rc = new RandomCollection().add(40, "park").add(40, "amusement_park").add(20, "cafe");
                 return rc.next();
             case 11:
-                rc = new RandomCollection().add(30, "department_store").add(30, "aquarium")
-                        .add(10, "convenience_store").add(30, "art_gallery");
+                rc = new RandomCollection().add(50, "restaurant").add(30, "meal_takeaway")
+                        .add(20, "cafe");
                 return rc.next();
             case 13:
                 rc = new RandomCollection().add(40, "aquarium").add(30, "city_hall")
@@ -102,7 +93,7 @@ public class Place {
                         .add(50, "zoo");
                 return rc.next();
             case 17:
-                rc = new RandomCollection().add(100, "restaurant");
+                rc = new RandomCollection().add(70, "restaurant").add(30, "meal_takeaway");
                 return rc.next();
             case 19:
                 rc = new RandomCollection().add(50, "casino").add(30, "night_club").add(20, "spa");

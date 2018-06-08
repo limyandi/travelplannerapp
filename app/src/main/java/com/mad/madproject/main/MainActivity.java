@@ -122,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        observeUser();
     }
 
     @Override
@@ -205,6 +204,12 @@ public class MainActivity extends AppCompatActivity {
         if(mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        observeUser();
     }
 
     /**

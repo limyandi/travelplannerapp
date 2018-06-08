@@ -201,7 +201,7 @@ public class AddTripDetailsActivity extends AppCompatActivity {
             dialog.show();
         } else {
             //cannot resolve at all
-            //TODO: Clean this.
+            Log.d("MVVM", "isServicesOK: You can't make map requests");
             Toast.makeText(AddTripDetailsActivity.this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;

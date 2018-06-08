@@ -72,7 +72,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     /**
      * Observe the successfulness of the forget password.
      */
-    //TODO: Handling if and else here seems not right.
     private void observeForgetPassword() {
         mForgetPasswordViewModel.getIsSuccessful().observe(this, new Observer<Boolean>() {
             @Override
@@ -81,7 +80,6 @@ public class ForgetPasswordActivity extends AppCompatActivity {
                     Utils.setIntent(ForgetPasswordActivity.this, LoginActivity.class);
                     progressBar.setVisibility(View.GONE);
                 } else {
-                    //TODO: Handle is not successful
                     progressBar.setVisibility(View.GONE);
                     mFailedForgetPasswordTv.setVisibility(View.VISIBLE);
                 }
