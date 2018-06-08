@@ -11,20 +11,20 @@ import java.io.Serializable;
  */
 
 /**
- * Not really part of the model for the database. Acts as Helper class to clean the code more, so the apps do not need to store 3 different fields like name, address, and mLatLng.
+ * Not really part of the model for the database. Acts as Helper class to clean the code more, so the apps do not need to store 3 different fields like mName, mAddress, and mLatLng.
  */
 public class Accommodation implements Serializable {
-    private String name;
-    private String address;
-    private String phoneNumber;
-    private Uri websiteUri;
+    private String mName;
+    private String mAddress;
+    private String mPhoneNumber;
+    private Uri mWebsiteUri;
     private LatLng mLatLng;
 
     public Accommodation(String name, String address, String phoneNumber, Uri websiteUri, LatLng latLng) {
-        this.name = name;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.websiteUri = websiteUri;
+        this.mName = name;
+        this.mAddress = address;
+        this.mPhoneNumber = phoneNumber;
+        this.mWebsiteUri = websiteUri;
         mLatLng = latLng;
     }
 
@@ -32,35 +32,35 @@ public class Accommodation implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.mName = name;
     }
 
     public String getAddress() {
-        return address;
+        return mAddress;
     }
 
     public void setAddress(String address) {
-        this.address = address;
+        this.mAddress = address;
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return mPhoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        this.mPhoneNumber = phoneNumber;
     }
 
     public Uri getWebsiteUri() {
-        return websiteUri;
+        return mWebsiteUri;
     }
 
     public void setWebsiteUri(Uri websiteUri) {
-        this.websiteUri = websiteUri;
+        this.mWebsiteUri = websiteUri;
     }
 
     public LatLng getLatLng() {
@@ -72,7 +72,7 @@ public class Accommodation implements Serializable {
     }
 
     public String toString() {
-        return "Name: " + name + "\n" +
-                "Address: " + address + "\n";
+        return "Name: " + mName + "\n" +
+                "Address: " + mAddress + "\n";
     }
 }

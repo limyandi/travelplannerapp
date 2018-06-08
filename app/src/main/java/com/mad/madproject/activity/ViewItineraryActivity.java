@@ -149,7 +149,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
 
             Itinerary itinerary = (Itinerary) getArguments().getSerializable("Itinerary Lists");
 
-            mTripsList = itinerary != null ? itinerary.getTrips() : null;
+            mTripsList = itinerary != null ? itinerary.getPlaces() : null;
 
             mTripAdapter = new TripAdapter(mTripsList, getActivity());
             RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.itinerary_view);

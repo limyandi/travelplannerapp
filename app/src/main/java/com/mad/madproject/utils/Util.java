@@ -2,6 +2,7 @@ package com.mad.madproject.utils;
 
 
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -12,7 +13,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.maps.android.SphericalUtil;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -65,14 +71,13 @@ public class Util {
     //TODO: Redundant functions, we have one similar function in main activity.
     public static String getPlaceType(int timeToGo) {
         RandomCollection rc;
-        //TODO: Suggest to food places at 11 a.m.
         switch (timeToGo) {
             case 9:
                 rc = new RandomCollection().add(40, "park").add(40, "amusement_park").add(20, "cafe");
                 return rc.next();
             case 11:
-                rc = new RandomCollection().add(30, "department_store").add(30, "aquarium")
-                        .add(10, "convenience_store").add(30, "art_gallery");
+                rc = new RandomCollection().add(50, "restaurant").add(30, "meal_takeaway")
+                        .add(20, "cafe");
                 return rc.next();
             case 13:
                 rc = new RandomCollection().add(40, "aquarium").add(30, "city_hall")
@@ -83,7 +88,7 @@ public class Util {
                         .add(50, "zoo");
                 return rc.next();
             case 17:
-                rc = new RandomCollection().add(100, "restaurant");
+                rc = new RandomCollection().add(70, "restaurant").add(30, "meal_takeaway");
                 return rc.next();
             case 19:
                 rc = new RandomCollection().add(50, "casino").add(30, "night_club").add(20, "spa");
@@ -101,8 +106,18 @@ public class Util {
         return value;
     }
 
+    //sometimes the places search might not return any value, or just 1 value or 2 value
+    public static int handlePlaceSearchIndexError(int size) {
+        int randomNumber = Util.randomizeNumber();
+
+        if (randomNumber > size) {
+            randomNumber = size - 1;
+        }
+
+        return randomNumber;
+    }
+
     /**
-     * TODO: Needs to be fix with time stamp instead, because in this, it could caused problem like if user choose 31 June and 2 May, the interval day would be 29.
      * Convert the date to day interval
      * @param endDate refer to the date of the trip finish
      * @param startDate refer to the date of the trip starting
@@ -131,5 +146,23 @@ public class Util {
         if(fragment.getActivity() != null) {
             fragment.getActivity().setTitle(title);
         }
+    }
+
+    /**
+     * Get a string and parse it into date
+     * @param dateString the date in string.
+     * @return date format.
+     */
+    public static Date parseDate(String dateString) {
+        DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        Date date = Calendar.getInstance().getTime();
+        try {
+            date = dateFormat.parse(dateString);
+            //set the local variable end date as the date format so we can find the day interval.
+            Log.d("Time", date.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
     }
 }

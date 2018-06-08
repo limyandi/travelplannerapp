@@ -12,9 +12,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/uikitbgclear"
-        android:fitsSystemWindows="true"
         tools:context="com.mad.madproject.login.LoginActivity">
 
         <ImageView
@@ -22,183 +21,199 @@
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
             android:src="@drawable/transparent"
+            android:contentDescription="BG"
+
             />
 
-        <LinearLayout
-            android:id="@+id/logo_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:orientation="vertical"
-            android:padding="@dimen/activity_horizontal_margin">
-
-
-            <ImageView
-                android:layout_width="@dimen/logo_w_h"
-                android:layout_height="55dp"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/logo_txt"
-                android:src="@drawable/logo"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/application_name"
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/logo_layout"
-            android:layout_marginBottom="40dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:text="Riote"
-            android:textColor="#fff"
-            android:textSize="40sp"/>
+            android:isScrollContainer="false"
+            >
 
-        <LinearLayout
-            android:id="@+id/field_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/application_name"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="@dimen/activity_field_margin"
-            android:layout_marginRight="@dimen/activity_field_margin"
-            android:orientation="vertical">
-
-            <android.support.design.widget.TextInputLayout
+            <RelativeLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:error="@{loginViewModel.errorEmail}">
+                android:layout_height="wrap_content">
 
-                <EditText
-                    android:id="@+id/email"
+                <LinearLayout
+                    android:id="@+id/logo_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="vertical"
+                    android:padding="@dimen/activity_horizontal_margin">
+
+
+                    <ImageView
+                        android:layout_width="@dimen/logo_w_h"
+                        android:layout_height="55dp"
+                        android:layout_gravity="center_horizontal"
+                        android:contentDescription="@string/logo_txt"
+                        android:src="@drawable/logo"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/application_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/roundwhite"
-                    android:drawableLeft="@drawable/email"
-                    android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/email"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:padding="10dp"
-                    android:text="@={loginViewModel.email}"
-                    android:textColor="@color/colorTextAndIcons"
-                    android:textColorHint="@color/colorTextAndIcons"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_below="@+id/logo_layout"
+                    android:layout_marginBottom="40dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:text="Riote"
+                    android:textColor="#fff"
+                    android:textSize="40sp"/>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:error="@{loginViewModel.errorPassword}">
-
-                <EditText
-                    android:id="@+id/password"
+                <LinearLayout
+                    android:id="@+id/field_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/roundwhite"
-                    android:drawableLeft="@drawable/password"
-                    android:drawablePadding="10dp"
-                    android:drawableStart="@drawable/password"
-                    android:focusableInTouchMode="true"
-                    android:hint="@string/hint_password"
-                    android:imeOptions="actionUnspecified"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:padding="10dp"
-                    android:text="@={loginViewModel.password}"
-                    android:textColor="@color/colorTextAndIcons"
-                    android:textColorHint="@color/colorTextAndIcons"/>
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_below="@id/application_name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="@dimen/activity_field_margin"
+                    android:layout_marginRight="@dimen/activity_field_margin"
+                    android:orientation="vertical">
 
-        </LinearLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:error="@{loginViewModel.errorEmail}">
 
-        <LinearLayout
-            android:id="@+id/button_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/field_layout"
-            android:layout_marginLeft="@dimen/activity_field_margin"
-            android:layout_marginRight="@dimen/activity_field_margin">
+                        <EditText
+                            android:id="@+id/email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/roundwhite"
+                            android:drawableLeft="@drawable/email"
+                            android:drawablePadding="10dp"
+                            android:drawableStart="@drawable/email"
+                            android:hint="@string/email"
+                            android:inputType="textEmailAddress"
+                            android:maxLines="1"
+                            android:padding="10dp"
+                            android:text="@={loginViewModel.email}"
+                            android:textColor="@color/colorTextAndIcons"
+                            android:textColorHint="@color/colorTextAndIcons"/>
+                    </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/btn_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/round"
-                android:padding="15dp"
-                android:text="@string/btn_signin"
-                android:textColor="@color/colorTextAndIcons"
-                android:textStyle="bold"/>
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:error="@{loginViewModel.errorPassword}">
 
-        </LinearLayout>
+                        <EditText
+                            android:id="@+id/password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/roundwhite"
+                            android:drawableLeft="@drawable/password"
+                            android:drawablePadding="10dp"
+                            android:drawableStart="@drawable/password"
+                            android:focusableInTouchMode="true"
+                            android:hint="@string/hint_password"
+                            android:imeOptions="actionUnspecified"
+                            android:inputType="textPassword"
+                            android:maxLines="1"
+                            android:padding="10dp"
+                            android:text="@={loginViewModel.password}"
+                            android:textColor="@color/colorTextAndIcons"
+                            android:textColorHint="@color/colorTextAndIcons"/>
+                    </android.support.design.widget.TextInputLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/button_layout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp">
+                </LinearLayout>
 
-            <TextView
-                android:id="@+id/failed_identity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:lines="2"
-                android:text="Your username and password does not match, try loggging in again!"
-                android:visibility="gone"
-                android:textColor="@color/colorError"
-                />
-        </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/button_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/field_layout"
+                    android:layout_marginLeft="@dimen/activity_field_margin"
+                    android:layout_marginRight="@dimen/activity_field_margin">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/btn_login"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/round"
+                        android:padding="15dp"
+                        android:text="@string/btn_signin"
+                        android:textColor="@color/colorTextAndIcons"
+                        android:textStyle="bold"/>
 
-            <Button
-                android:id="@+id/btn_reset_password"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="15dp"
-                android:layout_marginRight="15dp"
-                android:background="@null"
-                android:text="@string/btn_forgot_password"
-                android:textAllCaps="false"
-                android:textColor="@color/colorPrimaryLight"/>
+                </LinearLayout>
 
-            <!-- Link to Login Screen -->
+                <LinearLayout
+                    android:id="@+id/error_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/button_layout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp">
 
-            <Button
-                android:id="@+id/btn_signup"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginStart="15dp"
-                android:background="@null"
-                android:text="@string/btn_link_to_register"
-                android:textAllCaps="false"
-                android:textColor="@color/colorPrimaryLight"
-                android:textSize="15sp"/>
+                    <TextView
+                        android:id="@+id/failed_identity"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:lines="2"
+                        android:text="Your username and password does not match, try loggging in again!"
+                        android:textColor="@color/colorError"
+                        android:visibility="gone"
+                        />
+                </LinearLayout>
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/error_layout"
+                    android:layout_centerHorizontal="true"
+                    android:orientation="horizontal">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_below="@id/button_layout"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:visibility="gone"
-            />
+                    <Button
+                        android:id="@+id/btn_reset_password"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:background="@null"
+                        android:text="@string/btn_forgot_password"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimaryLight"/>
+
+                    <!-- Link to Login Screen -->
+
+                    <Button
+                        android:id="@+id/btn_signup"
+                        style="@style/Base.Widget.AppCompat.Button.Borderless"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="15dp"
+                        android:background="@null"
+                        android:text="@string/btn_link_to_register"
+                        android:textAllCaps="false"
+                        android:textColor="@color/colorPrimaryLight"
+                        android:textSize="15sp"/>
+
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/button_layout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    />
+
+            </RelativeLayout>
+        </ScrollView>
     </RelativeLayout>
-
 
 </layout>

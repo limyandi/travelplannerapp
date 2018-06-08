@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.mad.madproject.R;
 import com.mad.madproject.databinding.ActivityLoginBinding;
 import com.mad.madproject.forgetpassword.ForgetPasswordActivity;
-import com.mad.madproject.activity.MainActivity;
+import com.mad.madproject.main.MainActivity;
 import com.mad.madproject.register.RegisterActivity;
 import com.mad.madproject.utils.Utils;
 
@@ -66,8 +66,6 @@ public class LoginActivity extends AppCompatActivity {
         mLoginViewModel.getIsSuccessful().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isSuccessful) {
-                //TODO: Handle logic here might not be right.
-                mProgressBar.setVisibility(View.GONE);
                 if(isSuccessful) {
                     Utils.setIntent(LoginActivity.this, MainActivity.class);
                     mProgressBar.setVisibility(View.GONE);

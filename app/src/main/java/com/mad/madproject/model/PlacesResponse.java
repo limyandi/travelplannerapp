@@ -10,14 +10,14 @@ import java.util.List;
  * The places response handle the retrieval of the root data from the web service Google Places API.
  */
 public class PlacesResponse {
-    //store the results retrieved from the web service.
-    List<Place> results;
+    //store the mResults retrieved from the web service.
+    List<Place> mResults;
 
     public List<Place> getResults() {
-        return results;
+        return mResults;
     }
 
     public void setResults(List<Place> results) {
-        this.results = results;
+        this.mResults = results;
     }
 }

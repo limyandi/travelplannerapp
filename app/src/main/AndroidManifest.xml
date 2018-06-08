@@ -39,29 +39,29 @@
         <activity
             android:name=".register.RegisterActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
-        <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".main.MainActivity"/>
         <activity
             android:name=".forgetpassword.ForgetPasswordActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
-            android:name=".activity.SearchCityActivity"
+            android:name=".choosecity.ChooseCityActivity"
             android:label="Choose The City"
-            android:parentActivityName=".activity.MainActivity">
+            android:parentActivityName=".main.MainActivity">
         </activity>
         <activity
-            android:name=".activity.AddTripActivity"
+            android:name=".addtripdetails.AddTripDetailsActivity"
             android:label="Itinerary Details"
-            android:parentActivityName=".activity.SearchCityActivity">
+            android:parentActivityName=".choosecity.ChooseCityActivity">
         </activity>
         <activity
             android:name=".activity.ChooseAccommodationActivity"
             android:label="Choose the Accommodation"
-            android:parentActivityName=".activity.AddTripActivity">
+            android:parentActivityName=".addtripdetails.AddTripDetailsActivity">
         </activity>
         <activity
             android:name=".activity.ViewItineraryActivity"
             android:label="Itinerary"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".main.MainActivity"
             >
         </activity>
 

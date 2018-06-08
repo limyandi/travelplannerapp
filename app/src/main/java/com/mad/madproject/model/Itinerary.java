@@ -1,9 +1,6 @@
 package com.mad.madproject.model;
 
-import com.mad.madproject.utils.Util;
-
 import java.io.Serializable;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +11,7 @@ import java.util.ArrayList;
  * Itinerary class contains the trip lists for each day.
  */
 public class Itinerary implements Serializable {
-    private ArrayList<Place> mTrips;
+    private ArrayList<Place> mPlaces;
 
     /**
      * The default constructor
@@ -28,18 +25,18 @@ public class Itinerary implements Serializable {
      * @param trips the trips list in the whole day of the itinerary
      */
     public Itinerary(ArrayList<Place> trips) {
-        this.mTrips = trips;
+        this.mPlaces = trips;
     }
 
-    public ArrayList<Place> getTrips() {
-        return mTrips;
+    public ArrayList<Place> getPlaces() {
+        return mPlaces;
     }
 
-    public void setTrips(ArrayList<Place> trips) {
-        this.mTrips = trips;
+    public void setPlaces(ArrayList<Place> places) {
+        this.mPlaces = places;
     }
 
     public void addPlace(Place place) {
-        mTrips.add(place);
+        mPlaces.add(place);
     }
 }

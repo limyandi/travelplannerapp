@@ -16,7 +16,6 @@ import java.io.Serializable;
  * This class used parcelable, could have used serializable as well, but is good for future development
  *
  * This class defines the user object with a username, email and password.
- * TODO: Might not need to keep password?
  */
 public class User implements Parcelable {
     private String mUsername;
@@ -39,8 +38,8 @@ public class User implements Parcelable {
     }
 
     /**
-     * TODO: Havent done yet defining comments for this class.
-     * @param in
+     * The protected constructor for the parcelable class.
+     * @param in the parcel instances.
      */
     protected User(Parcel in) {
         mUsername = in.readString();

@@ -11,7 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.mad.madproject.R;
-import com.mad.madproject.activity.MainActivity;
+import com.mad.madproject.main.MainActivity;
 
 /**
  * Created by limyandivicotrico on 5/27/18.

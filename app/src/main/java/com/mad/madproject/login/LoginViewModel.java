@@ -4,14 +4,10 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableField;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.mad.madproject.FirebaseAuthenticationRepository;
+import com.mad.madproject.firebase.FirebaseAuthenticationRepository;
 import com.mad.madproject.validator.Validator;
 
 /**
@@ -41,9 +37,6 @@ public class LoginViewModel extends ViewModel {
         mIsSuccessful.postValue(true);
     }
 
-    /**
-     * Firebase Login Utility. TODO: Create repository for this.
-     */
     public void onLoginClick() {
         if(validateInputs()) {
             mFirebaseAuthenticationRepository.login(email.get(), password.get(), mIsSuccessful);
@@ -77,7 +70,6 @@ public class LoginViewModel extends ViewModel {
     }
 
 
-    //TODO: Might not be right. the logic in here does not feel right.
     public boolean getIsLoggedIn() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 

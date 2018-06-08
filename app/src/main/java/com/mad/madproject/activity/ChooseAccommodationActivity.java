@@ -82,7 +82,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
     private GeoDataClient mGeoDataClient;
     private GoogleApiClient mGoogleApiClient;
-    int PROXIMITY_RADIUS = 50000;
+
     double latitude = 0;
     double longitude = 0;
 
@@ -130,7 +130,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        //TODO: Handle connection failed.
+                        Log.d("MVVM", connectionResult.getErrorMessage());
                     }
                 }).build();
 
@@ -220,7 +220,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         }
     }
 
-
     //TODO: This might be bad.
     private void initEditText() {
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -265,12 +264,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                Intent newIntent = new Intent(ChooseAccommodationActivity.this, ViewItineraryActivity.class);
                                 Log.d(Constant.LOG_TAG, mAccommodationInfo.toString());
-                                //TODO: Key Naming.
-                                newIntent.putExtra("Accommodation Address", mAccommodationInfo.getAddress());
-                                newIntent.putExtra("Accommodation Latitude", mAccommodationInfo.getLatLng().latitude);
-                                newIntent.putExtra("Accommodation Longitude", mAccommodationInfo.getLatLng().longitude);
 
                                 //Start ProgressDialog
                                 initProgressDialog();
@@ -318,19 +312,18 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
         ApiService service = retrofit.create(ApiService.class);
 
-        Call<PlacesResponse> call = service.getNearbyPlaces(type, latitude + "," + longitude, PROXIMITY_RADIUS);
+        Call<PlacesResponse> call = service.getNearbyPlaces(type, latitude + "," + longitude, Constant.PROXIMITY_RADIUS);
 
         call.enqueue(new Callback<PlacesResponse>() {
             @Override
             public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
-                //TODO: Handle this part better.
                 //Handle if it does return any result.
                 if (response.body() != null) {
                     if (response.body().getResults().size() != 0) {
                         if (places.get(day).size() < 6 && day != numberOfTripDays) {
 
                             //randomize the number of place to go (0 to 5).
-                            int placeToGoIndex = handlePlaceSearchIndexError(response.body().getResults().size());
+                            int placeToGoIndex = Util.handlePlaceSearchIndexError(response.body().getResults().size());
 
                             response.body().getResults().get(placeToGoIndex).setTimeToGo(startTime);
                             String placeType = response.body().getResults().get(placeToGoIndex).getPlaceType();
@@ -368,11 +361,22 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                             }
                         }
                     }
-
+                    //TODO: Double dismiss?
+                    else {
+                        mPrgDialog.dismiss();
+                        MaterialDialog dialog = new MaterialDialog.Builder(ChooseAccommodationActivity.this)
+                                .title("Sorry!")
+                                .content("Our database can't suggest any places for this accommodation yet. Try another address!")
+                                .positiveText("Close")
+                                .show();
+                    }
                 } else {
-                    //TODO: Show UI(Material Dialog) instead of showing toast.
-                    Toast.makeText(ChooseAccommodationActivity.this, "Sorry, our database can't suggest any places for this accommodation yet.", Toast.LENGTH_LONG).show();
                     mPrgDialog.dismiss();
+                    MaterialDialog dialog = new MaterialDialog.Builder(ChooseAccommodationActivity.this)
+                            .title("Sorry!")
+                            .content("Our database can't suggest any places for this accommodation yet. Try another address!")
+                            .positiveText("Close")
+                            .show();
                 }
             }
 
@@ -393,9 +397,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         mPrgDialog.setCancelable(false);
         mPrgDialog.show();
     }
-    /*
-    ------------------------ google places API adapter ------------------------------- // Getting the details of one location clicked and showing dialog.
-     */
 
     //onItemClickListener, for each item in the dropdown list of the lists of accommodation that is clicked.
     private AdapterView.OnItemClickListener mAutoCompleteClickListener = new AdapterView.OnItemClickListener() {
@@ -443,14 +444,5 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         }
     };
 
-    //sometimes the places search might not return any value, or just 1 value or 2 value
-    public int handlePlaceSearchIndexError(int size) {
-        int randomNumber = Util.randomizeNumber();
 
-        if (randomNumber > size) {
-            randomNumber = size - 1;
-        }
-
-        return randomNumber;
-    }
 }
