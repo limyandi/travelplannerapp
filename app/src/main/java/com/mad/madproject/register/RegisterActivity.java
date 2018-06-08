@@ -11,10 +11,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mad.madproject.R;
-import com.mad.madproject.activity.MainActivity;
+import com.mad.madproject.main.MainActivity;
 import com.mad.madproject.databinding.ActivitySignupBinding;
 import com.mad.madproject.login.LoginActivity;
 import com.mad.madproject.utils.Utils;

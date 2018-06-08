@@ -1,7 +1,10 @@
-package com.mad.madproject.activity;
+package com.mad.madproject.main;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -11,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -51,12 +55,18 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private FirebaseUser mUser;
 
-    //to get the details of the current mUser from the firebase.
-    private User currentUser;
+    @BindView(R.id.nv)
+    NavigationView mNavigationView;
+
+    private View mHeader;
+
+    private NavHeaderViewModel mNavHeaderViewModel;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mNavHeaderViewModel = ViewModelProviders.of(this).get(NavHeaderViewModel.class);
 
         mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -84,17 +94,11 @@ public class MainActivity extends AppCompatActivity {
         //sync current state.
         drawerToggle.syncState();
 
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nv);
-
         //to get the header file of the navigation file.
-        View header = navigationView.getHeaderView(0);
-        //find the username textview from the header.
-        final TextView username = (TextView) header.findViewById(R.id.username_nav_header);
-        final TextView email = (TextView) header.findViewById(R.id.email_nav_header);
+        mHeader = mNavigationView.getHeaderView(0);
 
         //set the navigation item handler for each item.
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -106,10 +110,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //set the default checked item as the homepage (The main itinerary view).
-        navigationView.setCheckedItem(R.id.homepage);
+        mNavigationView.setCheckedItem(R.id.homepage);
 
         setDefaultFragment();
-        setUserDetails(username, email);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.activity_main_fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -119,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        observeUser();
     }
 
     @Override
@@ -205,25 +208,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Using firebase to set the user's username. (Should be in ViewModel Logic).
-     * @param username
-     * @param email
+     * Observe the user details data using the view model
      */
-    private void setUserDetails(final TextView username, final TextView email) {
-        Util.getDatabaseReference("Users").child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                currentUser = dataSnapshot.getValue(User.class);
-                username.setText(currentUser != null ? currentUser.getUsername() : "Anonymous");
-                email.setText(currentUser.getEmail());
-            }
+    private void observeUser() {
 
+        mNavHeaderViewModel.getUser().observe(this, new Observer<User>() {
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onChanged(@Nullable User user) {
+                ((TextView) mHeader.findViewById(R.id.username_nav_header)).setText(user.getUsername());
+                ((TextView) mHeader.findViewById(R.id.email_nav_header)).setText(user.getEmail());
             }
         });
     }
-
-
 }
