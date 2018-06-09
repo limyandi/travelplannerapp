@@ -18,7 +18,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -40,9 +39,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mad.madproject.NullOnEmptyConverterFactory;
+import com.mad.madproject.NearbyPlacesRepository;
 import com.mad.madproject.R;
-import com.mad.madproject.ApiService;
 import com.mad.madproject.adapter.PlaceAutocompleteAdapter;
 import com.mad.madproject.model.Accommodation;
 import com.mad.madproject.model.Itineraries;
@@ -51,6 +49,7 @@ import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.model.PlacesResponse;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
+import com.mad.madproject.viewitinerary.ViewItineraryActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,11 +57,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ChooseAccommodationActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -305,74 +299,50 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     }
 
     private void getNearbyPlace(String type, final String latitude, final String longitude) {
-        String baseUrl = "https://maps.googleapis.com/maps/";
-
-        //add new null on emptyconverter to make sure that null does not give errors.
-        Retrofit retrofit = new Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(new NullOnEmptyConverterFactory()).addConverterFactory(GsonConverterFactory.create()).build();
-
-        ApiService service = retrofit.create(ApiService.class);
-
-        Call<PlacesResponse> call = service.getNearbyPlaces(type, latitude + "," + longitude, Constant.PROXIMITY_RADIUS);
-
-        call.enqueue(new Callback<PlacesResponse>() {
+        NearbyPlacesRepository.getInstance().getPlaces(type, latitude + "," + longitude, Constant.PROXIMITY_RADIUS, new NearbyPlacesRepository.NearbyPlacesCallback() {
             @Override
-            public void onResponse(Call<PlacesResponse> call, Response<PlacesResponse> response) {
-                //Handle if it does return any result.
-                if (response.body() != null) {
-                    if (response.body().getResults().size() != 0) {
-                        if (places.get(day).size() < 6 && day != numberOfTripDays) {
-
-                            //randomize the number of place to go (0 to 5).
-                            int placeToGoIndex = Util.handlePlaceSearchIndexError(response.body().getResults().size());
-
-                            response.body().getResults().get(placeToGoIndex).setTimeToGo(startTime);
-                            String placeType = response.body().getResults().get(placeToGoIndex).getPlaceType();
-                            places.get(day).add(response.body().getResults().get(placeToGoIndex));
-                            double lat = response.body().getResults().get(placeToGoIndex).getGeometry().getLocation().getLat();
-                            double lng = response.body().getResults().get(placeToGoIndex).getGeometry().getLocation().getLng();
-                            response.body().getResults().get(placeToGoIndex).setTimeToGo(startTime);
-                            //TODO: Fix static timing.
-                            startTime += 2;
-                            getNearbyPlace(placeType, String.valueOf(lat), String.valueOf(lng));
+            public void onSuccess(PlacesResponse placesResponse) {
+                if (placesResponse != null && placesResponse.getResults().size() != 0) {
+                    if (places.get(day).size() < 6 && day != numberOfTripDays) {
+                        int placeToGoIndex = Util.handlePlaceSearchIndexError(placesResponse.getResults().size());
+                        placesResponse.getResults().get(placeToGoIndex).setTimeToGo(startTime);
+                        String placeType = placesResponse.getResults().get(placeToGoIndex).getPlaceType();
+                        places.get(day).add(placesResponse.getResults().get(placeToGoIndex));
+                        double lat = placesResponse.getResults().get(placeToGoIndex).getGeometry().getLocation().getLat();
+                        double lng = placesResponse.getResults().get(placeToGoIndex).getGeometry().getLocation().getLng();
+                        placesResponse.getResults().get(placeToGoIndex).setTimeToGo(startTime);
+                        //TODO: Fix static timing.
+                        startTime += 2;
+                        getNearbyPlace(placeType, String.valueOf(lat), String.valueOf(lng));
+                    } else {
+                        day++;
+                        if (day != (numberOfTripDays)) {
+                            //restart from the starting time again.
+                            //static time.
+                            startTime = 9;
+                            //Restart from the accommodation again.
+                            getNearbyPlace(Util.getPlaceType(startTime), String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
                         } else {
-                            day++;
-                            if (day != (numberOfTripDays)) {
-                                //restart from the starting time again.
-                                //static time.
-                                startTime = 9;
-                                //Restart from the accommodation again.
-                                getNearbyPlace(Util.getPlaceType(startTime), String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
-                            } else {
-                                for (int j = 0; j < places.size(); j++) {
-                                    mItineraryArrayList.add(new Itinerary(places.get(j)));
-                                }
-                                ItineraryPreview itineraryPreview = (ItineraryPreview) getIntent().getSerializableExtra("ItineraryPreview");
-                                //set the key here now, we dont set it in add trip activity.
-                                itineraryPreview.setItineraryPreviewId(itineraryPreviewKey);
-                                Itineraries itineraries = new Itineraries(mItineraryArrayList, itineraryPreview.getTripName(), itineraryPreview.getStartDate(), itineraryPreview.getEndDate(), itineraryPreviewKey);
-                                databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
-                                databaseReference.child("Itinerary").push().setValue(itineraries);
-                                //TODO: Handle progress dialog better.
-                                mPrgDialog.dismiss();
-                                Intent intent = new Intent(ChooseAccommodationActivity.this, ViewItineraryActivity.class);
-                                intent.putExtra("Day", itineraryPreview.getDayInterval());
-                                intent.putExtra("PreviewKey", itineraryPreviewKey);
-                                startActivity(intent);
+                            for (int j = 0; j < places.size(); j++) {
+                                mItineraryArrayList.add(new Itinerary(places.get(j)));
                             }
+                            ItineraryPreview itineraryPreview = (ItineraryPreview) getIntent().getSerializableExtra("ItineraryPreview");
+                            //set the key here now, we dont set it in add trip activity.
+                            itineraryPreview.setItineraryPreviewId(itineraryPreviewKey);
+                            Itineraries itineraries = new Itineraries(mItineraryArrayList, itineraryPreview.getTripName(), itineraryPreview.getStartDate(), itineraryPreview.getEndDate(), itineraryPreviewKey);
+                            databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
+                            databaseReference.child("Itinerary").push().setValue(itineraries);
+                            //TODO: Handle progress dialog better.
+                            mPrgDialog.dismiss();
+                            Intent intent = new Intent(ChooseAccommodationActivity.this, ViewItineraryActivity.class);
+                            intent.putExtra("Day", itineraryPreview.getDayInterval());
+                            intent.putExtra("PreviewKey", itineraryPreviewKey);
+                            startActivity(intent);
                         }
-                    }
-                    //TODO: Double dismiss?
-                    else {
-                        mPrgDialog.dismiss();
-                        MaterialDialog dialog = new MaterialDialog.Builder(ChooseAccommodationActivity.this)
-                                .title("Sorry!")
-                                .content("Our database can't suggest any places for this accommodation yet. Try another address!")
-                                .positiveText("Close")
-                                .show();
                     }
                 } else {
                     mPrgDialog.dismiss();
-                    MaterialDialog dialog = new MaterialDialog.Builder(ChooseAccommodationActivity.this)
+                    new MaterialDialog.Builder(ChooseAccommodationActivity.this)
                             .title("Sorry!")
                             .content("Our database can't suggest any places for this accommodation yet. Try another address!")
                             .positiveText("Close")
@@ -380,11 +350,9 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                 }
             }
 
-
             @Override
-            public void onFailure(Call<PlacesResponse> call, Throwable t) {
-                //TODO: Handle on Failure. (For example we cannot find the place)
-                Log.d(Constant.LOG_TAG, "onResponse onFailure");
+            public void onFailure(String message) {
+                Log.d(Constant.LOG_TAG_MVVM, message);
             }
         });
     }

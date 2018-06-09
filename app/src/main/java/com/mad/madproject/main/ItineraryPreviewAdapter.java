@@ -1,4 +1,4 @@
-package com.mad.madproject.adapter;
+package com.mad.madproject.main;
 
 /**
  * Created by limyandivicotrico on 5/17/18.
@@ -20,7 +20,7 @@ import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.storage.StorageReference;
 import com.mad.madproject.R;
-import com.mad.madproject.activity.ViewItineraryActivity;
+import com.mad.madproject.viewitinerary.ViewItineraryActivity;
 import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
