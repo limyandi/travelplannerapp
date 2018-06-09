@@ -1,5 +1,6 @@
-package com.mad.madproject.fragments;
+package com.mad.madproject.main;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -41,13 +42,16 @@ public class SettingsFragment extends Fragment {
 
     RelativeLayout mDeleteTripHistoryLayout;
     CheckBox mReceiveNotifCheckbox;
-    TextView mUsernameText;
+
+    SettingsViewModel mSettingsViewModel;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
         Util.setFragmentToolbarTitle(this, "Settings");
+
+        mSettingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
 
         mDeleteTripHistoryLayout = (RelativeLayout) rootView.findViewById(R.id.delete_trip_history);
         mReceiveNotifCheckbox = (CheckBox) rootView.findViewById(R.id.settings_checkbox);
@@ -74,34 +78,7 @@ public class SettingsFragment extends Fragment {
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                Util.getDatabaseReference("ItineraryPreview").orderByChild("ownerId").equalTo(Util.getUserUid()).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot itineraryView : dataSnapshot.getChildren()) {
-                                            ItineraryPreview itineraryPreview = itineraryView.getValue(ItineraryPreview.class);
-
-                                            Date endDate = new Date();
-                                            try {
-                                                Log.d(Constant.LOG_TAG, itineraryPreview.getEndDate());
-                                                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                                                endDate = formatter.parse(itineraryPreview.getEndDate());
-                                            } catch (ParseException e) {
-                                                Log.d(Constant.LOG_TAG, e.getMessage());
-                                                e.printStackTrace();
-                                            }
-
-                                            //check if the endDate past today's date
-                                            if (Util.isExpired(endDate, new Date())) {
-                                                //if yes, get the reference and then delete it from itinerary preview database.
-                                                itineraryView.getRef().removeValue();
-                                            }
-                                        }
-                                    }
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                });
+                                mSettingsViewModel.onConfirmClicked();
                             }
                         }).show();
             }
