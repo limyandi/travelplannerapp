@@ -49,7 +49,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
-        Util.setFragmentToolbarTitle(this, "Settings");
+        Util.setFragmentToolbarTitle(this, getString(R.string.settings_title));
 
         mSettingsViewModel = ViewModelProviders.of(this).get(SettingsViewModel.class);
 

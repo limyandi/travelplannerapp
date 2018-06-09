@@ -30,6 +30,9 @@ import com.mad.madproject.utils.Util;
 
 import java.util.ArrayList;
 
+/**
+ * View Itinerary Activity shows the trips plan associated with one trip created by the system.
+ */
 public class ViewItineraryActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "ViewItinerary";

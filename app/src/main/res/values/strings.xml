@@ -95,4 +95,18 @@
     <string name="city_text">City, Country</string>
     <string name="date_text">Date</string>
     <string name="trip_text">3 Days Trip</string>
+    <string name="sorry_text">Sorry!</string>
+    <string name="failed_generate_itinerary_text">Our database can\'t suggest any places for this accommodation yet. Try another address!</string>
+    <string name="close_text">Close</string>
+    <string name="about_us_title">About Us</string>
+    <string name="news_title">News</string>
+    <string name="days_trip_text">days trip</string>
+    <string name="hyphen">-</string>
+    <string name="pict_format_jpg">.jpg</string>
+    <string name="my_trips_title">My Trips</string>
+    <string name="trip_history_text">Trip History</string>
+    <string name="all_section">All</string>
+    <string name="present_section">Present</string>
+    <string name="past_section">Past</string>
+    <string name="settings_title">Settings</string>
 </resources>

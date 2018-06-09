@@ -1,4 +1,4 @@
-package com.mad.madproject.activity;
+package com.mad.madproject.chooseaccommodation;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -39,7 +39,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mad.madproject.NearbyPlacesRepository;
+import com.mad.madproject.retrofit.NearbyPlacesRepository;
 import com.mad.madproject.R;
 import com.mad.madproject.adapter.PlaceAutocompleteAdapter;
 import com.mad.madproject.model.Accommodation;
@@ -86,7 +86,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     private int day = 0;
     private int startTime = 9;
 
-    private ArrayList<ArrayList<com.mad.madproject.model.Place>> places = new ArrayList<ArrayList<com.mad.madproject.model.Place>>();
+    private ArrayList<ArrayList<com.mad.madproject.model.Place>> places = new ArrayList<>();
     private ArrayList<Itinerary> mItineraryArrayList = new ArrayList<>();
 
     private ProgressDialog mPrgDialog;
@@ -343,9 +343,9 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                 } else {
                     mPrgDialog.dismiss();
                     new MaterialDialog.Builder(ChooseAccommodationActivity.this)
-                            .title("Sorry!")
-                            .content("Our database can't suggest any places for this accommodation yet. Try another address!")
-                            .positiveText("Close")
+                            .title(R.string.sorry_text)
+                            .content(R.string.failed_generate_itinerary_text)
+                            .positiveText(R.string.close_text)
                             .show();
                 }
             }

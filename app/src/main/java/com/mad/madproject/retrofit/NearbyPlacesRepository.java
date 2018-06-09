@@ -1,14 +1,6 @@
-package com.mad.madproject;
+package com.mad.madproject.retrofit;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.util.Log;
-
-import com.mad.madproject.model.Place;
 import com.mad.madproject.model.PlacesResponse;
-import com.mad.madproject.model.User;
-
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;

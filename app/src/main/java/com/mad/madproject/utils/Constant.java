@@ -13,6 +13,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 public class Constant {
     public static final String LOG_TAG = "Rico Travel";
     public static final String LOG_TAG_MVVM = "MVVM";
+    public static final String DATE_FORMAT = "dd-MM-yyyy";
+    public static final int ONE_DAY = 86400000;
     public static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(new LatLng(-40, -168), new LatLng(71,136));
     //this is 4 days in milliseconds.
     public static final long DAY_LIMIT = 345600000;

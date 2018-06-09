@@ -21,7 +21,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.mad.madproject.databinding.ActivityAddTripBinding;
 import com.mad.madproject.R;
-import com.mad.madproject.activity.ChooseAccommodationActivity;
+import com.mad.madproject.chooseaccommodation.ChooseAccommodationActivity;
 import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
@@ -135,10 +135,10 @@ public class AddTripDetailsActivity extends AppCompatActivity {
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
             String dateString = initialSetUpListener(year, month, day);
             updateDisplay(mStartDateTv, dateString);
-            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+            DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.US);
             Date date = Util.parseDate(dateString);
             //if start date is updated, update the end date to be only 1 day after the start date.
-            updateDisplay(mEndDateTv, String.valueOf(dateFormat.format(new Date(date.getTime() + (1000 * 60 * 60 * 24)))));
+            updateDisplay(mEndDateTv, String.valueOf(dateFormat.format(new Date(date.getTime() + (Constant.ONE_DAY)))));
         }
     };
 

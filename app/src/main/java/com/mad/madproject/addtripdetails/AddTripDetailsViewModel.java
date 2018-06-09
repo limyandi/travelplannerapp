@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableField;
 
 import com.mad.madproject.model.ItineraryPreview;
+import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
 
 import java.text.SimpleDateFormat;
@@ -43,7 +44,7 @@ public class AddTripDetailsViewModel extends ViewModel {
      * Set the initial start date.
      */
     private void setInitialStartDate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);//formating according to my need
+        SimpleDateFormat formatter = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.US);//formating according to my need
 
         Date today = new Date();
         startDate.set(formatter.format(today));
@@ -54,10 +55,10 @@ public class AddTripDetailsViewModel extends ViewModel {
      * Set the initial end date.
      */
     private void setInitialEndDate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);//formating according to my need
+        SimpleDateFormat formatter = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.US);//formating according to my need
 
         Date today = new Date();
-        Date oneDayAfter = new Date(today.getTime() + (1000 * 60 * 60 * 24));
+        Date oneDayAfter = new Date(today.getTime() + (Constant.ONE_DAY));
         endDate.set(formatter.format(oneDayAfter));
     }
 }

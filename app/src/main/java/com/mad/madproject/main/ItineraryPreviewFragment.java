@@ -38,7 +38,7 @@ public class ItineraryPreviewFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_itinerary_preview, container, false);
-        Util.setFragmentToolbarTitle(this, "My Trips");
+        Util.setFragmentToolbarTitle(this, getString(R.string.my_trips_title));
 
         mItineraryPreviewViewModel = ViewModelProviders.of(this).get(ItineraryPreviewViewModel.class);
 

@@ -1,4 +1,4 @@
-package com.mad.madproject;
+package com.mad.madproject.retrofit;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

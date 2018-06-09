@@ -1,9 +1,8 @@
-package com.mad.madproject.activity;
+package com.mad.madproject.chooseaccommodation;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
-import com.mad.madproject.NearbyPlacesRepository;
 import com.mad.madproject.model.PlacesResponse;
 
 public class ChooseAccommodationViewModel extends ViewModel {

@@ -1,4 +1,4 @@
-package com.mad.madproject;
+package com.mad.madproject.retrofit;
 
 import com.mad.madproject.model.PlacesResponse;
 

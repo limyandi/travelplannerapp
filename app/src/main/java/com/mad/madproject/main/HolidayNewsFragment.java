@@ -38,7 +38,7 @@ public class HolidayNewsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Util.setFragmentToolbarTitle(this, "News");
+        Util.setFragmentToolbarTitle(this, getString(R.string.news_title));
         final View rootView = inflater.inflate(R.layout.fragment_holiday_news, container, false);
 
 

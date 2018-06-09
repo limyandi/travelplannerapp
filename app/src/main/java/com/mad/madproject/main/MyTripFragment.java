@@ -29,7 +29,7 @@ public class MyTripFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_my_trip, container, false);
-        Util.setFragmentToolbarTitle(this, "My Trips");
+        Util.setFragmentToolbarTitle(this, getString(R.string.trip_history_text));
 
         //set the view pager.
         ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
@@ -75,11 +75,11 @@ public class MyTripFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "All";
+                    return getString(R.string.all_section);
                 case 1:
-                    return "Present";
+                    return getString(R.string.present_section);
                 case 2:
-                    return "Past";
+                    return getString(R.string.past_section);
             }
             return null;
         }
