@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
             android:src="@drawable/transparent"
-            android:contentDescription="BG"
+            android:contentDescription="@string/background_picture"
 
             />
 
@@ -62,7 +62,7 @@
                     android:layout_marginBottom="40dp"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
-                    android:text="Riote"
+                    android:text="@string/app_name_alt"
                     android:textColor="#fff"
                     android:textSize="40sp"/>
 
@@ -86,7 +86,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/roundwhite"
-                            android:drawableLeft="@drawable/email"
                             android:drawablePadding="10dp"
                             android:drawableStart="@drawable/email"
                             android:hint="@string/email"
@@ -108,7 +107,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/roundwhite"
-                            android:drawableLeft="@drawable/password"
                             android:drawablePadding="10dp"
                             android:drawableStart="@drawable/password"
                             android:focusableInTouchMode="true"
@@ -160,7 +158,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:lines="2"
-                        android:text="Your username and password does not match, try loggging in again!"
+                        android:text="@string/error_message_log_in"
                         android:textColor="@color/colorError"
                         android:visibility="gone"
                         />
@@ -191,7 +189,6 @@
                         style="@style/Base.Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
                         android:layout_marginStart="15dp"
                         android:background="@null"
                         android:text="@string/btn_link_to_register"

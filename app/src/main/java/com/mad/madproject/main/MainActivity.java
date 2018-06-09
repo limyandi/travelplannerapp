@@ -166,6 +166,9 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
+    /**
+     * Set the authentication listener. (TODO: Can be changed to be handled by view model).
+     */
     private void setAuthenticationListener() {
         //listener for if mUser is already logged out.
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -180,6 +183,9 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
+    /**
+     * Set the default fragment.
+     */
     private void setDefaultFragment() {
         //Initialise the first fragment as the homepage (Where we can see the itinerary).
         FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
@@ -187,8 +193,25 @@ public class MainActivity extends AppCompatActivity {
         tx.commit();
     }
 
+    /**
+     * Handle the logout button when clicked.
+     */
     private void logOutHandler() {
         mAuth.signOut();
+    }
+
+    /**
+     * Observe the user details data using the view model
+     */
+    private void observeUser() {
+
+        mNavHeaderViewModel.getUser().observe(this, new Observer<User>() {
+            @Override
+            public void onChanged(@Nullable User user) {
+                ((TextView) mHeader.findViewById(R.id.username_nav_header)).setText(user.getUsername());
+                ((TextView) mHeader.findViewById(R.id.email_nav_header)).setText(user.getEmail());
+            }
+        });
     }
 
     //setting the listener
@@ -210,19 +233,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         observeUser();
-    }
-
-    /**
-     * Observe the user details data using the view model
-     */
-    private void observeUser() {
-
-        mNavHeaderViewModel.getUser().observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(@Nullable User user) {
-                ((TextView) mHeader.findViewById(R.id.username_nav_header)).setText(user.getUsername());
-                ((TextView) mHeader.findViewById(R.id.email_nav_header)).setText(user.getEmail());
-            }
-        });
     }
 }

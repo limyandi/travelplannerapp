@@ -10,7 +10,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_above="@+id/itinerary_view"
+        android:layout_above="@+id/filter_itinerary_rv"
         android:background="@color/colorDivider"/>
 
     <android.support.v7.widget.RecyclerView

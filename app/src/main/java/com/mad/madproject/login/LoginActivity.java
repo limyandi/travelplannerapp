@@ -79,10 +79,16 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Handle the click of sign up button.
+     */
     @OnClick(R.id.btn_signup) void onSignUpButtonClick() {
         Utils.setIntent(this, RegisterActivity.class);
     }
 
+    /**
+     * Handle the click of reset password button.
+     */
     @OnClick(R.id.btn_reset_password) void onResetPasswordButtonClick() {
         Utils.setIntent(this, ForgetPasswordActivity.class);
     }

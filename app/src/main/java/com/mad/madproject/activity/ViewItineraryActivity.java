@@ -26,6 +26,7 @@ import com.mad.madproject.adapter.TripAdapter;
 import com.mad.madproject.model.Itineraries;
 import com.mad.madproject.model.Itinerary;
 import com.mad.madproject.model.Place;
+import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
 
 import java.util.ArrayList;
@@ -91,7 +92,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot itinerary: dataSnapshot.getChildren()) {
                     mCrawledItinerary = itinerary.getValue(Itineraries.class);
-                    Log.d("ShowIt", mCrawledItinerary.toString());
+                    Log.d(Constant.LOG_TAG, mCrawledItinerary.toString());
                 }
                 mItineraryPlace.setText(mCrawledItinerary.getTripName());
                 mItineraryDate.setText(mCrawledItinerary.getStartDate() + " - " + mCrawledItinerary.getEndDate());

@@ -130,7 +130,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.d("MVVM", connectionResult.getErrorMessage());
+                        Log.d(Constant.LOG_TAG, connectionResult.getErrorMessage());
                     }
                 }).build();
 

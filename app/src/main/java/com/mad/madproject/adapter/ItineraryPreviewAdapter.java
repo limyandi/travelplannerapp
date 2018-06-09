@@ -22,6 +22,7 @@ import com.google.firebase.storage.StorageReference;
 import com.mad.madproject.R;
 import com.mad.madproject.activity.ViewItineraryActivity;
 import com.mad.madproject.model.ItineraryPreview;
+import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
 
 import java.util.ArrayList;
@@ -105,7 +106,7 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
         holder.daysIntervalTv.setText(itineraryPreview.getDayInterval() + " days trip");
 
         StorageReference cityReference = mCityStorageReference.child(itineraryPreview.getCity()+".jpg");
-        Log.d("ItineraryPreview", itineraryPreview.getCity()+".jpg");
+        Log.d(Constant.LOG_TAG, itineraryPreview.getCity()+".jpg");
 
         //handle error with .error and put a default picture.
         Glide.with(holder.imageViewIcon.getContext()).using(new FirebaseImageLoader()).load(cityReference).error(R.drawable.question_mark).into(holder.imageViewIcon);

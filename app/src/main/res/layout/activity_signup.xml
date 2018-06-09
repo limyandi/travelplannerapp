@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
             android:src="@drawable/transparent"
+            android:contentDescription="@string/background_picture"
             />
 
         <ScrollView
@@ -62,7 +63,7 @@
                     android:layout_marginBottom="40dp"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
-                    android:text="Riote"
+                    android:text="@string/app_name_alt"
                     android:textColor="#fff"
                     android:textSize="40sp"/>
 
@@ -86,7 +87,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/roundwhite"
-                            android:drawableLeft="@drawable/username"
                             android:drawablePadding="10dp"
                             android:drawableStart="@drawable/username"
                             android:hint="@string/uname_hint"
@@ -107,7 +107,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/roundwhite"
-                            android:drawableLeft="@drawable/email"
                             android:drawablePadding="10dp"
                             android:drawableStart="@drawable/email"
                             android:hint="@string/email"
@@ -130,7 +129,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/roundwhite"
-                            android:drawableLeft="@drawable/password"
                             android:drawablePadding="10dp"
                             android:drawableStart="@drawable/password"
                             android:focusableInTouchMode="true"
@@ -194,7 +192,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:lines="2"
-                        android:text="Either this account exists in the application or the \n details is invalid, Try Signing up again"
+                        android:text="@string/register_failed_text"
                         android:textColor="@color/colorError"
                         android:visibility="gone"
                         />

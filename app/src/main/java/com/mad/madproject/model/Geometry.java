@@ -13,10 +13,18 @@ public class Geometry {
     @SerializedName("location")
     private Location mLocation;
 
+    /**
+     * Getter methods
+     * @return location
+     */
     public Location getLocation() {
         return mLocation;
     }
 
+    /**
+     * Setter methods
+     * @param location the new location
+     */
     public void setLocation(Location location) {
         mLocation = location;
     }

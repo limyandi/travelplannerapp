@@ -12,6 +12,9 @@ import retrofit2.Retrofit;
  * Created by limyandivicotrico on 5/31/18.
  */
 
+/**
+ * Factory to handle the retrofit null on return
+ */
 public class NullOnEmptyConverterFactory extends Converter.Factory {
 
     @Override

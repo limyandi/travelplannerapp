@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.mad.madproject.R;
 import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.model.User;
+import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
 
 import java.text.ParseException;
@@ -81,11 +82,11 @@ public class SettingsFragment extends Fragment {
 
                                             Date endDate = new Date();
                                             try {
-                                                Log.d("Try", itineraryPreview.getEndDate());
+                                                Log.d(Constant.LOG_TAG, itineraryPreview.getEndDate());
                                                 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                                                 endDate = formatter.parse(itineraryPreview.getEndDate());
                                             } catch (ParseException e) {
-                                                Log.d("Try", "Failed");
+                                                Log.d(Constant.LOG_TAG, e.getMessage());
                                                 e.printStackTrace();
                                             }
 

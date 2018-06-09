@@ -43,18 +43,11 @@ import java.util.Locale;
  */
 public class MyTripFragment extends Fragment {
 
-    private ArrayList<ItineraryPreview> mItineraryPreviewList = new ArrayList<>();
-    private RecyclerView mRecyclerView;
-    private ItineraryPreviewAdapter mItineraryPreviewAdapter;
-    private TextView mNoTripTextTv;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_my_trip, container, false);
         Util.setFragmentToolbarTitle(this, "My Trips");
-
-        mNoTripTextTv = (TextView) rootView.findViewById(R.id.text_no_itinerary);
 
         //set the view pager.
         ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewpager);
@@ -65,13 +58,13 @@ public class MyTripFragment extends Fragment {
         //set up with the view pager.
         tabLayout.setupWithViewPager(viewPager);
 
-
-        //all acts as the default value. set initial.
-//        getItineraryPreviewData(rootView, "All");
-
         return rootView;
     }
 
+    /**
+     * Set up the view pager.
+     * @param viewPager
+     */
     private void setupViewPager(ViewPager viewPager) {
         FilterPagerAdapter adapter = new FilterPagerAdapter(getChildFragmentManager());
 

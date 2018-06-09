@@ -46,6 +46,9 @@ public class User implements Parcelable {
         mEmail = in.readString();
     }
 
+    /**
+     * Create the parcel using the Creator class.
+     */
     public static final Creator<User> CREATOR = new Creator<User>() {
         @Override
         public User createFromParcel(Parcel in) {

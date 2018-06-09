@@ -1,4 +1,5 @@
 <resources>
+    <string name="app_name_alt">Riote</string>
     <string name="app_name">Riote Travelapp</string>
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
@@ -68,7 +69,7 @@
     <string name="accommodation_text">Accommodation</string>
     <string name="create_a_new_trip_text">Create a new Trip</string>
     <string name="trip_name_text">Trip name</string>
-    <string name="trip_to_dotdot">Trip to ...</string>
+    <string name="trip_to_dotdot">Trip to …</string>
     <string name="home_nav_drawer_text">Home</string>
     <string name="my_trip_nav_drawer_text">My Trip</string>
     <string name="holiday_news_nav_drawer_text">Holiday News</string>
@@ -77,4 +78,21 @@
     <string name="log_out_nav_drawer_text">Log out</string>
     <string name="utility_nav_drawer_header">Utility</string>
     <string name="confirm_text">Confirm</string>
+    <string name="enter_address_hint">Enter address</string>
+    <string name="error_failed_forget_password_msg">The email does not exists, \n create an acccount with this email first.</string>
+    <string name="error_message_log_in">Your username and password does not match, try loggging in again!</string>
+    <string name="background_picture">BackgroundPict</string>
+    <string name="city_hint_text">Where are you going?</string>
+    <string name="register_failed_text">Either this account exists in the application or the \n details is invalid, Try Signing up again</string>
+    <string name="city_item_text">City</string>
+    <string name="country_item_text">Country</string>
+    <string name="caption_about">\'Bringing you your life best Experience\'</string>
+    <string name="holiday_news_text">Holiday News</string>
+    <string name="sorry_msg">We are sorry, this feature is on work and will be available on next version. We will notify you when this feature is available so stay tuned and wait forward to reading your news in the same app where you can travel your trip.</string>
+    <string name="image_holiday">ImageHoliday</string>
+    <string name="upcoming_trip_text">Your upcoming Trip</string>
+    <string name="city_image_desc">city image</string>
+    <string name="city_text">City, Country</string>
+    <string name="date_text">Date</string>
+    <string name="trip_text">3 Days Trip</string>
 </resources>

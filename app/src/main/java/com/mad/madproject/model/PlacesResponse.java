@@ -11,13 +11,13 @@ import java.util.List;
  */
 public class PlacesResponse {
     //store the mResults retrieved from the web service.
-    List<Place> mResults;
+    List<Place> results;
 
     public List<Place> getResults() {
-        return mResults;
+        return results;
     }
 
     public void setResults(List<Place> results) {
-        this.mResults = results;
+        this.results = results;
     }
 }

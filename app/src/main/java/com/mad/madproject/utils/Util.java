@@ -25,6 +25,9 @@ import java.util.Random;
  * Created by limyandivicotrico on 5/13/18.
  */
 
+/**
+ * Class to handle all functions that is being used several times and by several class
+ */
 public class Util {
     /**
      * Convert a latitude and longitude and radius to a new bounds (using android-maps-utils package)
@@ -68,6 +71,11 @@ public class Util {
         return storage.getReference(reference);
     }
 
+    /**
+     * Get place type, using the algorithms class.
+     * @param timeToGo the time to go.
+     * @return the place type to go.
+     */
     //TODO: Redundant functions, we have one similar function in main activity.
     public static String getPlaceType(int timeToGo) {
         RandomCollection rc;
@@ -99,13 +107,21 @@ public class Util {
         }
     }
 
-    public static int randomizeNumber() {
+    /**
+     * Create a random number from 0 to 4
+     * @return random number
+     */
+    private static int randomizeNumber() {
         Random rand = new Random();
-        //return number from 0 to 1
-        int value = rand.nextInt(5);
-        return value;
+        //return number from 0 to 4
+        return rand.nextInt(5);
     }
 
+    /**
+     * Handle error, if the nearby places web service return only very little places.
+     * @param size the size of the index.
+     * @return randomNumber
+     */
     //sometimes the places search might not return any value, or just 1 value or 2 value
     public static int handlePlaceSearchIndexError(int size) {
         int randomNumber = Util.randomizeNumber();
@@ -159,7 +175,7 @@ public class Util {
         try {
             date = dateFormat.parse(dateString);
             //set the local variable end date as the date format so we can find the day interval.
-            Log.d("Time", date.toString());
+            Log.d(Constant.LOG_TAG, date.toString());
         } catch (ParseException e) {
             e.printStackTrace();
         }

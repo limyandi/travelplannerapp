@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/parent_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -18,25 +18,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Holiday News"
+            android:text="@string/holiday_news_text"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="34sp"/>
 
     </RelativeLayout>
-    
+
     <RelativeLayout
         android:id="@+id/nextversion_layout"
         android:layout_width="match_parent"
-        android:background="@color/colorPrimary"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         android:visibility="gone">
 
         <android.support.v7.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            app:cardBackgroundColor="@color/colorAccent"
             android:layout_margin="@dimen/activity_field_margin"
+            app:cardBackgroundColor="@color/colorAccent"
             >
 
             <LinearLayout
@@ -48,13 +48,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:textSize="20dp"
-                    android:text="We are sorry, this feature is on work and will be available on next version. We will notify you when this feature is available so stay tuned and wait forward to reading your news in the same app where you can travel your trip."
-                    android:textColor="@color/colorTextAndIcons"/>
+                    android:text="@string/sorry_msg"
+                    android:textColor="@color/colorTextAndIcons"
+                    android:textSize="20sp"/>
 
             </LinearLayout>
 
-            </android.support.v7.widget.CardView>
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 
@@ -85,22 +85,19 @@
             app:cardElevation="8dp"
             >
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/alun_kapuas"/>
-
-
-                </LinearLayout>
-
-
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:scaleType="fitXY"
+                    android:contentDescription="@string/image_holiday"
+                    android:src="@drawable/alun_kapuas"/>
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
@@ -127,6 +124,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:scaleType="fitXY"
+                    android:contentDescription="@string/image_holiday"
                     android:src="@drawable/scenery"/>
 
             </LinearLayout>
@@ -159,6 +157,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
+                    android:contentDescription="@string/image_holiday"
                     android:scaleType="fitXY"
                     android:src="@drawable/scenery1"/>
 
@@ -189,8 +188,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:src="@drawable/scenery2"
-                    android:scaleType="fitXY"/>
+                    android:contentDescription="@string/image_holiday"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/scenery2"/>
 
 
             </LinearLayout>
@@ -219,6 +219,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
+                    android:contentDescription="@string/image_holiday"
                     android:scaleType="fitXY"
                     android:src="@drawable/scenery3"/>
 
@@ -247,6 +248,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
+                    android:contentDescription="@string/image_holiday"
                     android:scaleType="fitXY"
                     android:src="@drawable/scenery4"/>
 

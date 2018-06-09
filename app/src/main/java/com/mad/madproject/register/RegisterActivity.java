@@ -22,6 +22,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+/**
+ * Handle the utility to enable user to register to the application.
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     @BindView(R.id.sign_up_button)

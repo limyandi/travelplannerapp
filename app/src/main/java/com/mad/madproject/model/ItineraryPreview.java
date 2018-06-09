@@ -108,6 +108,11 @@ public class ItineraryPreview implements Serializable {
         mDayInterval = dayInterval;
     }
 
+    /**
+     * Convert date string into date format.
+     * @param date in string
+     * @return in Date Format.
+     */
     private Date convertDate(String date) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         Calendar cal = Calendar.getInstance();
@@ -120,6 +125,7 @@ public class ItineraryPreview implements Serializable {
         return dateformat;
     }
 
+    @Override
     public String toString() {
         return "City: " + mCity + " Date: " + mStartDate + " - " + mEndDate;
     }

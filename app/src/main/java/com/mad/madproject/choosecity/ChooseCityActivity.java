@@ -44,6 +44,9 @@ import java.io.ByteArrayOutputStream;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * The activity to choose the city to go.
+ */
 public class ChooseCityActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
 
@@ -68,7 +71,7 @@ public class ChooseCityActivity extends AppCompatActivity implements GoogleApiCl
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Log.d("MVVM", connectionResult.getErrorMessage());
+                        Log.d(Constant.LOG_TAG, connectionResult.getErrorMessage());
                     }
                 }).build();
 

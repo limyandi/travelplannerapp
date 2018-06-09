@@ -8,6 +8,9 @@ import android.databinding.ObservableField;
 import com.mad.madproject.firebase.FirebaseAuthenticationRepository;
 import com.mad.madproject.validator.Validator;
 
+/**
+ * Register View Model, the view model for the register activity
+ */
 public class RegisterViewModel extends ViewModel {
 
     private FirebaseAuthenticationRepository mFirebaseAuthenticationRepository = new FirebaseAuthenticationRepository();
@@ -38,6 +41,10 @@ public class RegisterViewModel extends ViewModel {
 
     }
 
+    /**
+     * Validate the input for register page
+     * @return true or false
+     */
     private boolean inputIsValidated() {
         boolean isValid = true;
 

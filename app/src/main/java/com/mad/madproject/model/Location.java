@@ -15,6 +15,7 @@ public class Location {
     @SerializedName("lng")
     private double mLng;
 
+
     public double getLat() {
         return mLat;
     }

@@ -82,11 +82,11 @@ public class ItineraryPreviewFragment extends Fragment {
 
                     //if no error, overwrite end date with the date from database.
                     try {
-                        Log.d("Try", crawledView.getEndDate());
+                        Log.d(Constant.LOG_TAG, crawledView.getEndDate());
                         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                         endDate = formatter.parse(crawledView.getEndDate());
                     } catch (ParseException e) {
-                        Log.d("Try", "Failed");
+                        Log.d(Constant.LOG_TAG, e.getMessage());
                         e.printStackTrace();
                     }
 

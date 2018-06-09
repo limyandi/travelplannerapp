@@ -3,6 +3,9 @@ package com.mad.madproject.validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The validator class to validate user input.
+ */
 public class Validator {
 
     public static boolean isEmailValid(String email) {

@@ -9,6 +9,9 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
  * Created by limyandivicotrico on 5/27/18.
  */
 
+/**
+ * Instances ID Service handle the firebase push notification service.
+ */
 public class InstanceIDService extends FirebaseInstanceIdService {
     private static final String TAG = "InstanceIDService";
 
@@ -36,6 +39,6 @@ public class InstanceIDService extends FirebaseInstanceIdService {
      * @param token the token to be sent to server.
      */
     private void sendRegistrationToServer(String token) {
-        //for later development because currently we dont need to send any token to server.
+        //TODO: for later development because currently we dont need to send any token to server, because we dont have any server yet.
     }
 }

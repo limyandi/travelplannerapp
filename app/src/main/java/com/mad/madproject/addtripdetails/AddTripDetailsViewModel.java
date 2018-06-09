@@ -8,13 +8,20 @@ import com.mad.madproject.utils.Util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
+/**
+ * View Model to present the add trip activity.
+ */
 public class AddTripDetailsViewModel extends ViewModel {
 
     public final ObservableField<String> startDate = new ObservableField<>();
     public final ObservableField<String> endDate = new ObservableField<>();
     public final ObservableField<String> tripName = new ObservableField<>();
 
+    /**
+     * View Model constructor
+     */
     public AddTripDetailsViewModel() {
 
         //set the initial start date and end date when trip details view model is created.
@@ -32,15 +39,22 @@ public class AddTripDetailsViewModel extends ViewModel {
     }
 
 
+    /**
+     * Set the initial start date.
+     */
     private void setInitialStartDate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");//formating according to my need
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);//formating according to my need
 
         Date today = new Date();
         startDate.set(formatter.format(today));
     }
 
+    //TODO: Might be wrong, we are accessing the UI Directly here.
+    /**
+     * Set the initial end date.
+     */
     private void setInitialEndDate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");//formating according to my need
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);//formating according to my need
 
         Date today = new Date();
         Date oneDayAfter = new Date(today.getTime() + (1000 * 60 * 60 * 24));

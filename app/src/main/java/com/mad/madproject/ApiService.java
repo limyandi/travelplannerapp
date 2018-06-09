@@ -10,6 +10,9 @@ import retrofit2.http.Query;
  * Created by limyandivicotrico on 5/30/18.
  */
 
+/**
+ * The API Services to get the nearby places.
+ */
 public interface ApiService {
     //URL FOR ACCESSING GOOGLE MAPS API.
     String baseUrl = "https://maps.googleapis.com/maps/";

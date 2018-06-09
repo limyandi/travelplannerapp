@@ -12,8 +12,9 @@ import android.databinding.ObservableField;
 import com.mad.madproject.firebase.FirebaseAuthenticationRepository;
 import com.mad.madproject.validator.Validator;
 
-
-//ViewModel
+/**
+ * View Model to handle the logic for the forget password activity.
+ */
 public class ForgetPasswordViewModel extends ViewModel {
 
     public FirebaseAuthenticationRepository mFirebaseAuthenticationRepository = new FirebaseAuthenticationRepository();
@@ -41,6 +42,10 @@ public class ForgetPasswordViewModel extends ViewModel {
         }
     }
 
+    /**
+     * Function to validate the input
+     * @return
+     */
     private boolean inputIsValidated() {
         boolean isValid = true;
 

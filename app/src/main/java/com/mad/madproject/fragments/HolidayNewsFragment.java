@@ -57,6 +57,9 @@ public class HolidayNewsFragment extends Fragment {
 
     }
 
+    /**
+     * Handle the circular reveal when clicked.
+     */
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private void circularReveal() {
         int x = fullLayout.getRight();
@@ -74,6 +77,9 @@ public class HolidayNewsFragment extends Fragment {
         textAnimation();
     }
 
+    /**
+     * Create the text delayed animation.
+     */
     private void textAnimation() {
         TransitionManager.beginDelayedTransition(mRelativeLayout);
     }

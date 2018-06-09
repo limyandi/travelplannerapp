@@ -35,13 +35,20 @@ public class FilterTripFragment extends Fragment {
     private ItineraryPreviewAdapter mItineraryPreviewAdapter;
     private TextView mNoTripTextView;
 
-    private static final String FILTER_TYPE = "FILTER_TYPE";
     private static final String POSITION = "POSITION";
 
+    /**
+     * Default constructor
+     */
     public FilterTripFragment() {
 
     }
 
+    /**
+     * To create a new instance of the FilterTripFragment.
+     * @param position
+     * @return
+     */
     public static FilterTripFragment newInstance(int position) {
         FilterTripFragment fragment = new FilterTripFragment();
 
@@ -94,11 +101,11 @@ public class FilterTripFragment extends Fragment {
                     Date todayDate = new Date();
 
                     try {
-                        Log.d("Try", crawledView.getEndDate());
+                        Log.d(Constant.LOG_TAG, crawledView.getEndDate());
                         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
                         endDate = formatter.parse(crawledView.getEndDate());
                     } catch (ParseException e) {
-                        Log.d("Try", "Failed");
+                        Log.d(Constant.LOG_TAG, e.getMessage());
                         e.printStackTrace();
                     }
 

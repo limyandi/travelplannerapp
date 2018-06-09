@@ -9,28 +9,20 @@ import com.mad.madproject.firebase.FirebaseDatabaseRepository;
 import com.mad.madproject.model.User;
 import com.mad.madproject.utils.Util;
 
+/**
+ * HeaderViewModel to get the user data.
+ */
 public class NavHeaderViewModel extends ViewModel {
     private FirebaseDatabaseRepository mFirebaseDatabaseRepository = new FirebaseDatabaseRepository();
 
-    private MutableLiveData<User> user;
+    private LiveData<User> user;
 
     public NavHeaderViewModel() {
-        user = new MutableLiveData<>();
+        //TODO: Passing the user id here might not be right?
+        user = mFirebaseDatabaseRepository.getUserDetails(Util.getUserUid());
     }
 
     public LiveData<User> getUser() {
-        if(user.getValue() == null) {
-            mFirebaseDatabaseRepository.getUser(Util.getUserUid(), new FirebaseDatabaseRepository.FirebaseUserCallback() {
-                @Override
-                public void onSuccess(User theUser) {
-                    user.postValue(theUser);
-                }
-                @Override
-                public void onFailure(String message) {
-                    Log.d("MVVM", message);
-                }
-            });
-        }
         return user;
     }
 }

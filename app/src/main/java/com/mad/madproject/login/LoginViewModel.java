@@ -14,6 +14,9 @@ import com.mad.madproject.validator.Validator;
  * Created by limyandivicotrico on 5/24/18.
  */
 
+/**
+ * The view model handles the logic for the login utility.
+ */
 public class LoginViewModel extends ViewModel {
 
     private FirebaseAuthenticationRepository mFirebaseAuthenticationRepository = new FirebaseAuthenticationRepository();
@@ -32,11 +35,9 @@ public class LoginViewModel extends ViewModel {
         mIsSuccessful = new MutableLiveData<>();
     }
 
-    private void loginSuccessful() {
-        Log.d("MVVM", "Successful!");
-        mIsSuccessful.postValue(true);
-    }
-
+    /**
+     * When the login button is clicked. Call the repository to call the login button.
+     */
     public void onLoginClick() {
         if(validateInputs()) {
             mFirebaseAuthenticationRepository.login(email.get(), password.get(), mIsSuccessful);
@@ -45,6 +46,10 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
+    /**
+     * Input validation for login handler.
+     * @return
+     */
     private boolean validateInputs() {
         boolean isValid = true;
 
@@ -69,7 +74,10 @@ public class LoginViewModel extends ViewModel {
         return isValid;
     }
 
-
+    /**
+     * Check the user's session in the application
+     * @return true or false
+     */
     public boolean getIsLoggedIn() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -79,6 +87,10 @@ public class LoginViewModel extends ViewModel {
         return false;
     }
 
+    /**
+     * Check whether the logic ins successful.
+     * @return the live data of successfullness
+     */
     public LiveData<Boolean> getIsSuccessful() {
         return mIsSuccessful;
     }

@@ -23,13 +23,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimaryText"
-            android:text="Smart Travel App"
+            android:text="@string/app_name"
             android:textSize="20sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorSecondaryText"
-            android:text="'Bringing you your life best Experience'"
+            android:text="@string/caption_about"
             android:layout_marginBottom="20dp"
             android:textStyle="italic"/>
         <TextView

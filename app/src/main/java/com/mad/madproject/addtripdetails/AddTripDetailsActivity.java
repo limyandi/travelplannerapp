@@ -31,10 +31,14 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * The activity for adding the trip details.
+ */
 public class AddTripDetailsActivity extends AppCompatActivity {
 
     @BindView(R.id.start_date_tv)
@@ -55,6 +59,7 @@ public class AddTripDetailsActivity extends AppCompatActivity {
 
     private AddTripDetailsViewModel mTripDetailsViewModel;
 
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityAddTripBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_add_trip);
@@ -71,6 +76,9 @@ public class AddTripDetailsActivity extends AppCompatActivity {
         onConfirmClicked();
     }
 
+    /**
+     * when the confirm button is clicked, use the view model to get the itinerary preview data.
+     */
     private void onConfirmClicked() {
         ((Button) findViewById(R.id.addtrip_activity_confirm_btn)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +89,7 @@ public class AddTripDetailsActivity extends AppCompatActivity {
                 intervalDay = Util.convertDateToDayInterval(mEndDate, mStartDate);
 
                 Intent intent = new Intent(getBaseContext(), ChooseAccommodationActivity.class);
-                Log.d("Time", String.valueOf(intervalDay));
+                Log.d(Constant.LOG_TAG, String.valueOf(intervalDay));
                 intent.putExtra("Day", intervalDay);
                 //TODO: Chaining intent put? is this bad practice?
                 intent.putExtra("Latitude", getIntent().getDoubleExtra("Latitude", 0));
@@ -95,6 +103,9 @@ public class AddTripDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * when the start date layout is clicked, the function is called.
+     */
     private void onStartDateLayoutClicked() {
         ((LinearLayout) findViewById(R.id.start_date_layout)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,6 +115,9 @@ public class AddTripDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * when the end date layout is clicked, the function is called
+     */
     private void onEndDateLayoutClicked() {
         ((LinearLayout) findViewById(R.id.end_date_layout)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,18 +127,24 @@ public class AddTripDetailsActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * The start date listener
+     */
     private DatePickerDialog.OnDateSetListener startDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
             String dateString = initialSetUpListener(year, month, day);
             updateDisplay(mStartDateTv, dateString);
-            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
             Date date = Util.parseDate(dateString);
             //if start date is updated, update the end date to be only 1 day after the start date.
             updateDisplay(mEndDateTv, String.valueOf(dateFormat.format(new Date(date.getTime() + (1000 * 60 * 60 * 24)))));
         }
     };
 
+    /**
+     * The end date listener
+     */
     private DatePickerDialog.OnDateSetListener endDateSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -133,6 +153,10 @@ public class AddTripDetailsActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * Initial date picker setup.
+     * @param listener the listener, the start one or end date one.
+     */
     private void datePickerSetup(DatePickerDialog.OnDateSetListener listener) {
         Calendar cal = Calendar.getInstance();
         //initialise the current year, month and day.
@@ -163,17 +187,28 @@ public class AddTripDetailsActivity extends AppCompatActivity {
         dateDialog.show();
     }
 
+    /**
+     * Set up the listener for the date to make it reusable for the start date and end date.
+     * @param year the initial year
+     * @param month the initial month
+     * @param day the initial day
+     * @return a string format of the date.
+     */
     private String initialSetUpListener(int year, int month, int day) {
         month = month + 1;
         DecimalFormat df = new DecimalFormat("00");
         //add leading zeros to day and month less than 10.
         String leadingDay = df.format(day);
         String leadingMonth = df.format(month);
-        String dateString = leadingDay + "-" + leadingMonth + "-" + year;
-        return dateString;
+        return leadingDay + "-" + leadingMonth + "-" + year;
     }
 
 
+    /**
+     * Update the date text view display for reusability
+     * @param dateDisplay the textview
+     * @param date the new date in string.
+     */
     private void updateDisplay(TextView dateDisplay, String date) {
         dateDisplay.setText(date);
     }
@@ -201,7 +236,7 @@ public class AddTripDetailsActivity extends AppCompatActivity {
             dialog.show();
         } else {
             //cannot resolve at all
-            Log.d("MVVM", "isServicesOK: You can't make map requests");
+            Log.d(Constant.LOG_TAG, "isServicesOK: You can't make map requests");
             Toast.makeText(AddTripDetailsActivity.this, "You can't make map requests", Toast.LENGTH_SHORT).show();
         }
         return false;
