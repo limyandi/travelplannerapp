@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.bumptech.glide.request.target.ViewTarget;
 import com.google.gson.Gson;
+import com.mad.madproject.retrofit.NearbyPlacesService;
 
 import java.util.concurrent.TimeUnit;
 

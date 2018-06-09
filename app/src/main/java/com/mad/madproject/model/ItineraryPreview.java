@@ -1,5 +1,6 @@
 package com.mad.madproject.model;
 
+import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
 
 import java.io.Serializable;
@@ -7,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by limyandivicotrico on 5/17/18.
@@ -114,7 +116,7 @@ public class ItineraryPreview implements Serializable {
      * @return in Date Format.
      */
     private Date convertDate(String date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.US);
         Calendar cal = Calendar.getInstance();
         Date dateformat = cal.getTime();
         try {

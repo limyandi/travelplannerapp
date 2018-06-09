@@ -93,8 +93,8 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ViewItineraryActivity.class);
-                intent.putExtra("Day", itineraryPreview.getDayInterval());
-                intent.putExtra("PreviewKey", itineraryPreview.getItineraryPreviewId());
+                intent.putExtra(Constant.DAYS_KEY, itineraryPreview.getDayInterval());
+                intent.putExtra(Constant.ITINERARY_PREVIEW_PUSH_KEY_KEY, itineraryPreview.getItineraryPreviewId());
                 view.getContext().startActivity(intent);
             }
         });
@@ -102,11 +102,13 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
         holder.tripNameTv.setText(itineraryPreview.getTripName());
         holder.placeTv.setText(itineraryPreview.getCity());
         //TODO: Fix warning.
-        holder.dateTv.setText(itineraryPreview.getStartDate() + " - " + itineraryPreview.getEndDate());
-        holder.daysIntervalTv.setText(itineraryPreview.getDayInterval() + " days trip");
+        String dateText = itineraryPreview.getStartDate() + mContext.getString(R.string.hyphen) + itineraryPreview.getEndDate();
+        holder.dateTv.setText(dateText);
+        String daysIntervalText = itineraryPreview.getDayInterval() + mContext.getString(R.string.days_trip_text);
+        holder.daysIntervalTv.setText(daysIntervalText);
 
-        StorageReference cityReference = mCityStorageReference.child(itineraryPreview.getCity()+".jpg");
-        Log.d(Constant.LOG_TAG, itineraryPreview.getCity()+".jpg");
+        StorageReference cityReference = mCityStorageReference.child(itineraryPreview.getCity()+mContext.getString(R.string.pict_format_jpg));
+        Log.d(Constant.LOG_TAG, itineraryPreview.getCity()+mContext.getString(R.string.pict_format_jpg));
 
         //handle error with .error and put a default picture.
         Glide.with(holder.imageViewIcon.getContext()).using(new FirebaseImageLoader()).load(cityReference).error(R.drawable.question_mark).into(holder.imageViewIcon);

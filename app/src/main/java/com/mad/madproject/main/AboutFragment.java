@@ -24,7 +24,7 @@ public class AboutFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //set the title located in the toolbar.
-        Util.setFragmentToolbarTitle(this, "About Us");
+        Util.setFragmentToolbarTitle(this, getString(R.string.about_us_title));
         return inflater.inflate(R.layout.fragment_about_us, container, false);
     }
 }

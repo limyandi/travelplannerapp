@@ -176,9 +176,9 @@ public class ChooseCityActivity extends AppCompatActivity implements GoogleApiCl
             places.release();
             Intent intent = new Intent(ChooseCityActivity.this, AddTripDetailsActivity.class);
 
-            intent.putExtra("City", mCityInfo.getCity());
-            intent.putExtra("Latitude", mCityInfo.getLatLng().latitude);
-            intent.putExtra("Longitude", mCityInfo.getLatLng().longitude);
+            intent.putExtra(Constant.CITY_KEY, mCityInfo.getCity());
+            intent.putExtra(Constant.LATITUDE_KEY, mCityInfo.getLatLng().latitude);
+            intent.putExtra(Constant.LONGITUDE_KEY, mCityInfo.getLatLng().longitude);
 
             startActivity(intent);
         }
@@ -190,6 +190,7 @@ public class ChooseCityActivity extends AppCompatActivity implements GoogleApiCl
      */
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT);
+        Log.d(Constant.LOG_TAG, connectionResult.getErrorMessage());
+        Toast.makeText(this, "Connection Failed", Toast.LENGTH_SHORT).show();
     }
 }

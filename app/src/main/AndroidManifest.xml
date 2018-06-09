@@ -54,7 +54,7 @@
             android:parentActivityName=".choosecity.ChooseCityActivity">
         </activity>
         <activity
-            android:name=".activity.ChooseAccommodationActivity"
+            android:name=".chooseaccommodation.ChooseAccommodationActivity"
             android:label="Choose the Accommodation"
             android:parentActivityName=".addtripdetails.AddTripDetailsActivity">
         </activity>

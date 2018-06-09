@@ -30,6 +30,9 @@ import com.mad.madproject.utils.Util;
 
 import java.util.ArrayList;
 
+/**
+ * View Itinerary Activity shows the trips plan associated with one trip created by the system.
+ */
 public class ViewItineraryActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "ViewItinerary";
@@ -66,7 +69,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        mPreviewId = getIntent().getStringExtra("PreviewKey");
+        mPreviewId = getIntent().getStringExtra(Constant.ITINERARY_PREVIEW_PUSH_KEY_KEY);
 
         mItineraryPlace = (TextView) findViewById(R.id.view_itinerary_activity_place);
         mItineraryDate = (TextView) findViewById(R.id.view_itinerary_activity_date);
@@ -137,7 +140,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             //Use the itineraries object to get the itinerary for each day and use it to set the arguments for each fragment view.
 
-            args.putSerializable("Itinerary Lists", itineraries.getItineraryLists().get(sectionNumber - 1));
+            args.putSerializable(Constant.ITINERARY_LISTS_KEY, itineraries.getItineraryLists().get(sectionNumber - 1));
             fragment.setArguments(args);
             return fragment;
         }
@@ -147,7 +150,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_view_itinerary, container, false);
 
-            Itinerary itinerary = (Itinerary) getArguments().getSerializable("Itinerary Lists");
+            Itinerary itinerary = (Itinerary) getArguments().getSerializable(Constant.ITINERARY_LISTS_KEY);
 
             mTripsList = itinerary != null ? itinerary.getPlaces() : null;
 
@@ -178,7 +181,7 @@ public class ViewItineraryActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            mDays = getIntent().getIntExtra("Day", 1);
+            mDays = getIntent().getIntExtra(Constant.DAYS_KEY, 1);
             return mDays;
         }
 

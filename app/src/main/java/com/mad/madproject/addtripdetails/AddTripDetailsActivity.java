@@ -21,7 +21,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.mad.madproject.databinding.ActivityAddTripBinding;
 import com.mad.madproject.R;
-import com.mad.madproject.activity.ChooseAccommodationActivity;
+import com.mad.madproject.chooseaccommodation.ChooseAccommodationActivity;
 import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
@@ -69,7 +69,7 @@ public class AddTripDetailsActivity extends AppCompatActivity {
         binding.setAddTripDetailsViewModel(mTripDetailsViewModel);
 
         //Set up data using the trip details.
-        mTripDetailsViewModel.setInitialTripName(getIntent().getStringExtra("City"));
+        mTripDetailsViewModel.setInitialTripName(getIntent().getStringExtra(Constant.CITY_KEY));
 
         onStartDateLayoutClicked();
         onEndDateLayoutClicked();
@@ -90,14 +90,13 @@ public class AddTripDetailsActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getBaseContext(), ChooseAccommodationActivity.class);
                 Log.d(Constant.LOG_TAG, String.valueOf(intervalDay));
-                intent.putExtra("Day", intervalDay);
+                intent.putExtra(Constant.DAYS_KEY, intervalDay);
                 //TODO: Chaining intent put? is this bad practice?
-                intent.putExtra("Latitude", getIntent().getDoubleExtra("Latitude", 0));
-                intent.putExtra("Longitude", getIntent().getDoubleExtra("Longitude", 0));
-                //Dont set the itinerary preview id for now.
-                ItineraryPreview itineraryPreview = mTripDetailsViewModel.onNextClick(getIntent().getStringExtra("City"));
-                //Itinerary Preview Data.
-                intent.putExtra("ItineraryPreview", itineraryPreview);
+                intent.putExtra(Constant.LATITUDE_KEY, getIntent().getDoubleExtra(Constant.LATITUDE_KEY, 0));
+                intent.putExtra(Constant.LONGITUDE_KEY, getIntent().getDoubleExtra(Constant.LONGITUDE_KEY, 0));
+                //Itinerary Preview Data. (Call the view model to create the data).
+                ItineraryPreview itineraryPreview = mTripDetailsViewModel.onNextClick(getIntent().getStringExtra(Constant.CITY_KEY));
+                intent.putExtra(Constant.ITINERARY_PREVIEW_KEY, itineraryPreview);
                 startActivity(intent);
             }
         });
@@ -135,10 +134,10 @@ public class AddTripDetailsActivity extends AppCompatActivity {
         public void onDateSet(DatePicker datePicker, int year, int month, int day) {
             String dateString = initialSetUpListener(year, month, day);
             updateDisplay(mStartDateTv, dateString);
-            DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+            DateFormat dateFormat = new SimpleDateFormat(Constant.DATE_FORMAT, Locale.US);
             Date date = Util.parseDate(dateString);
             //if start date is updated, update the end date to be only 1 day after the start date.
-            updateDisplay(mEndDateTv, String.valueOf(dateFormat.format(new Date(date.getTime() + (1000 * 60 * 60 * 24)))));
+            updateDisplay(mEndDateTv, String.valueOf(dateFormat.format(new Date(date.getTime() + (Constant.ONE_DAY)))));
         }
     };
 

@@ -1,4 +1,4 @@
-package com.mad.madproject.activity;
+package com.mad.madproject.chooseaccommodation;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -39,7 +40,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.mad.madproject.NearbyPlacesRepository;
+import com.mad.madproject.retrofit.NearbyPlacesRepository;
 import com.mad.madproject.R;
 import com.mad.madproject.adapter.PlaceAutocompleteAdapter;
 import com.mad.madproject.model.Accommodation;
@@ -86,7 +87,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     private int day = 0;
     private int startTime = 9;
 
-    private ArrayList<ArrayList<com.mad.madproject.model.Place>> places = new ArrayList<ArrayList<com.mad.madproject.model.Place>>();
+    private ArrayList<ArrayList<com.mad.madproject.model.Place>> places = new ArrayList<>();
     private ArrayList<Itinerary> mItineraryArrayList = new ArrayList<>();
 
     private ProgressDialog mPrgDialog;
@@ -104,10 +105,10 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         ButterKnife.bind(this);
 
         //Latitude and longitude for the city.
-        latitude = getIntent().getDoubleExtra("Latitude", 0);
-        longitude = getIntent().getDoubleExtra("Longitude", 0);
+        latitude = getIntent().getDoubleExtra(Constant.LATITUDE_KEY, 0);
+        longitude = getIntent().getDoubleExtra(Constant.LONGITUDE_KEY, 0);
         //TODO: Number of trip days redundant, do not need this.
-        numberOfTripDays = getIntent().getIntExtra("Day", 1);
+        numberOfTripDays = getIntent().getIntExtra(Constant.DAYS_KEY, 1);
 
         for (int i = 0; i < numberOfTripDays; i++) {
             places.add(new ArrayList<com.mad.madproject.model.Place>());
@@ -158,6 +159,8 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
             }
         });
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         getLocationPermission();
     }
 
@@ -195,6 +198,17 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
             moveToCityLocation(CAMERA_ZOOM);
             initEditText();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //to make sure that we are not recreating a new one when the up navigation button is clicked.
+        switch(item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return false;
     }
 
     private void getLocationPermission() {
@@ -326,7 +340,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                             for (int j = 0; j < places.size(); j++) {
                                 mItineraryArrayList.add(new Itinerary(places.get(j)));
                             }
-                            ItineraryPreview itineraryPreview = (ItineraryPreview) getIntent().getSerializableExtra("ItineraryPreview");
+                            ItineraryPreview itineraryPreview = (ItineraryPreview) getIntent().getSerializableExtra(Constant.ITINERARY_PREVIEW_KEY);
                             //set the key here now, we dont set it in add trip activity.
                             itineraryPreview.setItineraryPreviewId(itineraryPreviewKey);
                             Itineraries itineraries = new Itineraries(mItineraryArrayList, itineraryPreview.getTripName(), itineraryPreview.getStartDate(), itineraryPreview.getEndDate(), itineraryPreviewKey);
@@ -335,17 +349,17 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                             //TODO: Handle progress dialog better.
                             mPrgDialog.dismiss();
                             Intent intent = new Intent(ChooseAccommodationActivity.this, ViewItineraryActivity.class);
-                            intent.putExtra("Day", itineraryPreview.getDayInterval());
-                            intent.putExtra("PreviewKey", itineraryPreviewKey);
+                            intent.putExtra(Constant.DAYS_KEY, itineraryPreview.getDayInterval());
+                            intent.putExtra(Constant.ITINERARY_PREVIEW_PUSH_KEY_KEY, itineraryPreviewKey);
                             startActivity(intent);
                         }
                     }
                 } else {
                     mPrgDialog.dismiss();
                     new MaterialDialog.Builder(ChooseAccommodationActivity.this)
-                            .title("Sorry!")
-                            .content("Our database can't suggest any places for this accommodation yet. Try another address!")
-                            .positiveText("Close")
+                            .title(R.string.sorry_text)
+                            .content(R.string.failed_generate_itinerary_text)
+                            .positiveText(R.string.close_text)
                             .show();
                 }
             }

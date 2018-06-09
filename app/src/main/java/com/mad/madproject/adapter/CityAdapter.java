@@ -54,6 +54,9 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
             ButterKnife.bind(this, itemView);
         }
     }
+
+    @NonNull
+    @Override
     public CityAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.city_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
