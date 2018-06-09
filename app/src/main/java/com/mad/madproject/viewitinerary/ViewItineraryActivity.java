@@ -1,4 +1,4 @@
-package com.mad.madproject.activity;
+package com.mad.madproject.viewitinerary;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
@@ -22,7 +22,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.madproject.R;
-import com.mad.madproject.adapter.TripAdapter;
 import com.mad.madproject.model.Itineraries;
 import com.mad.madproject.model.Itinerary;
 import com.mad.madproject.model.Place;

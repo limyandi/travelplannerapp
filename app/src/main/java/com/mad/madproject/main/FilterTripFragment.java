@@ -15,11 +15,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mad.madproject.R;
-import com.mad.madproject.adapter.ItineraryPreviewAdapter;
 import com.mad.madproject.model.ItineraryPreview;
 
 import java.util.ArrayList;
 
+/**
+ * The fragment for setting the different filter for the my trip page.
+ */
 public class FilterTripFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ItineraryPreviewAdapter mItineraryPreviewAdapter;
@@ -37,8 +39,7 @@ public class FilterTripFragment extends Fragment {
 
     /**
      * To create a new instance of the FilterTripFragment.
-     *
-     * @param position
+     * @param position the position of the fragment in.
      * @return
      */
     public static FilterTripFragment newInstance(int position) {
@@ -101,8 +102,13 @@ public class FilterTripFragment extends Fragment {
         mTripFilterViewModel.getItineraryPreviews().observe(this, new Observer<ArrayList<ItineraryPreview>>() {
             @Override
             public void onChanged(@Nullable ArrayList<ItineraryPreview> itineraryPreviews) {
-                mItineraryPreviewAdapter = new ItineraryPreviewAdapter(rootView.getContext(), itineraryPreviews);
-                mRecyclerView.setAdapter(mItineraryPreviewAdapter);
+                if(itineraryPreviews != null) {
+                    mItineraryPreviewAdapter = new ItineraryPreviewAdapter(rootView.getContext(), itineraryPreviews);
+                    mRecyclerView.setAdapter(mItineraryPreviewAdapter);
+                }
+                else {
+                    mNoTripTextView.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

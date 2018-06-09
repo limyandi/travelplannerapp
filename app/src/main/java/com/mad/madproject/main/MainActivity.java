@@ -22,8 +22,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mad.madproject.R;
 import com.mad.madproject.choosecity.ChooseCityActivity;
-import com.mad.madproject.fragments.AboutFragment;
-import com.mad.madproject.fragments.HolidayNewsFragment;
 import com.mad.madproject.login.LoginActivity;
 import com.mad.madproject.model.User;
 

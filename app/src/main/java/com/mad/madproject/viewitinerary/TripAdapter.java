@@ -1,4 +1,4 @@
-package com.mad.madproject.adapter;
+package com.mad.madproject.viewitinerary;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

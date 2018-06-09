@@ -59,7 +59,7 @@
             android:parentActivityName=".addtripdetails.AddTripDetailsActivity">
         </activity>
         <activity
-            android:name=".activity.ViewItineraryActivity"
+            android:name=".viewitinerary.ViewItineraryActivity"
             android:label="Itinerary"
             android:parentActivityName=".main.MainActivity"
             >

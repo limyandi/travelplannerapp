@@ -1,4 +1,4 @@
-package com.mad.madproject.fragments;
+package com.mad.madproject.main;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;

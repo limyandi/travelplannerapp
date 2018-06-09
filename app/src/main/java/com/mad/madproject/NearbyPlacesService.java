@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 /**
  * The API Services to get the nearby places.
  */
-public interface ApiService {
+public interface NearbyPlacesService {
     //URL FOR ACCESSING GOOGLE MAPS API.
     String baseUrl = "https://maps.googleapis.com/maps/";
 

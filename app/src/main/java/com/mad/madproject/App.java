@@ -15,10 +15,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 /**
- * This class enable the access to glide older version API. And also handle ApiService Network Error.
+ * This class enable the access to glide older version API. And also handle NearbyPlacesService Network Error.
  */
 public class App extends Application {
-    private ApiService mApiService;
+    private NearbyPlacesService mApiService;
 
     @Override
     public void onCreate() {
@@ -32,9 +32,9 @@ public class App extends Application {
      * Get an instance of api service
      * @return apiservice
      */
-    public ApiService getApiService() {
+    public NearbyPlacesService getApiService() {
         if (mApiService == null) {
-            mApiService = provideRetrofit(ApiService.baseUrl).create(ApiService.class);
+            mApiService = provideRetrofit(NearbyPlacesService.baseUrl).create(NearbyPlacesService.class);
         }
         return mApiService;
     }

@@ -3,14 +3,12 @@ package com.mad.madproject.firebase;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.mad.madproject.R;
-import com.mad.madproject.adapter.ItineraryPreviewAdapter;
+import com.mad.madproject.model.Itineraries;
+import com.mad.madproject.model.Itinerary;
 import com.mad.madproject.model.ItineraryPreview;
 import com.mad.madproject.model.User;
 import com.mad.madproject.utils.Constant;
@@ -20,11 +18,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 /**
  * The single source of truth for data for the database data retrieval and insert. (Repository).
+ * TODO: Singleton pattern?? (Public static synchronized?).
  */
 public class FirebaseDatabaseRepository {
 
@@ -82,7 +80,12 @@ public class FirebaseDatabaseRepository {
                         itineraryPreviews.add(crawledView);
                     }
                 }
-                itineraryPreviewsLive.setValue(itineraryPreviews);
+                if(itineraryPreviews.size() != 0) {
+                    itineraryPreviewsLive.setValue(itineraryPreviews);
+                }
+                else {
+                    itineraryPreviewsLive.setValue(null);
+                }
             }
 
             @Override
@@ -105,7 +108,12 @@ public class FirebaseDatabaseRepository {
                     Log.d(Constant.LOG_TAG, itineraryPreview.toString());
                     itineraryPreviews.add(itineraryPreview.getValue(ItineraryPreview.class));
                 }
-                itineraryPreviewsLive.setValue(itineraryPreviews);
+                if(itineraryPreviews.size() != 0) {
+                    itineraryPreviewsLive.setValue(itineraryPreviews);
+                }
+                else {
+                    itineraryPreviewsLive.setValue(null);
+                }
             }
 
             @Override
@@ -148,7 +156,12 @@ public class FirebaseDatabaseRepository {
                         itineraryPreviews.add(crawledView);
                     }
                 }
-                itineraryPreviewsLive.setValue(itineraryPreviews);
+                if(itineraryPreviews.size() != 0) {
+                    itineraryPreviewsLive.setValue(itineraryPreviews);
+                }
+                else {
+                    itineraryPreviewsLive.setValue(null);
+                }
             }
 
             @Override
@@ -191,5 +204,24 @@ public class FirebaseDatabaseRepository {
             }
         });
     }
+
+    public LiveData<Itineraries> getItineraryDetails(String itineraryPreviewId) {
+        final MutableLiveData<Itineraries> itineraries = new MutableLiveData<>();
+
+
+        Util.getDatabaseReference("Itinerary").orderByChild("itineraryPreviewId").equalTo(itineraryPreviewId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                itineraries.setValue(dataSnapshot.getValue(Itineraries.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                itineraries.setValue(null);
+            }
+        });
+        return itineraries;
+    }
+
 }
 
