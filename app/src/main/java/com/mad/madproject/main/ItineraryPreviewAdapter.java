@@ -93,8 +93,8 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ViewItineraryActivity.class);
-                intent.putExtra("Day", itineraryPreview.getDayInterval());
-                intent.putExtra("PreviewKey", itineraryPreview.getItineraryPreviewId());
+                intent.putExtra(Constant.DAYS_KEY, itineraryPreview.getDayInterval());
+                intent.putExtra(Constant.ITINERARY_PREVIEW_PUSH_KEY_KEY, itineraryPreview.getItineraryPreviewId());
                 view.getContext().startActivity(intent);
             }
         });
@@ -102,7 +102,7 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
         holder.tripNameTv.setText(itineraryPreview.getTripName());
         holder.placeTv.setText(itineraryPreview.getCity());
         //TODO: Fix warning.
-        String dateText = itineraryPreview + mContext.getString(R.string.hyphen) + itineraryPreview.getEndDate();
+        String dateText = itineraryPreview.getStartDate() + mContext.getString(R.string.hyphen) + itineraryPreview.getEndDate();
         holder.dateTv.setText(dateText);
         String daysIntervalText = itineraryPreview.getDayInterval() + mContext.getString(R.string.days_trip_text);
         holder.daysIntervalTv.setText(daysIntervalText);

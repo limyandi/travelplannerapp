@@ -19,4 +19,11 @@ public class Constant {
     //this is 4 days in milliseconds.
     public static final long DAY_LIMIT = 345600000;
     public static final int PROXIMITY_RADIUS = 50000;
+    public static final String CITY_KEY = "City";
+    public static final String LATITUDE_KEY = "Latitude";
+    public static final String LONGITUDE_KEY = "Longitude";
+    public static final String DAYS_KEY = "Day";
+    public static final String ITINERARY_PREVIEW_KEY = "ItineraryPreview";
+    public static final String ITINERARY_PREVIEW_PUSH_KEY_KEY = "PreviewKey";
+    public static final String ITINERARY_LISTS_KEY = "Itinerary List";
 }

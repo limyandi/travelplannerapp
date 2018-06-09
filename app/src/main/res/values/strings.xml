@@ -100,8 +100,8 @@
     <string name="close_text">Close</string>
     <string name="about_us_title">About Us</string>
     <string name="news_title">News</string>
-    <string name="days_trip_text">days trip</string>
-    <string name="hyphen">-</string>
+    <string name="days_trip_text">&#160;days trip</string>
+    <string name="hyphen">&#160;-&#160;</string>
     <string name="pict_format_jpg">.jpg</string>
     <string name="my_trips_title">My Trips</string>
     <string name="trip_history_text">Trip History</string>

@@ -69,7 +69,7 @@ public class AddTripDetailsActivity extends AppCompatActivity {
         binding.setAddTripDetailsViewModel(mTripDetailsViewModel);
 
         //Set up data using the trip details.
-        mTripDetailsViewModel.setInitialTripName(getIntent().getStringExtra("City"));
+        mTripDetailsViewModel.setInitialTripName(getIntent().getStringExtra(Constant.CITY_KEY));
 
         onStartDateLayoutClicked();
         onEndDateLayoutClicked();
@@ -90,14 +90,13 @@ public class AddTripDetailsActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(getBaseContext(), ChooseAccommodationActivity.class);
                 Log.d(Constant.LOG_TAG, String.valueOf(intervalDay));
-                intent.putExtra("Day", intervalDay);
+                intent.putExtra(Constant.DAYS_KEY, intervalDay);
                 //TODO: Chaining intent put? is this bad practice?
-                intent.putExtra("Latitude", getIntent().getDoubleExtra("Latitude", 0));
-                intent.putExtra("Longitude", getIntent().getDoubleExtra("Longitude", 0));
-                //Dont set the itinerary preview id for now.
-                ItineraryPreview itineraryPreview = mTripDetailsViewModel.onNextClick(getIntent().getStringExtra("City"));
-                //Itinerary Preview Data.
-                intent.putExtra("ItineraryPreview", itineraryPreview);
+                intent.putExtra(Constant.LATITUDE_KEY, getIntent().getDoubleExtra(Constant.LATITUDE_KEY, 0));
+                intent.putExtra(Constant.LONGITUDE_KEY, getIntent().getDoubleExtra(Constant.LONGITUDE_KEY, 0));
+                //Itinerary Preview Data. (Call the view model to create the data).
+                ItineraryPreview itineraryPreview = mTripDetailsViewModel.onNextClick(getIntent().getStringExtra(Constant.CITY_KEY));
+                intent.putExtra(Constant.ITINERARY_PREVIEW_KEY, itineraryPreview);
                 startActivity(intent);
             }
         });
