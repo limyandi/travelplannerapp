@@ -76,12 +76,11 @@ public class Util {
      * @param timeToGo the time to go.
      * @return the place type to go.
      */
-    //TODO: Redundant functions, we have one similar function in main activity.
     public static String getPlaceType(int timeToGo) {
         RandomCollection rc;
         switch (timeToGo) {
             case 9:
-                rc = new RandomCollection().add(40, "park").add(40, "amusement_park").add(20, "cafe");
+                rc = new RandomCollection().add(50, "park").add(50, "amusement_park");
                 return rc.next();
             case 11:
                 rc = new RandomCollection().add(50, "restaurant").add(30, "meal_takeaway")
@@ -103,7 +102,10 @@ public class Util {
                 return rc.next();
             default:
                 //return park if there is an error in time.
-                return "park";
+                rc = new RandomCollection().add(10, "liquor_store").add(10, "park").add(10, "amusement_park")
+                        .add(10, "restaurant").add(10, "mean_takeaway").add(10, "aquarium").add(10, "movie_theater")
+                        .add(10, "home_goods_store").add(10, "spa").add(10, "cafe");
+                return rc.next();
         }
     }
 

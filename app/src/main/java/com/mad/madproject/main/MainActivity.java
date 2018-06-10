@@ -198,8 +198,10 @@ public class MainActivity extends AppCompatActivity {
         mNavHeaderViewModel.getUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable User user) {
-                ((TextView) mHeader.findViewById(R.id.username_nav_header)).setText(user.getUsername());
-                ((TextView) mHeader.findViewById(R.id.email_nav_header)).setText(user.getEmail());
+                if (user != null) {
+                    ((TextView) mHeader.findViewById(R.id.username_nav_header)).setText(user.getUsername());
+                    ((TextView) mHeader.findViewById(R.id.email_nav_header)).setText(user.getEmail());
+                }
             }
         });
     }

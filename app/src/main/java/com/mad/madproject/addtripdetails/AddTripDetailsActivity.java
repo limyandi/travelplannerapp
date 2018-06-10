@@ -168,20 +168,20 @@ public class AddTripDetailsActivity extends AppCompatActivity {
                 listener,
                 year, month, day);
 
+        DatePicker datePicker = dateDialog.getDatePicker();
+        datePicker.setMinDate(cal.getTimeInMillis());
+
         if(listener == endDateSetListener) {
-            DatePicker datePicker = dateDialog.getDatePicker();
             Date date = Util.parseDate(mStartDateTv.getText().toString());
             Log.d(Constant.LOG_TAG, date.toString());
             //set up min date and max date.
-            long minDate = date.getTime();
+            long minDate = date.getTime() + Constant.ONE_DAY;
             long maxDate = date.getTime() + Constant.DAY_LIMIT;
             Log.d(Constant.LOG_TAG, String.valueOf(maxDate));
             datePicker.setMinDate(minDate);
             datePicker.setMaxDate(maxDate);
         }
 
-        DatePicker datePicker = dateDialog.getDatePicker();
-        datePicker.setMinDate(cal.getTimeInMillis());
         dateDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dateDialog.show();
     }
