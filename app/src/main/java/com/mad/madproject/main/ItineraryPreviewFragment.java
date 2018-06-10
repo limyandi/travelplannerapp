@@ -53,6 +53,10 @@ public class ItineraryPreviewFragment extends Fragment {
         return rootView;
     }
 
+    /**
+     * Observe the change in the itinerary preview data
+     * @param rootView the view to be attached to.
+     */
     private void observeItineraryPreview(final View rootView) {
         mItineraryPreviewViewModel.getItineraryPreviews().observe(this, new Observer<ArrayList<ItineraryPreview>>() {
             @Override
@@ -64,8 +68,7 @@ public class ItineraryPreviewFragment extends Fragment {
                 }
                 else {
                     mMainProgressBar.setVisibility(View.INVISIBLE);
-                    TextView noItineraryTv = (TextView) rootView.findViewById(R.id.text_no_itinerary);
-                    noItineraryTv.setVisibility(View.VISIBLE);
+                    ((TextView) rootView.findViewById(R.id.text_no_itinerary)).setVisibility(View.VISIBLE);
                 }
             }
         });

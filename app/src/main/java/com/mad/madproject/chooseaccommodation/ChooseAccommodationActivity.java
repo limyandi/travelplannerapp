@@ -355,6 +355,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                         }
                     }
                 } else {
+                    places.clear();
                     mPrgDialog.dismiss();
                     new MaterialDialog.Builder(ChooseAccommodationActivity.this)
                             .title(R.string.sorry_text)
