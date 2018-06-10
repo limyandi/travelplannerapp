@@ -6,6 +6,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.google.gson.annotations.SerializedName;
 import com.mad.madproject.utils.RandomCollection;
+import com.mad.madproject.utils.Util;
 
 import java.util.List;
 
@@ -75,32 +76,6 @@ public class Place {
      * @return the place type
      */
     public String getPlaceType() {
-        RandomCollection rc;
-        switch (timeToGo) {
-            case 9:
-                rc = new RandomCollection().add(40, "park").add(40, "amusement_park").add(20, "cafe");
-                return rc.next();
-            case 11:
-                rc = new RandomCollection().add(50, "restaurant").add(30, "meal_takeaway")
-                        .add(20, "cafe");
-                return rc.next();
-            case 13:
-                rc = new RandomCollection().add(40, "aquarium").add(30, "city_hall")
-                        .add(30, "shopping_mall");
-                return rc.next();
-            case 15:
-                rc = new RandomCollection().add(40, "movie_theater").add(10, "home_goods_store")
-                        .add(50, "zoo");
-                return rc.next();
-            case 17:
-                rc = new RandomCollection().add(70, "restaurant").add(30, "meal_takeaway");
-                return rc.next();
-            case 19:
-                rc = new RandomCollection().add(50, "casino").add(30, "night_club").add(20, "spa");
-                return rc.next();
-            default:
-                //return park if there is an error in time.
-                return "park";
-        }
+        return Util.getPlaceType(timeToGo);
     }
 }

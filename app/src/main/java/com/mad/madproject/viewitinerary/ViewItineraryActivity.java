@@ -32,6 +32,7 @@ import java.util.ArrayList;
 
 /**
  * View Itinerary Activity shows the trips plan associated with one trip created by the system.
+ * Does not use the view model because the implementation is not in align for the fragments. (The fragment does not wait for the live data to gather all the data before doing so).
  */
 public class ViewItineraryActivity extends AppCompatActivity {
 
