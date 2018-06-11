@@ -117,8 +117,8 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         LatLng latLng = new LatLng(latitude, longitude);
 
         //Create the bound for the city, so that the autocompleteadapter will suggest mostly places that are close to the chosen city.
-        //TODO: Does not seems like it is fully working yet.
-        LatLngBounds cityBound = Util.toBounds(latLng, 0);
+        //TODO: Does not seems like it is fully working yet. (Turns out that the google places does not allow restriction, it is still possible to get outer results, eventhough it will suggests you the one in the bounds first).
+        LatLngBounds cityBound = Util.toBounds(latLng, 50);
 
         mGeoDataClient = Places.getGeoDataClient(this);
         mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).addApi(Places.PLACE_DETECTION_API)
