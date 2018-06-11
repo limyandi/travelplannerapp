@@ -19,7 +19,7 @@ import com.mad.madproject.main.MainActivity;
 
 /**
  * Service that handles sending notification to user when the trip time is in a week or in 3 day.
- * TODO: Handle the notifation sent by the server.
+ * TODO: Handle the notification to be sent by the server. (For next version)
  */
 public class FirebaseMessagingNotificationService extends FirebaseMessagingService {
 

@@ -223,5 +223,9 @@ public class FirebaseDatabaseRepository {
         return itineraries;
     }
 
+    public void deleteItinerary(String itineraryPreviewId) {
+        Util.getDatabaseReference("ItineraryPreview").child(itineraryPreviewId).removeValue();
+    }
+
 }
 

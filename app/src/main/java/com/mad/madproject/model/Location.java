@@ -2,6 +2,8 @@ package com.mad.madproject.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by limyandivicotrico on 5/30/18.
  */
@@ -9,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Location class handles the POJO for defining the location details of each place.
  */
-public class Location {
+public class Location implements Serializable {
     @SerializedName("lat")
     private double mLat;
     @SerializedName("lng")

@@ -50,7 +50,7 @@ public class AddTripDetailsViewModel extends ViewModel {
         startDate.set(formatter.format(today));
     }
 
-    //TODO: Might be wrong, we are accessing the UI Directly here.
+    //TODO: Might be wrong (in MVVM Terms), we are accessing the UI Directly here.
     /**
      * Set the initial end date.
      */

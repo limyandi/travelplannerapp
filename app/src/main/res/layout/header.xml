@@ -19,7 +19,6 @@
         android:src="@mipmap/ic_launcher"
         app:civ_border_color="#FF000000"/>
 
-    <!--TODO: FIX THIS LATER -->
     <TextView
         android:id="@+id/username_nav_header"
         android:layout_width="match_parent"

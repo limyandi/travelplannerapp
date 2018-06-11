@@ -2,6 +2,8 @@ package com.mad.madproject.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by limyandivicotrico on 5/30/18.
  */
@@ -9,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Geometry class handles the POJO to define the Geometrical Location of a place from the web service.
  */
-public class Geometry {
+public class Geometry implements Serializable {
     @SerializedName("location")
     private Location mLocation;
 

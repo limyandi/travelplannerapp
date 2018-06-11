@@ -107,7 +107,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         //Latitude and longitude for the city.
         latitude = getIntent().getDoubleExtra(Constant.LATITUDE_KEY, 0);
         longitude = getIntent().getDoubleExtra(Constant.LONGITUDE_KEY, 0);
-        //TODO: Number of trip days redundant, do not need this.
         numberOfTripDays = getIntent().getIntExtra(Constant.DAYS_KEY, 1);
 
         for (int i = 0; i < numberOfTripDays; i++) {
@@ -228,7 +227,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         }
     }
 
-    //TODO: This might be bad.
     private void initEditText() {
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -266,7 +264,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
         if (accommodationInfo != null) {
             try {
-                //TODO: The Material Dialog here might not be a good idea.
                 new MaterialDialog.Builder(this).title("Is this your accommodation address?").content(accommodationInfo.toString())
                         .positiveText(R.string.confirm).negativeText(R.string.cancel).positiveColor(getResources().getColor(R.color.green))
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -326,7 +323,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                             double lat = placesResponse.getResults().get(placeToGoIndex).getGeometry().getLocation().getLat();
                             double lng = placesResponse.getResults().get(placeToGoIndex).getGeometry().getLocation().getLng();
                             placesResponse.getResults().get(placeToGoIndex).setTimeToGo(startTime);
-                            //TODO: Fix static timing.
+                            //TODO: Fix static timing. (For next version).
                             startTime += 2;
                             getNearbyPlace(placeType, String.valueOf(lat), String.valueOf(lng));
                         } else {
@@ -347,7 +344,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                                 Itineraries itineraries = new Itineraries(mItineraryArrayList, itineraryPreview.getTripName(), itineraryPreview.getStartDate(), itineraryPreview.getEndDate(), itineraryPreviewKey);
                                 databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
                                 databaseReference.child("Itinerary").push().setValue(itineraries);
-                                //TODO: Handle progress dialog better.
                                 mPrgDialog.dismiss();
                                 Intent intent = new Intent(ChooseAccommodationActivity.this, ViewItineraryActivity.class);
                                 intent.putExtra(Constant.DAYS_KEY, itineraryPreview.getDayInterval());
@@ -365,6 +361,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
             @Override
             public void onFailure(String message) {
+                dismissDialogForFailed();
                 Log.d(Constant.LOG_TAG_MVVM, message);
             }
         });

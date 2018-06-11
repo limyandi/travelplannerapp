@@ -62,7 +62,6 @@ public class FirebaseAuthenticationRepository {
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             //get Users branch.
                             final DatabaseReference ref = database.getReference("Users");
-                            //TODO: Handle if auth null.
                             ref.child(Util.getUserUid()).setValue(user);
                             isSuccessful.postValue(true);
                         }

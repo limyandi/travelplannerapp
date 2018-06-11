@@ -101,7 +101,6 @@ public class ItineraryPreviewAdapter extends RecyclerView.Adapter<ItineraryPrevi
 
         holder.tripNameTv.setText(itineraryPreview.getTripName());
         holder.placeTv.setText(itineraryPreview.getCity());
-        //TODO: Fix warning.
         String dateText = itineraryPreview.getStartDate() + mContext.getString(R.string.hyphen) + itineraryPreview.getEndDate();
         holder.dateTv.setText(dateText);
         String daysIntervalText = itineraryPreview.getDayInterval() + mContext.getString(R.string.days_trip_text);

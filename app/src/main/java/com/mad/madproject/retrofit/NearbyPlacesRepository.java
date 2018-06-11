@@ -46,7 +46,6 @@ public class NearbyPlacesRepository {
 
             @Override
             public void onFailure(Call<PlacesResponse> call, Throwable t) {
-                //TODO: Can have better error handling.
                 callback.onFailure(t.getMessage());
             }
         });
