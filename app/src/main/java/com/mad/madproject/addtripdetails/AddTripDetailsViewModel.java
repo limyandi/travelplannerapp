@@ -30,11 +30,20 @@ public class AddTripDetailsViewModel extends ViewModel {
         setInitialEndDate();
     }
 
+    /**
+     * View model to returns the itinerary preview data when user is about to go to next part.
+     * @param cityName the city name
+     * @return
+     */
     public ItineraryPreview onNextClick(String cityName) {
         ItineraryPreview itineraryData = new ItineraryPreview(tripName.get(), cityName, Util.getUserUid(), "", startDate.get(), endDate.get());
         return itineraryData;
     }
 
+    /**
+     * Set the initial trip name
+     * @param cityName the city name
+     */
     public void setInitialTripName(String cityName) {
         tripName.set("Trip to " + cityName);
     }

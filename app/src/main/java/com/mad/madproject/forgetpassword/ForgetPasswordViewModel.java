@@ -17,7 +17,7 @@ import com.mad.madproject.validator.Validator;
  */
 public class ForgetPasswordViewModel extends ViewModel {
 
-    public FirebaseAuthenticationRepository mFirebaseAuthenticationRepository = new FirebaseAuthenticationRepository();
+    private FirebaseAuthenticationRepository mFirebaseAuthenticationRepository = new FirebaseAuthenticationRepository();
 
     private MutableLiveData<Boolean> mIsSuccessful;
 

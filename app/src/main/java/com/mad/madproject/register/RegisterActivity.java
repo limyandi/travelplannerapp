@@ -62,6 +62,9 @@ public class RegisterActivity extends AppCompatActivity {
         observeRegister();
     }
 
+    /**
+     * Handle when the sign in button is clicked.
+     */
     @OnClick(R.id.sign_in_button) void onSignInButtonClick() {
         Utils.setIntent(this, LoginActivity.class);
     }

@@ -18,6 +18,10 @@ public class ViewItineraryViewModel extends ViewModel {
 //        mItinerariesLiveData = mFirebaseDatabaseRepository.getItineraryDetails(itineraryPreviewId);
     }
 
+    /**
+     * call the repository to delete certain itinerary.
+     * @param itineraryPreviewId the associated itinerary preview id.
+     */
     public void deleteItineraryPreviewData(String itineraryPreviewId) {
         mFirebaseDatabaseRepository.deleteItinerary(itineraryPreviewId);
     }

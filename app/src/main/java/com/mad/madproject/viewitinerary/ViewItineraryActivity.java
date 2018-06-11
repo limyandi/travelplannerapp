@@ -135,7 +135,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
                     Log.d(Constant.LOG_TAG, mCrawledItinerary.toString());
                 }
                 mItineraryPlace.setText(mCrawledItinerary.getTripName());
-                mItineraryDate.setText(mCrawledItinerary.getStartDate() + " - " + mCrawledItinerary.getEndDate());
+                String dateText = mCrawledItinerary.getStartDate() + getString(R.string.hyphen) + mCrawledItinerary.getEndDate();
+                mItineraryDate.setText(dateText);
                 mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
                 // Set up the ViewPager with the sections adapter.
                 mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -168,7 +169,6 @@ public class ViewItineraryActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-
         public static PlaceholderFragment newInstance(int sectionNumber, Itineraries itineraries) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();

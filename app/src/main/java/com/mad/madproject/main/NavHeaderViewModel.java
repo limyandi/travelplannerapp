@@ -22,6 +22,10 @@ public class NavHeaderViewModel extends ViewModel {
         user = mFirebaseDatabaseRepository.getUserDetails(Util.getUserUid());
     }
 
+    /**
+     * Get the live data of user to be observed
+     * @return live data of the user.
+     */
     public LiveData<User> getUser() {
         return user;
     }

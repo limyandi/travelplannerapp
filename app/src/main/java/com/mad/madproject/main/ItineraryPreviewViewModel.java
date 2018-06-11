@@ -9,6 +9,9 @@ import com.mad.madproject.utils.Util;
 
 import java.util.ArrayList;
 
+/**
+ * View Model for the itinerary preview.
+ */
 public class ItineraryPreviewViewModel extends ViewModel {
     private FirebaseDatabaseRepository mFirebaseDatabaseRepository = new FirebaseDatabaseRepository();
     private LiveData<ArrayList<ItineraryPreview>> mItineraryPreviews;
@@ -17,6 +20,10 @@ public class ItineraryPreviewViewModel extends ViewModel {
         mItineraryPreviews = mFirebaseDatabaseRepository.getUpcomingItineraryPreviews(Util.getUserUid());
     }
 
+    /**
+     * Method for the activity/fragment to observe the itinerarypreview data from the database.
+     * @return live data of an array list of itinerary previews.
+     */
     public LiveData<ArrayList<ItineraryPreview>> getItineraryPreviews() {
         return mItineraryPreviews;
     }
