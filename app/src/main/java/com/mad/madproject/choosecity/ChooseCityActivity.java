@@ -86,6 +86,9 @@ public class ChooseCityActivity extends AppCompatActivity implements GoogleApiCl
     }
 
 
+    /**
+     * Listener for when an item is clicked.
+     */
     private AdapterView.OnItemClickListener mAutoCompleteClickListener = new AdapterView.OnItemClickListener() {
 
         @Override
@@ -101,7 +104,9 @@ public class ChooseCityActivity extends AppCompatActivity implements GoogleApiCl
         }
     };
 
-    //when the request is successfull, call this.
+    /**
+     * Callback when an item is clicked.
+     */
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
         @Override
         public void onResult(@NonNull PlaceBuffer places) {

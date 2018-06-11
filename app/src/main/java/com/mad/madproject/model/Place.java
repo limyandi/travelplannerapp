@@ -8,6 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import com.mad.madproject.utils.RandomCollection;
 import com.mad.madproject.utils.Util;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * The Place class is a POJO Model retrieved to define the place retrieved from web service.
  */
-public class Place {
+public class Place implements Serializable {
     @SerializedName("geometry")
     private Geometry mGeometry;
     @SerializedName("icon")

@@ -11,6 +11,9 @@ import com.mad.madproject.utils.Util;
 public class SettingsViewModel extends ViewModel {
     private FirebaseDatabaseRepository mFirebaseDatabaseRepository = new FirebaseDatabaseRepository();
 
+    /**
+     * Handle when on confirm is clicked, then delete the past trips from the firebase database.
+     */
     public void onConfirmClicked() {
         mFirebaseDatabaseRepository.deletePastTrips(Util.getUserUid());
     }

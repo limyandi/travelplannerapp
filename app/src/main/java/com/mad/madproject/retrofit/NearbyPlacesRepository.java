@@ -8,6 +8,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * The retrofit utility to get the nearby places.
+ */
 public class NearbyPlacesRepository {
     private NearbyPlacesService mNearbyPlacesService;
     //for a singleton.
@@ -46,7 +49,6 @@ public class NearbyPlacesRepository {
 
             @Override
             public void onFailure(Call<PlacesResponse> call, Throwable t) {
-                //TODO: Can have better error handling.
                 callback.onFailure(t.getMessage());
             }
         });

@@ -5,6 +5,9 @@ import android.arch.lifecycle.ViewModel;
 
 import com.mad.madproject.model.PlacesResponse;
 
+/**
+ * Currently not used but should be used in the next version to make sure that the activity (main thread) just observe data and not doing everything.
+ */
 public class ChooseAccommodationViewModel extends ViewModel {
     private LiveData<PlacesResponse> mNearbyPlacesResult;
 

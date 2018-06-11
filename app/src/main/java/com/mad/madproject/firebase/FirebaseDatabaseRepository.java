@@ -49,6 +49,11 @@ public class FirebaseDatabaseRepository {
         return user;
     }
 
+    /**
+     * Get upcoming itinerary
+     * @param userId the userid
+     * @return live data to be observed of the upcoming itinerary preview.
+     */
     public LiveData<ArrayList<ItineraryPreview>> getUpcomingItineraryPreviews(String userId) {
         final MutableLiveData<ArrayList<ItineraryPreview>> itineraryPreviewsLive = new MutableLiveData<>();
         final ArrayList<ItineraryPreview> itineraryPreviews = new ArrayList<>();
@@ -97,6 +102,11 @@ public class FirebaseDatabaseRepository {
         return itineraryPreviewsLive;
     }
 
+    /**
+     * Get all itinerary previews
+     * @param userId the associated user id
+     * @return the live data to be observed of all itinerary previews.
+     */
     public LiveData<ArrayList<ItineraryPreview>> getAllItineraryPreviews(String userId) {
         final MutableLiveData<ArrayList<ItineraryPreview>> itineraryPreviewsLive = new MutableLiveData<>();
         final ArrayList<ItineraryPreview> itineraryPreviews = new ArrayList<>();
@@ -125,6 +135,11 @@ public class FirebaseDatabaseRepository {
         return itineraryPreviewsLive;
     }
 
+    /**
+     * Get past itinerary previews
+     * @param userId the userid
+     * @return live data to be observed of the past itinerary previews.
+     */
     public LiveData<ArrayList<ItineraryPreview>> getPastItineraryPreviews(String userId) {
         final MutableLiveData<ArrayList<ItineraryPreview>> itineraryPreviewsLive = new MutableLiveData<>();
         final ArrayList<ItineraryPreview> itineraryPreviews = new ArrayList<>();
@@ -173,7 +188,10 @@ public class FirebaseDatabaseRepository {
         return itineraryPreviewsLive;
     }
 
-
+    /**
+     * Utility function to delete all past trips (for privacy purpose).
+     * @param userId associated userid.
+     */
     public void deletePastTrips(String userId) {
         Util.getDatabaseReference("ItineraryPreview").orderByChild("ownerId").equalTo(userId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -205,6 +223,11 @@ public class FirebaseDatabaseRepository {
         });
     }
 
+    /**
+     * Get itinerary details (TODO: Currently not used but we will use it for next development)
+     * @param itineraryPreviewId the associated itinerary preview id
+     * @return the live data to be observed of all the itinerary details
+     */
     public LiveData<Itineraries> getItineraryDetails(String itineraryPreviewId) {
         final MutableLiveData<Itineraries> itineraries = new MutableLiveData<>();
 
@@ -221,6 +244,14 @@ public class FirebaseDatabaseRepository {
             }
         });
         return itineraries;
+    }
+
+    /**
+     * Delete a certain itinerary that users dont want anymore
+     * @param itineraryPreviewId the associated itinerarypreviewid.
+     */
+    public void deleteItinerary(String itineraryPreviewId) {
+        Util.getDatabaseReference("ItineraryPreview").child(itineraryPreviewId).removeValue();
     }
 
 }

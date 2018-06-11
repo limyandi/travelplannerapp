@@ -101,7 +101,7 @@ public class Util {
                 rc = new RandomCollection().add(50, "casino").add(30, "night_club").add(20, "spa");
                 return rc.next();
             default:
-                //return park if there is an error in time.
+                //return random if there is an error in time.
                 rc = new RandomCollection().add(10, "liquor_store").add(10, "park").add(10, "amusement_park")
                         .add(10, "restaurant").add(10, "mean_takeaway").add(10, "aquarium").add(10, "movie_theater")
                         .add(10, "home_goods_store").add(10, "spa").add(10, "cafe");

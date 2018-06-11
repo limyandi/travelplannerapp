@@ -91,7 +91,7 @@ public class AddTripDetailsActivity extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(), ChooseAccommodationActivity.class);
                 Log.d(Constant.LOG_TAG, String.valueOf(intervalDay));
                 intent.putExtra(Constant.DAYS_KEY, intervalDay);
-                //TODO: Chaining intent put? is this bad practice?
+
                 intent.putExtra(Constant.LATITUDE_KEY, getIntent().getDoubleExtra(Constant.LATITUDE_KEY, 0));
                 intent.putExtra(Constant.LONGITUDE_KEY, getIntent().getDoubleExtra(Constant.LONGITUDE_KEY, 0));
                 //Itinerary Preview Data. (Call the view model to create the data).

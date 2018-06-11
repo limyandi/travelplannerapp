@@ -26,6 +26,9 @@ import butterknife.ButterKnife;
  * Created by limyandivicotrico on 5/2/18.
  */
 
+/**
+ * The city adapter is intended to customise when user choose the city, but not currently used because the placeautocompleteadapter is hard to customise to make up for it.
+ */
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
     private Context mContext;

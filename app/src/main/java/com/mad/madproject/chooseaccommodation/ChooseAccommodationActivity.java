@@ -78,24 +78,25 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
     private GeoDataClient mGeoDataClient;
     private GoogleApiClient mGoogleApiClient;
 
-    double latitude = 0;
-    double longitude = 0;
+    //store to prevent crash.
+    double mLatitude = 0;
+    double mLongitude = 0;
 
     private Accommodation mAccommodationInfo;
-    private int numberOfTripDays;
+    private int mNumberOfTripDays;
 
-    private int day = 0;
-    private int startTime = 9;
+    private int mDay = 0;
+    private int mStartTime = 9;
 
-    private ArrayList<ArrayList<com.mad.madproject.model.Place>> places = new ArrayList<>();
+    private ArrayList<ArrayList<com.mad.madproject.model.Place>> mPlaces = new ArrayList<>();
     private ArrayList<Itinerary> mItineraryArrayList = new ArrayList<>();
 
     private ProgressDialog mPrgDialog;
 
     //Database Reference
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference databaseReference = database.getReference();
-    String itineraryPreviewKey = databaseReference.child("ItineraryPreview").push().getKey();
+    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference mDatabaseReference = mDatabase.getReference();
+    String mItineraryPreviewKey = mDatabaseReference.child("ItineraryPreview").push().getKey();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,21 +105,20 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
         ButterKnife.bind(this);
 
-        //Latitude and longitude for the city.
-        latitude = getIntent().getDoubleExtra(Constant.LATITUDE_KEY, 0);
-        longitude = getIntent().getDoubleExtra(Constant.LONGITUDE_KEY, 0);
-        //TODO: Number of trip days redundant, do not need this.
-        numberOfTripDays = getIntent().getIntExtra(Constant.DAYS_KEY, 1);
+        //Latitude and mLongitude for the city.
+        mLatitude = getIntent().getDoubleExtra(Constant.LATITUDE_KEY, 0);
+        mLongitude = getIntent().getDoubleExtra(Constant.LONGITUDE_KEY, 0);
+        mNumberOfTripDays = getIntent().getIntExtra(Constant.DAYS_KEY, 1);
 
-        for (int i = 0; i < numberOfTripDays; i++) {
-            places.add(new ArrayList<com.mad.madproject.model.Place>());
+        for (int i = 0; i < mNumberOfTripDays; i++) {
+            mPlaces.add(new ArrayList<com.mad.madproject.model.Place>());
         }
 
-        LatLng latLng = new LatLng(latitude, longitude);
+        LatLng latLng = new LatLng(mLatitude, mLongitude);
 
-        //Create the bound for the city, so that the autocompleteadapter will suggest mostly places that are close to the chosen city.
-        //TODO: Does not seems like it is fully working yet.
-        LatLngBounds cityBound = Util.toBounds(latLng, 0);
+        //Create the bound for the city, so that the autocompleteadapter will suggest mostly mPlaces that are close to the chosen city.
+        //TODO: Does not seems like it is fully working yet. (Turns out that the google mPlaces does not allow restriction, it is still possible to get outer results, eventhough it will suggests you the one in the bounds first).
+        LatLngBounds cityBound = Util.toBounds(latLng, 50);
 
         mGeoDataClient = Places.getGeoDataClient(this);
         mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Places.GEO_DATA_API).addApi(Places.PLACE_DETECTION_API)
@@ -195,7 +195,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         mGoogleMap = googleMap;
 
         if (mLocationPermissionsGranted) {
-            moveToCityLocation(CAMERA_ZOOM);
+            initialMoveToChosenCityLocation(CAMERA_ZOOM);
             initEditText();
         }
     }
@@ -211,6 +211,9 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         return false;
     }
 
+    /**
+     * Get location permission for allow accessing user location (not used) but the apps want to be able to move the map around.
+     */
     private void getLocationPermission() {
         Log.d(Constant.LOG_TAG, "getting location permission");
         //After android marshmallow, we need to explicitly check the fine location and coarse location.
@@ -228,7 +231,9 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         }
     }
 
-    //TODO: This might be bad.
+    /**
+     * Enable the autocompletetextview to geolocate each press.
+     */
     private void initEditText() {
         mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -245,6 +250,9 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         });
     }
 
+    /**
+     * init the map fragment and show it.
+     */
     private void initMap() {
         Log.d(Constant.LOG_TAG, "initMap: initialising Map.");
         //refer to the map fragment we declared in xml.
@@ -254,11 +262,21 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         mapFragment.getMapAsync(ChooseAccommodationActivity.this);
     }
 
-    private void moveToCityLocation(float zoom) {
-        Log.d(Constant.LOG_TAG, "moveToCityLocation: Moving the camera to : lat: " + latitude + ", lng: " + longitude);
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), zoom));
+    /**
+     * Move the maps to the chosen city location.
+     * @param zoom how zoom is it.
+     */
+    private void initialMoveToChosenCityLocation(float zoom) {
+        Log.d(Constant.LOG_TAG, "initialMoveToChosenCityLocation: Moving the camera to : lat: " + mLatitude + ", lng: " + mLongitude);
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(mLatitude, mLongitude), zoom));
     }
 
+    /**
+     * Move the camera to each location pressed by user
+     * @param latLng the lat lng of the location
+     * @param zoom how zoom is it
+     * @param accommodationInfo the info of the pressed place.
+     */
     private void moveCamera(final LatLng latLng, float zoom, Accommodation accommodationInfo) {
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
@@ -266,7 +284,6 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
         if (accommodationInfo != null) {
             try {
-                //TODO: The Material Dialog here might not be a good idea.
                 new MaterialDialog.Builder(this).title("Is this your accommodation address?").content(accommodationInfo.toString())
                         .positiveText(R.string.confirm).negativeText(R.string.cancel).positiveColor(getResources().getColor(R.color.green))
                         .onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -276,7 +293,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
                                 //Start ProgressDialog
                                 initProgressDialog();
-                                getNearbyPlace(Util.getPlaceType(startTime), String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
+                                getNearbyPlace(Util.getPlaceType(mStartTime), String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
                             }
                         }).show();
             } catch (NullPointerException e) {
@@ -285,11 +302,19 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         }
     }
 
+    /**
+     * Move the camera with the lat lng and zoom.
+     * @param latLng of the location
+     * @param zoom the zoomness.
+     */
     private void moveCamera(LatLng latLng, float zoom) {
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
     }
 
+    /**
+     * geo locate the location.
+     */
     private void geoLocate() {
         Log.d(Constant.LOG_TAG, "geoLocate: geolocating");
 
@@ -312,46 +337,51 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         }
     }
 
+    /**
+     * Utility recursion function to find the nearby places using google nearby places web service
+     * @param type type of the places (i.e. Restaurant, Shopping mall, etc.)
+     * @param latitude lat of the from place
+     * @param longitude longitude of the from place.
+     */
     private void getNearbyPlace(String type, final String latitude, final String longitude) {
         NearbyPlacesRepository.getInstance().getPlaces(type, latitude + "," + longitude, Constant.PROXIMITY_RADIUS, new NearbyPlacesRepository.NearbyPlacesCallback() {
             @Override
             public void onSuccess(PlacesResponse placesResponse) {
                 if(placesResponse != null) {
                     if (placesResponse.getResults().size() != 0) {
-                        if (places.get(day).size() < 6 && day != numberOfTripDays) {
+                        if (mPlaces.get(mDay).size() < 6 && mDay != mNumberOfTripDays) {
                             int placeToGoIndex = Util.handlePlaceSearchIndexError(placesResponse.getResults().size());
-                            placesResponse.getResults().get(placeToGoIndex).setTimeToGo(startTime);
+                            placesResponse.getResults().get(placeToGoIndex).setTimeToGo(mStartTime);
                             String placeType = placesResponse.getResults().get(placeToGoIndex).getPlaceType();
-                            places.get(day).add(placesResponse.getResults().get(placeToGoIndex));
+                            mPlaces.get(mDay).add(placesResponse.getResults().get(placeToGoIndex));
                             double lat = placesResponse.getResults().get(placeToGoIndex).getGeometry().getLocation().getLat();
                             double lng = placesResponse.getResults().get(placeToGoIndex).getGeometry().getLocation().getLng();
-                            placesResponse.getResults().get(placeToGoIndex).setTimeToGo(startTime);
-                            //TODO: Fix static timing.
-                            startTime += 2;
+                            placesResponse.getResults().get(placeToGoIndex).setTimeToGo(mStartTime);
+                            //TODO: Fix static timing. (For next version).
+                            mStartTime += 2;
                             getNearbyPlace(placeType, String.valueOf(lat), String.valueOf(lng));
                         } else {
-                            day++;
-                            if (day != (numberOfTripDays)) {
+                            mDay++;
+                            if (mDay != (mNumberOfTripDays)) {
                                 //restart from the starting time again.
                                 //static time.
-                                startTime = 9;
+                                mStartTime = 9;
                                 //Restart from the accommodation again.
-                                getNearbyPlace(Util.getPlaceType(startTime), String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
+                                getNearbyPlace(Util.getPlaceType(mStartTime), String.valueOf(mAccommodationInfo.getLatLng().latitude), String.valueOf(mAccommodationInfo.getLatLng().longitude));
                             } else {
-                                for (int j = 0; j < places.size(); j++) {
-                                    mItineraryArrayList.add(new Itinerary(places.get(j)));
+                                for (int j = 0; j < mPlaces.size(); j++) {
+                                    mItineraryArrayList.add(new Itinerary(mPlaces.get(j)));
                                 }
                                 ItineraryPreview itineraryPreview = (ItineraryPreview) getIntent().getSerializableExtra(Constant.ITINERARY_PREVIEW_KEY);
                                 //set the key here now, we dont set it in add trip activity.
-                                itineraryPreview.setItineraryPreviewId(itineraryPreviewKey);
-                                Itineraries itineraries = new Itineraries(mItineraryArrayList, itineraryPreview.getTripName(), itineraryPreview.getStartDate(), itineraryPreview.getEndDate(), itineraryPreviewKey);
-                                databaseReference.child("ItineraryPreview").child(itineraryPreviewKey).setValue(itineraryPreview);
-                                databaseReference.child("Itinerary").push().setValue(itineraries);
-                                //TODO: Handle progress dialog better.
+                                itineraryPreview.setItineraryPreviewId(mItineraryPreviewKey);
+                                Itineraries itineraries = new Itineraries(mItineraryArrayList, itineraryPreview.getTripName(), itineraryPreview.getStartDate(), itineraryPreview.getEndDate(), mItineraryPreviewKey);
+                                mDatabaseReference.child("ItineraryPreview").child(mItineraryPreviewKey).setValue(itineraryPreview);
+                                mDatabaseReference.child("Itinerary").push().setValue(itineraries);
                                 mPrgDialog.dismiss();
                                 Intent intent = new Intent(ChooseAccommodationActivity.this, ViewItineraryActivity.class);
                                 intent.putExtra(Constant.DAYS_KEY, itineraryPreview.getDayInterval());
-                                intent.putExtra(Constant.ITINERARY_PREVIEW_PUSH_KEY_KEY, itineraryPreviewKey);
+                                intent.putExtra(Constant.ITINERARY_PREVIEW_PUSH_KEY_KEY, mItineraryPreviewKey);
                                 startActivity(intent);
                             }
                         }
@@ -365,16 +395,20 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
 
             @Override
             public void onFailure(String message) {
+                dismissDialogForFailed();
                 Log.d(Constant.LOG_TAG_MVVM, message);
             }
         });
     }
 
+    /**
+     * Dismiss dialog for failed retrieving data.
+     */
     private void dismissDialogForFailed() {
-        places.clear();
-        //reinitialise places.
-        for (int i = 0; i < numberOfTripDays; i++) {
-            places.add(new ArrayList<com.mad.madproject.model.Place>());
+        mPlaces.clear();
+        //reinitialise mPlaces.
+        for (int i = 0; i < mNumberOfTripDays; i++) {
+            mPlaces.add(new ArrayList<com.mad.madproject.model.Place>());
         }
         mPrgDialog.dismiss();
         new MaterialDialog.Builder(ChooseAccommodationActivity.this)
@@ -384,6 +418,9 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                 .show();
     }
 
+    /**
+     * Init the progress dialog for showing progress
+     */
     private void initProgressDialog() {
         mPrgDialog = new ProgressDialog(ChooseAccommodationActivity.this);
         mPrgDialog.setMessage("Please wait while we are creating your itinerary");
@@ -393,7 +430,9 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         mPrgDialog.show();
     }
 
-    //onItemClickListener, for each item in the dropdown list of the lists of accommodation that is clicked.
+    /**
+     * The listener for clicking an item in the autocomplete text view.
+     */
     private AdapterView.OnItemClickListener mAutoCompleteClickListener = new AdapterView.OnItemClickListener() {
 
         @Override
@@ -409,7 +448,9 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
         }
     };
 
-    //when the request is successfull, call this.
+    /**
+     * Callback on what happens after a location is pressed.
+     */
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback = new ResultCallback<PlaceBuffer>() {
         @Override
         public void onResult(@NonNull PlaceBuffer places) {
@@ -428,7 +469,7 @@ public class ChooseAccommodationActivity extends AppCompatActivity implements On
                 mAccommodationInfo.setAddress(place.getAddress().toString());
                 mAccommodationInfo.setLatLng(place.getLatLng());
 
-                Log.d(Constant.LOG_TAG, "onResult: places: " + mAccommodationInfo.toString());
+                Log.d(Constant.LOG_TAG, "onResult: mPlaces: " + mAccommodationInfo.toString());
             } catch (NullPointerException e) {
                 Log.e(Constant.LOG_TAG, "onResult: NullPointerException: " + e.getMessage());
             }

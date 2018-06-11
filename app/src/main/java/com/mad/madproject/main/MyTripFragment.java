@@ -53,6 +53,9 @@ public class MyTripFragment extends Fragment {
         viewPager.setAdapter(adapter);
     }
 
+    /**
+     * The pager adapter to enable different fragment to be shown in each section.
+     */
     public class FilterPagerAdapter extends FragmentPagerAdapter {
 
         public FilterPagerAdapter(FragmentManager fm) {

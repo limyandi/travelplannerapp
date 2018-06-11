@@ -1,5 +1,7 @@
 package com.mad.madproject.viewitinerary;
 
+import android.arch.lifecycle.ViewModelProviders;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -13,20 +15,26 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.mad.madproject.R;
+import com.mad.madproject.main.MainActivity;
 import com.mad.madproject.model.Itineraries;
 import com.mad.madproject.model.Itinerary;
 import com.mad.madproject.model.Place;
 import com.mad.madproject.utils.Constant;
 import com.mad.madproject.utils.Util;
+import com.mad.madproject.utils.Utils;
 
 import java.util.ArrayList;
 
@@ -44,6 +52,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
 
     private String mPreviewId;
     private Itineraries mCrawledItinerary;
+
+    ViewItineraryViewModel mViewItineraryViewModel;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -65,6 +75,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_itinerary);
 
+        mViewItineraryViewModel = ViewModelProviders.of(this).get(ViewItineraryViewModel.class);
+
         mViewPager = (ViewPager) findViewById(R.id.container);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -76,6 +88,31 @@ public class ViewItineraryActivity extends AppCompatActivity {
         mItineraryDate = (TextView) findViewById(R.id.view_itinerary_activity_date);
         getItinerariesDetails();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.app_bar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.delete_trip:
+                new MaterialDialog.Builder(this).title("Delete Itineraries").content("Are you sure you want to delete it?")
+                        .positiveText(R.string.confirm).negativeText(R.string.cancel).positiveColor(getResources().getColor(R.color.green))
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                mViewItineraryViewModel.deleteItineraryPreviewData(mPreviewId);
+                                //TODO: Setting intent here might not be right, use finish or something (But then the update is not refreshed).
+                                Utils.setIntent(ViewItineraryActivity.this, MainActivity.class);
+                            }
+                        }).show();
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -98,7 +135,8 @@ public class ViewItineraryActivity extends AppCompatActivity {
                     Log.d(Constant.LOG_TAG, mCrawledItinerary.toString());
                 }
                 mItineraryPlace.setText(mCrawledItinerary.getTripName());
-                mItineraryDate.setText(mCrawledItinerary.getStartDate() + " - " + mCrawledItinerary.getEndDate());
+                String dateText = mCrawledItinerary.getStartDate() + getString(R.string.hyphen) + mCrawledItinerary.getEndDate();
+                mItineraryDate.setText(dateText);
                 mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
                 // Set up the ViewPager with the sections adapter.
                 mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -131,7 +169,6 @@ public class ViewItineraryActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-
         public static PlaceholderFragment newInstance(int sectionNumber, Itineraries itineraries) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();

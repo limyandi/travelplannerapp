@@ -27,7 +27,7 @@ import com.mad.madproject.utils.Util;
  */
 
 /**
- * TODO: HolidayNewsFragment For next build version.
+ * TODO: HolidayNewsFragment (For next version).
  * This fragment now only handles showing some fancy messages telling that this feature will be available in the next version of the application.
  */
 public class HolidayNewsFragment extends Fragment {
