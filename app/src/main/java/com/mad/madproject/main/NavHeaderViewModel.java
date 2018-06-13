@@ -18,7 +18,6 @@ public class NavHeaderViewModel extends ViewModel {
     private LiveData<User> user;
 
     public NavHeaderViewModel() {
-        //TODO: Passing the user id here might not be right?
         user = mFirebaseDatabaseRepository.getUserDetails(Util.getUserUid());
     }
 
