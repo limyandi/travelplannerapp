@@ -52,14 +52,13 @@ dependencies {
     compile 'com.firebaseui:firebase-ui-storage:0.6.0'
     compile 'com.makeramen:roundedimageview:2.3.0'
     compile ('com.github.ozodrukh:CircularReveal:2.0.1@aar') {
-        transitive = true;
+        transitive = true
     }
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.squareup.okhttp3:okhttp:3.10.0'
     compile "com.andkulikov:transitionseverywhere:1.7.9"
-    compile 'com.jota.autocompletelocation:autocomplete-location:0.9.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
     testCompile 'junit:junit:4.12'

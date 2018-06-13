@@ -19,5 +19,4 @@ public interface NearbyPlacesService {
 
     @GET("api/place/nearbysearch/json?rankby=prominence&language=en&key=AIzaSyAUIVnQu5Pc9K48reQl0btDc2VrSrESzS8")
     Call<PlacesResponse> getNearbyPlaces(@Query("type") String type, @Query("location") String location, @Query("radius") int radius);
-
 }

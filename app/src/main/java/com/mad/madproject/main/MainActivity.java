@@ -194,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
      * Observe the user details data using the view model
      */
     private void observeUser() {
-
         mNavHeaderViewModel.getUser().observe(this, new Observer<User>() {
             @Override
             public void onChanged(@Nullable User user) {
