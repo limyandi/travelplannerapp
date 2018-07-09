@@ -14,26 +14,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 import com.mad.madproject.R;
 import com.mad.madproject.choosecity.ChooseCityActivity;
 import com.mad.madproject.fragments.AboutFragment;
 import com.mad.madproject.fragments.HolidayNewsFragment;
-import com.mad.madproject.fragments.ItineraryPreviewFragment;
-import com.mad.madproject.fragments.MyTripFragment;
-import com.mad.madproject.fragments.SettingsFragment;
 import com.mad.madproject.login.LoginActivity;
 import com.mad.madproject.model.User;
-import com.mad.madproject.utils.Util;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

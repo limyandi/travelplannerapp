@@ -17,10 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- specify the api key -->
+        <!-- TODO: specify the maps api key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCs3VfeeBgLZv5OLamZWMgqPHDI8IbTkFA"/>
+            android:value="YOURAPIKEY"/>
         <!-- specify google play services version -->
         <meta-data
             android:name="com.google.android.gms.version"
