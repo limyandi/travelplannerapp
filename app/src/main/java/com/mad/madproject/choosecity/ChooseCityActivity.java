@@ -125,7 +125,7 @@ public class ChooseCityActivity extends AppCompatActivity implements GoogleApiCl
                 mCityInfo.setCity(place.getName().toString());
                 mCityInfo.setLatLng(place.getLatLng());
                 Log.d(Constant.LOG_TAG, mCityInfo.getCity());
-                Log.d(Constant.LOG_TAG, mCityInfo.getCountry());
+//                Log.d(Constant.LOG_TAG, mCityInfo.getCountry());
                 Log.d(Constant.LOG_TAG, "" + mCityInfo.getLatLng());
 
                 final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(place.getId());
