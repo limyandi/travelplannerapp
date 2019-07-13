@@ -9,8 +9,8 @@
 
     <application android:name=".App" android:allowBackup="true" android:icon="@mipmap/ic_launcher" android:label="@string/app_name" android:roundIcon="@mipmap/ic_launcher" android:supportsRtl="true" android:theme="@style/AppTheme">
 
-        <!-- TODO: specify the maps api key -->
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyAgcOxVFUxSoPOv9BlBul1yOIBtaTEANe4"/>
+        <!-- TODO: replace "@string/api_key" with your own Google Maps API Key -->
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/api_key"/>
         <!-- specify google play services version -->
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
 
