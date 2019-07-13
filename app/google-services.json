@@ -21,7 +21,8 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBWTMef0jylLaRDszdKjoO_VveINgE5vT8"
+          //TODO: Specify the api key for google services, or you can just copy your own google-services.
+          "current_key": "YOUR_KEY"
         }
       ],
       "services": {
